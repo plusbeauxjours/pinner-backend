@@ -96,7 +96,7 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#migration-modules
 MIGRATION_MODULES = {
-    'sites': 'pinner.contrib.sites.migrations'
+    'sites': 'contrib.sites.migrations'
 }
 
 # AUTHENTICATION
@@ -364,4 +364,4 @@ sentry_sdk.init(
     integrations=[DjangoIntegration()]
 )
 
-# django_heroku.settings(locals())
+django_heroku.settings(locals())
