@@ -148,7 +148,7 @@ class CompletePhoneVerification(graphene.Mutation):
                         gcd_formula,
                         (latitude, longitude, latitude)
                     )
-                    qs = models.City.objects.all().annotate(distance=distance_raw_sql).order_by('distance')
+                    qs = location_models.City.objects.all().annotate(distance=distance_raw_sql).order_by('distance')
                     if max_distance is not None:
                         qs = qs.filter(distance__lt=max_distance)
                         for i in qs:
@@ -156,15 +156,15 @@ class CompletePhoneVerification(graphene.Mutation):
                         return qs
 
                 try:
-                    city = models.City.objects.get(city_id=cityId)
+                    city = location_models.City.objects.get(city_id=cityId)
                     return types.CreateCityResponse(ok=True)
-                except models.City.DoesNotExist:
+                except location_models.City.DoesNotExist:
                     cityLatitude, cityLongitude, cityName, countryCode = reversePlace.reverse_place(cityId)
                     nearCities = get_locations_nearby_coords(cityLatitude, cityLongitude, 3000)[:20]
 
                     try:
-                        country = models.Country.objects.get(country_code=countryCode)
-                    except models.Country.DoesNotExist:
+                        country = location_models.Country.objects.get(country_code=countryCode)
+                    except location_models.Country.DoesNotExist:
 
                         with open('pinner/locations/countryData.json', mode='rt', encoding='utf-8') as file:
                             countryData = json.load(file)
@@ -180,7 +180,7 @@ class CompletePhoneVerification(graphene.Mutation):
                             longitude = currentCountry['longitude']
 
                             try:
-                                continent = models.Continent.objects.get(continent_code=continentCode)
+                                continent = location_models.Continent.objects.get(continent_code=continentCode)
                             except:
                                 with open('pinner/locations/continentData.json', mode='rt', encoding='utf-8') as file:
                                     continentData = json.load(file)
@@ -192,7 +192,7 @@ class CompletePhoneVerification(graphene.Mutation):
                                     except:
                                         continentPhotoURL = None
 
-                                    continent = models.Continent.objects.create(
+                                    continent = location_models.Continent.objects.create(
                                         continent_name=continentName,
                                         continent_photo=continentPhotoURL,
                                         continent_code=continentCode
@@ -202,7 +202,7 @@ class CompletePhoneVerification(graphene.Mutation):
                             countryPhotoURL = gp.get_urls()
                         except:
                             countryPhotoURL = None
-                        country = models.Country.objects.create(
+                        country = location_models.Country.objects.create(
                             country_code=countryCode,
                             country_name=countryName,
                             country_name_native=countryNameNative,
@@ -221,7 +221,7 @@ class CompletePhoneVerification(graphene.Mutation):
                         cityPhotoURL = gp.get_urls()
                     except:
                         cityPhotoURL = None
-                    city = models.City.objects.create(
+                    city = location_models.City.objects.create(
                         city_id=cityId,
                         city_name=cityName,
                         country=country,
@@ -457,7 +457,7 @@ class CompleteEmailVerification(graphene.Mutation):
                         gcd_formula,
                         (latitude, longitude, latitude)
                     )
-                    qs = models.City.objects.all().annotate(distance=distance_raw_sql).order_by('distance')
+                    qs = location_models.City.objects.all().annotate(distance=distance_raw_sql).order_by('distance')
                     if max_distance is not None:
                         qs = qs.filter(distance__lt=max_distance)
                         for i in qs:
@@ -465,15 +465,15 @@ class CompleteEmailVerification(graphene.Mutation):
                         return qs
 
                 try:
-                    city = models.City.objects.get(city_id=cityId)
+                    city = location_models.City.objects.get(city_id=cityId)
                     return types.CreateCityResponse(ok=True)
-                except models.City.DoesNotExist:
+                except location_models.City.DoesNotExist:
                     cityLatitude, cityLongitude, cityName, countryCode = reversePlace.reverse_place(cityId)
                     nearCities = get_locations_nearby_coords(cityLatitude, cityLongitude, 3000)[:20]
 
                     try:
-                        country = models.Country.objects.get(country_code=countryCode)
-                    except models.Country.DoesNotExist:
+                        country = location_models.Country.objects.get(country_code=countryCode)
+                    except location_models.Country.DoesNotExist:
 
                         with open('pinner/locations/countryData.json', mode='rt', encoding='utf-8') as file:
                             countryData = json.load(file)
@@ -489,7 +489,7 @@ class CompleteEmailVerification(graphene.Mutation):
                             longitude = currentCountry['longitude']
 
                             try:
-                                continent = models.Continent.objects.get(continent_code=continentCode)
+                                continent = location_models.Continent.objects.get(continent_code=continentCode)
                             except:
                                 with open('pinner/locations/continentData.json', mode='rt', encoding='utf-8') as file:
                                     continentData = json.load(file)
@@ -501,7 +501,7 @@ class CompleteEmailVerification(graphene.Mutation):
                                     except:
                                         continentPhotoURL = None
 
-                                    continent = models.Continent.objects.create(
+                                    continent = location_models.Continent.objects.create(
                                         continent_name=continentName,
                                         continent_photo=continentPhotoURL,
                                         continent_code=continentCode
@@ -511,7 +511,7 @@ class CompleteEmailVerification(graphene.Mutation):
                             countryPhotoURL = gp.get_urls()
                         except:
                             countryPhotoURL = None
-                        country = models.Country.objects.create(
+                        country = location_models.Country.objects.create(
                             country_code=countryCode,
                             country_name=countryName,
                             country_name_native=countryNameNative,
@@ -530,7 +530,7 @@ class CompleteEmailVerification(graphene.Mutation):
                         cityPhotoURL = gp.get_urls()
                     except:
                         cityPhotoURL = None
-                    city = models.City.objects.create(
+                    city = location_models.City.objects.create(
                         city_id=cityId,
                         city_name=cityName,
                         country=country,
