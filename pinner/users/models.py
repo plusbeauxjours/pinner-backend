@@ -26,7 +26,6 @@ def upload_thumbnail(instance, filename):
 
 
 class Avatar(config_models.TimeStampedModel):
-    is_default = models.BooleanField(default=False)
     is_main = models.BooleanField(default=False)
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, blank=True, null=True)
     creator = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE, related_name='avatar')
@@ -160,6 +159,7 @@ class Profile(config_models.TimeStampedModel):
 @receiver(post_delete, sender=Profile)
 def delete_attached_image(sender, **kwargs):
     instance = kwargs.pop('instance')
+    instance.avatar.delete()
     instance.user.delete()
 
 
