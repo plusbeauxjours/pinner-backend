@@ -21,7 +21,6 @@ class CreateCity(graphene.Mutation):
 
     Output = types.CreateCityResponse
 
-    @login_required
     def mutate(self, info, **kwargs):
         user = info.context.user
 
