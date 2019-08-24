@@ -12,6 +12,7 @@ from graphql_extensions.exceptions import GraphQLError
 from users import models as users_models
 from locations import models as location_models
 from locations import reversePlace
+from locations import locationThumbnail
 from django.contrib.auth.models import User
 from . import models, types
 from . import sendSMS

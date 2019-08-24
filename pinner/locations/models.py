@@ -111,7 +111,7 @@ def send_slack_notification_city_created(sender,  instance, created, **kwargs):
             "fallback": "New City on Pinner",
             "color": "#569934",
             "title":  "New city: %s" % (instance.city_name),
-            "title_link": "http://localhost:3000/city/%s" % (instance.city_id),
+            "title_link": "https://5d60dc9507a4170008abea29--pinner.netlify.com/city/%s" % (instance.city_id),
             "text": "Created new city on %s %s. \n Total cities on %s %s: %s." % (
                 instance.country.country_name, instance.country.country_emoji, instance.country.country_name, instance.country.country_emoji, instance.country.city_count),
             "image_url": instance.city_photo,
@@ -129,7 +129,7 @@ def send_slack_notification_country_created(sender,  instance, created, **kwargs
             "color": "#569934",
             "title":   "Created new city on %s %s. \n Total cities on %s %s: %s." % (
                 instance.country_name, instance.country_emoji, instance.country_name, instance.country_emoji, instance.city_count, ),
-            "title_link": "http://localhost:3000/country/%s" % (instance.country_code),
+            "title_link": "https://5d60dc9507a4170008abea29--pinner.netlify.com/country/%s" % (instance.country_code),
             "text": "Optional text that appears within the attachment",
             "image_url": instance.country_photo,
             "footer": "🙌🏻 New Country!",
