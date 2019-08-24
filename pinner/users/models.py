@@ -27,6 +27,7 @@ def upload_thumbnail(instance, filename):
 
 class Avatar(config_models.TimeStampedModel):
     is_main = models.BooleanField(default=False)
+    is_default = models.BooleanField(default=False)
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, blank=True, null=True)
     creator = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE, related_name='avatar')
     image = ProcessedImageField(

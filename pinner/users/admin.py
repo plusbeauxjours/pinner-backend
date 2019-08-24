@@ -40,6 +40,7 @@ class AvatarAdmin(admin.ModelAdmin):
         'uuid',
         'creator',
         'is_main',
+        'is_default',
         'image',
         'thumbnail',
     )

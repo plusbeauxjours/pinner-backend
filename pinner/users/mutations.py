@@ -677,7 +677,7 @@ class FacebookConnect(graphene.Mutation):
                 newUser.last_name = last_name
                 newUser.save()
 
-                avatarUrl = "http://graph.facebook.com/%s/picture?type=large" % fbId
+                avatarUrl = "https://graph.facebook.com/%s/picture?type=large" % fbId
                 thumbnail = BytesIO(urlopen(avatarUrl).read())
                 avatar = models.Avatar.objects.create(
                     is_main=True,
