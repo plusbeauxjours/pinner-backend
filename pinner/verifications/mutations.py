@@ -4,12 +4,14 @@ import json
 
 import uuid
 import graphene
+from django.db.models.expressions import RawSQL
 from django.db import IntegrityError
 from graphql_jwt.decorators import login_required
 from graphql_jwt.shortcuts import get_token
 from graphql_extensions.exceptions import GraphQLError
 from users import models as users_models
 from locations import models as location_models
+from locations import reversePlace
 from django.contrib.auth.models import User
 from . import models, types
 from . import sendSMS
@@ -136,6 +138,101 @@ class CompletePhoneVerification(graphene.Mutation):
                 return types.CompletePhoneVerificationResponse(ok=True, token=token)
 
             except users_models.Profile.DoesNotExist:
+
+                def get_locations_nearby_coords(latitude, longitude, max_distance=3000):
+                    gcd_formula = "6371 * acos(cos(radians(%s)) * \
+                    cos(radians(latitude)) \
+                    * cos(radians(longitude) - radians(%s)) + \
+                    sin(radians(%s)) * sin(radians(latitude)))"
+                    distance_raw_sql = RawSQL(
+                        gcd_formula,
+                        (latitude, longitude, latitude)
+                    )
+                    qs = models.City.objects.all().annotate(distance=distance_raw_sql).order_by('distance')
+                    if max_distance is not None:
+                        qs = qs.filter(distance__lt=max_distance)
+                        for i in qs:
+                            pass
+                        return qs
+
+                try:
+                    city = models.City.objects.get(city_id=cityId)
+                    return types.CreateCityResponse(ok=True)
+                except models.City.DoesNotExist:
+                    cityLatitude, cityLongitude, cityName, countryCode = reversePlace.reverse_place(cityId)
+                    nearCities = get_locations_nearby_coords(cityLatitude, cityLongitude, 3000)[:20]
+
+                    try:
+                        country = models.Country.objects.get(country_code=countryCode)
+                    except models.Country.DoesNotExist:
+
+                        with open('pinner/locations/countryData.json', mode='rt', encoding='utf-8') as file:
+                            countryData = json.load(file)
+                            currentCountry = countryData[countryCode]
+                            countryName = currentCountry['name']
+                            countryNameNative = currentCountry['native']
+                            countryCapital = currentCountry['capital']
+                            countryCurrency = currentCountry['currency']
+                            countryPhone = currentCountry['phone']
+                            countryEmoji = currentCountry['emoji']
+                            continentCode = currentCountry['continent']
+                            latitude = currentCountry['latitude']
+                            longitude = currentCountry['longitude']
+
+                            try:
+                                continent = models.Continent.objects.get(continent_code=continentCode)
+                            except:
+                                with open('pinner/locations/continentData.json', mode='rt', encoding='utf-8') as file:
+                                    continentData = json.load(file)
+                                    continentName = continentData[continentCode]
+
+                                    try:
+                                        gp = locationThumbnail.get_photos(term=continentName)
+                                        continentPhotoURL = gp.get_urls()
+                                    except:
+                                        continentPhotoURL = None
+
+                                    continent = models.Continent.objects.create(
+                                        continent_name=continentName,
+                                        continent_photo=continentPhotoURL,
+                                        continent_code=continentCode
+                                    )
+                        try:
+                            gp = locationThumbnail.get_photos(term=countryName)
+                            countryPhotoURL = gp.get_urls()
+                        except:
+                            countryPhotoURL = None
+                        country = models.Country.objects.create(
+                            country_code=countryCode,
+                            country_name=countryName,
+                            country_name_native=countryNameNative,
+                            country_capital=countryCapital,
+                            country_currency=countryCurrency,
+                            country_phone=countryPhone,
+                            country_emoji=countryEmoji,
+                            country_photo=countryPhotoURL,
+                            continent=continent,
+                            latitude=latitude,
+                            longitude=longitude
+                        )
+
+                    try:
+                        gp = locationThumbnail.get_photos(term=cityName)
+                        cityPhotoURL = gp.get_urls()
+                    except:
+                        cityPhotoURL = None
+                    city = models.City.objects.create(
+                        city_id=cityId,
+                        city_name=cityName,
+                        country=country,
+                        city_photo=cityPhotoURL,
+                        latitude=cityLatitude,
+                        longitude=cityLongitude
+                    )
+                    for i in nearCities:
+                        city.near_city.add(i)
+                        city.save()
+
                 with open('pinner/users/adjectives.json', mode='rt', encoding='utf-8') as adjectives:
                     with open('pinner/users/nouns.json', mode='rt', encoding='utf-8') as nouns:
                         adjectives = json.load(adjectives)
@@ -350,6 +447,101 @@ class CompleteEmailVerification(graphene.Mutation):
                 return types.CompleteEmailVerificationResponse(ok=True, token=token)
 
             except users_models.Profile.DoesNotExist:
+
+                def get_locations_nearby_coords(latitude, longitude, max_distance=3000):
+                    gcd_formula = "6371 * acos(cos(radians(%s)) * \
+                    cos(radians(latitude)) \
+                    * cos(radians(longitude) - radians(%s)) + \
+                    sin(radians(%s)) * sin(radians(latitude)))"
+                    distance_raw_sql = RawSQL(
+                        gcd_formula,
+                        (latitude, longitude, latitude)
+                    )
+                    qs = models.City.objects.all().annotate(distance=distance_raw_sql).order_by('distance')
+                    if max_distance is not None:
+                        qs = qs.filter(distance__lt=max_distance)
+                        for i in qs:
+                            pass
+                        return qs
+
+                try:
+                    city = models.City.objects.get(city_id=cityId)
+                    return types.CreateCityResponse(ok=True)
+                except models.City.DoesNotExist:
+                    cityLatitude, cityLongitude, cityName, countryCode = reversePlace.reverse_place(cityId)
+                    nearCities = get_locations_nearby_coords(cityLatitude, cityLongitude, 3000)[:20]
+
+                    try:
+                        country = models.Country.objects.get(country_code=countryCode)
+                    except models.Country.DoesNotExist:
+
+                        with open('pinner/locations/countryData.json', mode='rt', encoding='utf-8') as file:
+                            countryData = json.load(file)
+                            currentCountry = countryData[countryCode]
+                            countryName = currentCountry['name']
+                            countryNameNative = currentCountry['native']
+                            countryCapital = currentCountry['capital']
+                            countryCurrency = currentCountry['currency']
+                            countryPhone = currentCountry['phone']
+                            countryEmoji = currentCountry['emoji']
+                            continentCode = currentCountry['continent']
+                            latitude = currentCountry['latitude']
+                            longitude = currentCountry['longitude']
+
+                            try:
+                                continent = models.Continent.objects.get(continent_code=continentCode)
+                            except:
+                                with open('pinner/locations/continentData.json', mode='rt', encoding='utf-8') as file:
+                                    continentData = json.load(file)
+                                    continentName = continentData[continentCode]
+
+                                    try:
+                                        gp = locationThumbnail.get_photos(term=continentName)
+                                        continentPhotoURL = gp.get_urls()
+                                    except:
+                                        continentPhotoURL = None
+
+                                    continent = models.Continent.objects.create(
+                                        continent_name=continentName,
+                                        continent_photo=continentPhotoURL,
+                                        continent_code=continentCode
+                                    )
+                        try:
+                            gp = locationThumbnail.get_photos(term=countryName)
+                            countryPhotoURL = gp.get_urls()
+                        except:
+                            countryPhotoURL = None
+                        country = models.Country.objects.create(
+                            country_code=countryCode,
+                            country_name=countryName,
+                            country_name_native=countryNameNative,
+                            country_capital=countryCapital,
+                            country_currency=countryCurrency,
+                            country_phone=countryPhone,
+                            country_emoji=countryEmoji,
+                            country_photo=countryPhotoURL,
+                            continent=continent,
+                            latitude=latitude,
+                            longitude=longitude
+                        )
+
+                    try:
+                        gp = locationThumbnail.get_photos(term=cityName)
+                        cityPhotoURL = gp.get_urls()
+                    except:
+                        cityPhotoURL = None
+                    city = models.City.objects.create(
+                        city_id=cityId,
+                        city_name=cityName,
+                        country=country,
+                        city_photo=cityPhotoURL,
+                        latitude=cityLatitude,
+                        longitude=cityLongitude
+                    )
+                    for i in nearCities:
+                        city.near_city.add(i)
+                        city.save()
+
                 with open('pinner/users/adjectives.json', mode='rt', encoding='utf-8') as adjectives:
                     with open('pinner/users/nouns.json', mode='rt', encoding='utf-8') as nouns:
                         adjectives = json.load(adjectives)
