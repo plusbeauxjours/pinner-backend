@@ -73,6 +73,7 @@ requests = "*"
 idna = "*"
 pg = "*"
 argon2 = "*"
+future = "*"
 
 [requires]
 python_version = "3.7"
