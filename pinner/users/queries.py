@@ -1,6 +1,5 @@
 import graphene
 from graphql_jwt.decorators import login_required
-from graphql_extensions.exceptions import GraphQLError
 from django.contrib.auth.models import User
 from . import types, models
 from django.db.models import Count, F, Sum, Q

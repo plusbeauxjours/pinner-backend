@@ -173,7 +173,7 @@ def send_slack_notification_city_created(sender, instance, created,  **kwargs):
             # "author_name": instance.user.username,
             # "author_link": "localhost:3000/%s" % (instance.user.username),
             "title":  "New user: %s" % (instance.user.username),
-            "title_link": "https://5d60dc9507a4170008abea29--pinner.netlify.com/%s" % (instance.user.username),
+            "title_link": "https://www.pinner.fun/%s" % (instance.user.username),
             "text": "From %s , %s %s. \n Total user until now is %s" % (instance.current_city, instance.current_city.country.country_name, instance.current_city.country.country_emoji, User.objects.all().count()),
             "footer": "🙌🏻 New User!",
         }]

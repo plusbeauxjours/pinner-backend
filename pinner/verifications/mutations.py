@@ -8,7 +8,6 @@ from django.db.models.expressions import RawSQL
 from django.db import IntegrityError
 from graphql_jwt.decorators import login_required
 from graphql_jwt.shortcuts import get_token
-from graphql_extensions.exceptions import GraphQLError
 from users import models as users_models
 from locations import models as location_models
 from locations import reversePlace
