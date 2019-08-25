@@ -15,11 +15,12 @@ def resolve_profile(self, info, **kwargs):
 
     try:
         profile = User.objects.get(username=username)
-
+        return types.UserProfileResponse(user=profile)
+        
     except User.DoesNotExist:
-        raise GraphQLError('User not found')
+        return types.UserProfileResponse(user=None)
 
-    return types.UserProfileResponse(user=profile)
+    
 
 
 def resolve_get_avatars(self, info, **kwargs):
