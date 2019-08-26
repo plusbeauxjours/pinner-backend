@@ -40,6 +40,7 @@ class MarkAsVerified(graphene.Mutation):
             return types.MarkAsVerifiedResponse(ok=True)
 
         except models.Verification.DoesNotExist:
+            return types.MarkAsVerifiedResponse(ok=False)
             raise Exception('Verification Not Found')
 
 
@@ -74,6 +75,7 @@ class StartPhoneVerification(graphene.Mutation):
                 return types.StartPhoneVerificationResponse(ok=False)
 
         except IntegrityError as e:
+            return types.StartPhoneVerificationResponse(ok=False)
             raise Exception("Wrong Phone Number")
 
         except models.Verification.DoesNotExist:
@@ -90,6 +92,7 @@ class StartPhoneVerification(graphene.Mutation):
                 return types.StartPhoneVerificationResponse(ok=False)
 
         except:
+            return types.StartPhoneVerificationResponse(ok=False)
             raise Exception('Phone number is already verified')
 
 
@@ -284,6 +287,7 @@ class StartEditPhoneVerification(graphene.Mutation):
         try:
             existingPhoneNumber = users_models.Profile.objects.get(phone_number=phoneNumber)
             if existingPhoneNumber:
+                return types.StartEditPhoneVerificationResponse(ok=False)
                 raise Exception('Phone number is already verified')
 
         except users_models.Profile.DoesNotExist:
@@ -366,6 +370,11 @@ class CompleteEditPhoneVerification(graphene.Mutation):
                                                                isVerifiedPhoneNumber=True)
 
         except models.Verification.DoesNotExist:
+            return types.CompleteEditPhoneVerificationResponse(ok=False,
+                                                               phoneNumber=None,
+                                                               countryPhoneNumber=None,
+                                                               countryPhoneCode=None,
+                                                               isVerifiedPhoneNumber=False)
             raise Exception('Verification key not valid')
 
 
@@ -589,6 +598,7 @@ class StartEditEmailVerification(graphene.Mutation):
             existingEmailAddress = users_models.Profile.objects.get(
                 email_address=emailAddress, is_verified_email_address=True)
             if existingEmailAddress:
+                return types.StartEditEmailVerificationResponse(ok=False)
                 raise Exception('Email address is already verified')
 
         except users_models.Profile.DoesNotExist:
