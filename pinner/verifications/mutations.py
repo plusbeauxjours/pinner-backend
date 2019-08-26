@@ -258,6 +258,7 @@ class CompletePhoneVerification(graphene.Mutation):
                         return types.CompletePhoneVerificationResponse(ok=True, token=token)
 
         except models.Verification.DoesNotExist:
+            return types.CompletePhoneVerificationResponse(ok=False, token=None)
             raise Exception('Verification key not valid')
 
 
