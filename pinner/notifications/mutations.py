@@ -61,6 +61,7 @@ class AddTrip(graphene.Mutation):
             return types.AddTripResponse(ok=True, moveNotification=moveNotification)
         except IntegrityError as e:
             print(e)
+            return types.AddTripResponse(ok=False, moveNotification=None)
             raise Exception("Can't create the trip")
 
 
@@ -104,7 +105,8 @@ class EditTrip(graphene.Mutation):
                 return types.EditTripResponse(ok=True, moveNotification=moveNotification)
             except IntegrityError as e:
                 print(e)
-                raise Exception("Can't Save Trip")
+                return types.EditTripResponse(ok=False, moveNotification=moveNotification)
+                raise Exception("Can't save Trip")
 
 
 class DeleteTrip(graphene.Mutation):
@@ -131,7 +133,7 @@ class DeleteTrip(graphene.Mutation):
             return types.DeleteTripResponse(ok=True, tripId=moveNotificationId)
 
         else:
-            raise Exception('You need to log in')
+            raise Exception('You cannot delete this trip')
 
 
 class CalculateDistance(graphene.Mutation):
