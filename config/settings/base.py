@@ -23,7 +23,7 @@ load_dotenv(dotenv_path)
 # GENERAL
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#debug
-DEBUG = True
+DEBUG = False
 # Local time zone. Choices are
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # though not all of them may be available with every OS.
@@ -366,3 +366,7 @@ sentry_sdk.init(
 )
 
 django_heroku.settings(locals())
+
+BUCKETEER_AWS_ACCESS_KEY_ID = env('BUCKETEER_AWS_ACCESS_KEY_ID')
+BUCKETEER_AWS_SECRET_ACCESS_KEY = env('BUCKETEER_AWS_SECRET_ACCESS_KEY')
+BUCKETEER_BUCKET_NAME = env('BUCKETEER_BUCKET_NAME')
