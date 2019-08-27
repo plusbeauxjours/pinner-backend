@@ -161,7 +161,6 @@ class CompletePhoneVerification(graphene.Mutation):
 
                 try:
                     city = location_models.City.objects.get(city_id=cityId)
-                    return location_types.CreateCityResponse(ok=True)
                 except location_models.City.DoesNotExist:
                     cityLatitude, cityLongitude, cityName, countryCode = reversePlace.reverse_place(cityId)
                     nearCities = get_locations_nearby_coords(cityLatitude, cityLongitude, 3000)[:20]
@@ -259,6 +258,8 @@ class CompletePhoneVerification(graphene.Mutation):
                         verification.is_verified = True
                         verification.user = newUser
                         verification.save()
+                        print('ko')
+                        print(token)
                         return types.CompletePhoneVerificationResponse(ok=True, token=token)
 
         except models.Verification.DoesNotExist:
@@ -477,7 +478,6 @@ class CompleteEmailVerification(graphene.Mutation):
 
                 try:
                     city = location_models.City.objects.get(city_id=cityId)
-                    return location_types.CreateCityResponse(ok=True)
                 except location_models.City.DoesNotExist:
                     cityLatitude, cityLongitude, cityName, countryCode = reversePlace.reverse_place(cityId)
                     nearCities = get_locations_nearby_coords(cityLatitude, cityLongitude, 3000)[:20]
