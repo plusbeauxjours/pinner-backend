@@ -367,13 +367,14 @@ sentry_sdk.init(
 
 django_heroku.settings(locals())
 
-DEFAULT_FILE_STORAGE = 'pinner.storage_backend.MediaStorage'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 AWS_QUERYSTRING_AUTH = False
 AWS_STORAGE_BUCKET_NAME = env('BUCKETEER_BUCKET_NAME')
 AWS_S3_REGION_NAME = env('BUCKETEER_AWS_REGION')
 AWS_ACCESS_KEY_ID = env('BUCKETEER_AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = env('BUCKETEER_AWS_SECRET_ACCESS_KEY')
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+MEDIA_URL = 'http://%s.s3.amazonaws.com/' % str(AWS_STORAGE_BUCKET_NAME)
 AWS_DEFAULT_ACL = None
 AWS_S3_OBJECT_PARAMETERS = {
         'CacheControl': 'max-age=86400',
