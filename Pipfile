@@ -74,6 +74,7 @@ idna = "*"
 pg = "*"
 argon2 = "*"
 future = "*"
+django-storages = "*"
 
 [requires]
 python_version = "3.7"
