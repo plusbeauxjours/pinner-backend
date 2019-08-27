@@ -7,7 +7,7 @@ import sentry_sdk
 import dj_database_url
 import os
 import django_heroku
-
+import boto3
 import environ
 from os.path import join, dirname
 from dotenv import load_dotenv
@@ -79,6 +79,8 @@ THIRD_PARTY_APPS = [
     'twilio',
     'cached_property',
     "anymail",
+    "storages",
+
 ]
 LOCAL_APPS = [
     'users.apps.UsersConfig',
@@ -368,13 +370,11 @@ sentry_sdk.init(
 django_heroku.settings(locals())
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
-
-AWS_STORAGE_BUCKET_NAME = os.environ.get('BUCKETEER_BUCKET_NAME')
-AWS_S3_REGION_NAME = os.environ.get('BUCKETEER_AWS_REGION')
-AWS_ACCESS_KEY_ID = os.environ.get('BUCKETEER_AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.environ.get('BUCKETEER_AWS_SECRET_ACCESS_KEY')
+if 'BUCKETEER_AWS_ACCESS_KEY_ID' in env:
+    AWS_STORAGE_BUCKET_NAME = env('BUCKETEER_BUCKET_NAME')
+    AWS_S3_REGION_NAME = env('BUCKETEER_AWS_REGION')
+    AWS_ACCESS_KEY_ID = env('BUCKETEER_AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = env('BUCKETEER_AWS_SECRET_ACCESS_KEY')
+    MEDIA_URL = 'http://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
