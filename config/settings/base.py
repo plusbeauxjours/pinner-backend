@@ -79,8 +79,6 @@ THIRD_PARTY_APPS = [
     'twilio',
     'cached_property',
     "anymail",
-    "storages",
-
 ]
 LOCAL_APPS = [
     'users.apps.UsersConfig',
