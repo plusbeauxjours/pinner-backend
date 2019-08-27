@@ -10,6 +10,7 @@ from graphql_jwt.decorators import login_required
 from graphql_jwt.shortcuts import get_token
 from users import models as users_models
 from locations import models as location_models
+from locations import types as location_types
 from locations import reversePlace
 from locations import locationThumbnail
 from django.contrib.auth.models import User
@@ -160,7 +161,7 @@ class CompletePhoneVerification(graphene.Mutation):
 
                 try:
                     city = location_models.City.objects.get(city_id=cityId)
-                    return types.CreateCityResponse(ok=True)
+                    return location_types.CreateCityResponse(ok=True)
                 except location_models.City.DoesNotExist:
                     cityLatitude, cityLongitude, cityName, countryCode = reversePlace.reverse_place(cityId)
                     nearCities = get_locations_nearby_coords(cityLatitude, cityLongitude, 3000)[:20]
@@ -476,7 +477,7 @@ class CompleteEmailVerification(graphene.Mutation):
 
                 try:
                     city = location_models.City.objects.get(city_id=cityId)
-                    return types.CreateCityResponse(ok=True)
+                    return location_types.CreateCityResponse(ok=True)
                 except location_models.City.DoesNotExist:
                     cityLatitude, cityLongitude, cityName, countryCode = reversePlace.reverse_place(cityId)
                     nearCities = get_locations_nearby_coords(cityLatitude, cityLongitude, 3000)[:20]
