@@ -623,6 +623,7 @@ class FacebookConnect(graphene.Mutation):
             )
 
         try:
+            cityLatitude, cityLongitude, cityName, countryCode = reversePlace.reverse_place(cityId)
             city = location_models.City.objects.get(city_id=cityId)
             if city.near_city.count() < 20:
                 nearCities = get_locations_nearby_coords(cityLatitude, cityLongitude, 3000)[:20]
