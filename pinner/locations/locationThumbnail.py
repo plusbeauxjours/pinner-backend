@@ -22,7 +22,7 @@ class get_photos(object):
         req = requests.get(url=self.base_url,
                            headers=self.headers, params=payload)
         data = json.loads(req.text)
-        return data['results'][0]['urls']['regular']
+        return data['results'][0]['urls']['small']
         # DOWNLOAD IMAGE
         # for i in range(self.num):
         #     self.urls.append(data['results'][i]['links']['download'])
