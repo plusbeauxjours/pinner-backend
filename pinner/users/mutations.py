@@ -568,8 +568,6 @@ class FacebookConnect(graphene.Mutation):
                     pass
             return qs
 
-        cityLatitude, cityLongitude, cityName, countryCode = reversePlace.reverse_place(cityId)
-
         try:
             country = location_models.Country.objects.get(country_code=countryCode)
         except location_models.Country.DoesNotExist:
@@ -632,6 +630,7 @@ class FacebookConnect(graphene.Mutation):
                     city.near_city.add(i)
                     city.save()
         except location_models.City.DoesNotExist:
+            cityLatitude, cityLongitude, cityName, countryCode = reversePlace.reverse_place(cityId)
             nearCities = get_locations_nearby_coords(cityLatitude, cityLongitude, 3000)[:20]
             try:
                 gp = locationThumbnail.get_photos(term=cityName)

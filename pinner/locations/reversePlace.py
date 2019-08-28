@@ -27,4 +27,4 @@ def reverse_place(placeId):
         lng = 0
         city_name = ""
         country_code = ""
-    return lat, lng, city_name,  country_code
+    return lat, lng, city_name, country_code
