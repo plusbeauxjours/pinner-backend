@@ -568,7 +568,7 @@ class FacebookConnect(graphene.Mutation):
                     pass
             return qs
 
-        cityLatitude, cityLongitude = reversePlace.reverse_place(cityId)
+        cityLatitude, cityLongitude, cityName, countryCode = reversePlace.reverse_place(cityId)
 
         try:
             country = location_models.Country.objects.get(country_code=countryCode)

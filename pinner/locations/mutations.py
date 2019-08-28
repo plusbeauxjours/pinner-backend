@@ -233,7 +233,7 @@ class ReportLocation(graphene.Mutation):
                     city.save()
 
         except models.City.DoesNotExist:
-            cityLatitude, cityLongitude = reversePlace.reverse_place(currentCityId)
+            cityLatitude, cityLongitude, cityName, countryCode = reversePlace.reverse_place(currentCityId)
             nearCities = get_locations_nearby_coords(cityLatitude, cityLongitude, 3000)[:20]
 
             try:
