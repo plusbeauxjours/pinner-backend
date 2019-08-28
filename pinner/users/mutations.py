@@ -534,8 +534,6 @@ class FacebookConnect(graphene.Mutation):
         last_name = graphene.String()
         email = graphene.String()
         gender = graphene.String()
-        latitude = graphene.Float(required=True)
-        longitude = graphene.Float(required=True)
         cityId = graphene.String(required=True)
         cityName = graphene.String(required=True)
         countryCode = graphene.String(required=True)
@@ -549,8 +547,6 @@ class FacebookConnect(graphene.Mutation):
         last_name = kwargs.get('last_name')
         email = kwargs.get('email')
         gender = kwargs.get('gender')
-        latitude = kwargs.get('latitude')
-        longitude = kwargs.get('longitude')
         cityId = kwargs.get('cityId')
         cityName = kwargs.get('cityName')
         countryCode = kwargs.get('countryCode')
@@ -571,6 +567,8 @@ class FacebookConnect(graphene.Mutation):
                 for i in qs:
                     pass
             return qs
+
+        cityLatitude, cityLongitude = reversePlace.reverse_place(cityId)
 
         try:
             country = location_models.Country.objects.get(country_code=countryCode)
@@ -629,12 +627,12 @@ class FacebookConnect(graphene.Mutation):
         try:
             city = location_models.City.objects.get(city_id=cityId)
             if city.near_city.count() < 20:
-                nearCities = get_locations_nearby_coords(latitude, longitude, 3000)[:20]
+                nearCities = get_locations_nearby_coords(cityLatitude, cityLongitude, 3000)[:20]
                 for i in nearCities:
                     city.near_city.add(i)
                     city.save()
         except location_models.City.DoesNotExist:
-            nearCities = get_locations_nearby_coords(latitude, longitude, 3000)[:20]
+            nearCities = get_locations_nearby_coords(cityLatitude, cityLongitude, 3000)[:20]
             try:
                 gp = locationThumbnail.get_photos(term=cityName)
                 cityPhotoURL = gp.get_urls()
@@ -646,8 +644,8 @@ class FacebookConnect(graphene.Mutation):
                 city_name=cityName,
                 country=country,
                 city_photo=cityPhotoURL,
-                latitude=latitude,
-                longitude=longitude
+                latitude=cityLatitude,
+                longitude=cityLongitude
             )
             for i in nearCities:
                 city.near_city.add(i)
