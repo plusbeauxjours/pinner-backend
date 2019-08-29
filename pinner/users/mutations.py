@@ -568,77 +568,74 @@ class FacebookConnect(graphene.Mutation):
                     pass
             return qs
 
+       
         try:
-            country = location_models.Country.objects.get(country_code=countryCode)
-        except location_models.Country.DoesNotExist:
-            with open('pinner/locations/countryData.json', mode='rt', encoding='utf-8') as file:
-                countryData = json.load(file)
-                currentCountry = countryData[countryCode]
-                countryName = currentCountry['name']
-                countryNameNative = currentCountry['native']
-                countryCapital = currentCountry['capital']
-                countryCurrency = currentCountry['currency']
-                countryPhone = currentCountry['phone']
-                countryEmoji = currentCountry['emoji']
-                continentCode = currentCountry['continent']
-                latitude = currentCountry['latitude']
-                longitude = currentCountry['longitude']
-
-                try:
-                    continent = location_models.Continent.objects.get(continent_code=continentCode)
-                except:
-                    with open('pinner/locations/continentData.json', mode='rt', encoding='utf-8') as file:
-                        continentData = json.load(file)
-                        continentName = continentData[continentCode]
-
-                        try:
-                            gp = locationThumbnail.get_photos(term=continentName)
-                            continentPhotoURL = gp.get_urls()
-                        except:
-                            continentPhotoURL = None
-
-                        continent = location_models.Continent.objects.create(
-                            continent_name=continentName,
-                            continent_photo=continentPhotoURL,
-                            continent_code=continentCode
-                        )
-            try:
-                gp = locationThumbnail.get_photos(term=countryName)
-                countryPhotoURL = gp.get_urls()
-            except:
-                countryPhotoURL = None
-
-            country = location_models.Country.objects.create(
-                country_code=countryCode,
-                country_name=countryName,
-                country_name_native=countryNameNative,
-                country_capital=countryCapital,
-                country_currency=countryCurrency,
-                country_phone=countryPhone,
-                country_emoji=countryEmoji,
-                country_photo=countryPhotoURL,
-                continent=continent,
-                latitude=latitude,
-                longitude=longitude
-            )
-
-        try:
-            cityLatitude, cityLongitude, cityName, countryCode = reversePlace.reverse_place(cityId)
             city = location_models.City.objects.get(city_id=cityId)
-            if city.near_city.count() < 20:
-                nearCities = get_locations_nearby_coords(cityLatitude, cityLongitude, 3000)[:20]
-                for i in nearCities:
-                    city.near_city.add(i)
-                    city.save()
+
         except location_models.City.DoesNotExist:
             cityLatitude, cityLongitude, cityName, countryCode = reversePlace.reverse_place(cityId)
             nearCities = get_locations_nearby_coords(cityLatitude, cityLongitude, 3000)[:20]
+
+            try:
+                country = location_models.Country.objects.get(country_code=countryCode)
+            except location_models.Country.DoesNotExist:
+
+                with open('pinner/locations/countryData.json', mode='rt', encoding='utf-8') as file:
+                    countryData = json.load(file)
+                    currentCountry = countryData[countryCode]
+                    countryName = currentCountry['name']
+                    countryNameNative = currentCountry['native']
+                    countryCapital = currentCountry['capital']
+                    countryCurrency = currentCountry['currency']
+                    countryPhone = currentCountry['phone']
+                    countryEmoji = currentCountry['emoji']
+                    continentCode = currentCountry['continent']
+                    latitude = currentCountry['latitude']
+                    longitude = currentCountry['longitude']
+
+                    try:
+                        continent = location_models.Continent.objects.get(continent_code=continentCode)
+                    except:
+                        with open('pinner/locations/continentData.json', mode='rt', encoding='utf-8') as file:
+                            continentData = json.load(file)
+                            continentName = continentData[continentCode]
+
+                            try:
+                                gp = locationThumbnail.get_photos(term=continentName)
+                                continentPhotoURL = gp.get_urls()
+                            except:
+                                continentPhotoURL = None
+
+                            continent = location_models.Continent.objects.create(
+                                continent_name=continentName,
+                                continent_photo=continentPhotoURL,
+                                continent_code=continentCode
+                            )
+                try:
+                    gp = locationThumbnail.get_photos(term=countryName)
+                    countryPhotoURL = gp.get_urls()
+                except:
+                    countryPhotoURL = None
+
+                country = location_models.Country.objects.create(
+                    country_code=countryCode,
+                    country_name=countryName,
+                    country_name_native=countryNameNative,
+                    country_capital=countryCapital,
+                    country_currency=countryCurrency,
+                    country_phone=countryPhone,
+                    country_emoji=countryEmoji,
+                    country_photo=countryPhotoURL,
+                    continent=continent,
+                    latitude=latitude,
+                    longitude=longitude
+                )
+
             try:
                 gp = locationThumbnail.get_photos(term=cityName)
                 cityPhotoURL = gp.get_urls()
             except:
                 cityPhotoURL = None
-
             city = location_models.City.objects.create(
                 city_id=cityId,
                 city_name=cityName,
