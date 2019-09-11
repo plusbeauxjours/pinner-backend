@@ -146,7 +146,6 @@ def resolve_recommend_users(self, info, **kwargs):
 
     hasNextPage = offset < combined.count()
     combined = combined[offset:20 + offset]
-    print(combined)
 
     return types.RecommendUsersResponse(users=combined, page=nextPage, hasNextPage=hasNextPage)
 
