@@ -113,7 +113,7 @@ class FacebookConnectResponse(graphene.ObjectType):
 class RecommendUsersResponse(graphene.ObjectType):
     page = graphene.Int()
     hasNextPage = graphene.Boolean()
-    users = graphene.List(ProfileType)
+    users = graphene.List(UserType)
 
 
 class ReportLocationResponse(graphene.ObjectType):
