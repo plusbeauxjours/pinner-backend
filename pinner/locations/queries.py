@@ -466,7 +466,7 @@ def resolve_recommend_locations(self, info, **kwargs):
             (latitude, longitude, latitude)
         )
 
-        qs = combined.exclude(id=city.id).annotate(distance=distance_raw_sql).order_by('distance')[:30]
+        qs = combined.annotate(distance=distance_raw_sql).order_by('distance')[:30]
         return qs
 
     try:
@@ -474,7 +474,7 @@ def resolve_recommend_locations(self, info, **kwargs):
         for i in nationalityUser:
             nationalityUsers = models.City.objects.filter(id=i.user.profile.current_city.id)
             print("nationalityUsers",nationalityUsers)
-            combined = combined | nationalityUsers
+            combined = combined | nationalityUsers.exclude(id=city.id)
     except:
         nationalityUser = models.City.objects.none()
 
@@ -483,7 +483,7 @@ def resolve_recommend_locations(self, info, **kwargs):
         for i in residenceUser:
             residenceUsers = models.City.objects.filter(id=i.user.profile.current_city.id)
             print("residenceUsers",residenceUsers)
-            combined = combined | residenceUsers
+            combined = combined | residenceUsers.exclude(id=city.id)
     except:
         residenceUser = models.City.objects.none()
 
@@ -493,7 +493,7 @@ def resolve_recommend_locations(self, info, **kwargs):
         for i in locationUser:
             locationUsers = models.City.objects.filter(id=i.user.profile.current_city.id)
             print("locationUsers",locationUsers)
-            combined = combined | locationUsers
+            combined = combined | locationUsers.exclude(id=city.id)
     except:
         locationUser = models.City.objects.none()
 
@@ -502,7 +502,7 @@ def resolve_recommend_locations(self, info, **kwargs):
         for i in likeUser:
             likeUsers = models.City.objects.filter(id=i.user.profile.current_city.id)
             print("likeUsers",likeUsers)
-            combined = combined | likeUsers
+            combined = combined | likeUsers.exclude(id=city.id)
     except:
         likeUser = models.City.objects.none()
 
