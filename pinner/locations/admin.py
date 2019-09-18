@@ -5,8 +5,8 @@ from . import models
 @admin.register(models.Continent)
 class ContinentAdmin(admin.ModelAdmin):
     list_display = (
+        'image_tag',
         'continent_name',
-        'continent_photo',
         'country_count',
         'user_log_count'
     )
@@ -15,9 +15,9 @@ class ContinentAdmin(admin.ModelAdmin):
 @admin.register(models.Country)
 class CountryAdmin(admin.ModelAdmin):
     list_display = (
+        'image_tag',
         'country_name',
         'continent',
-        'country_photo',
         'total_like_count',
         'city_count',
         'user_log_count',
@@ -31,13 +31,12 @@ class CountryAdmin(admin.ModelAdmin):
 @admin.register(models.City)
 class CityAdmin(admin.ModelAdmin):
     list_display = (
-        'id',
+        'image_tag',
         'city_name',
         'country',
         'like_count',
         'user_count',
         'user_log_count',
-        'city_photo',
         'population',
     )
 
