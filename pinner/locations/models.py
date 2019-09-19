@@ -30,7 +30,7 @@ class Continent (config_models.TimeStampedModel):
 
     def image_tag(self):
         return format_html(
-            '<img src="{url}" style="width:80px; height:80px; object-fit: cover;">',
+            '<img src="{url}" style="width:50px; height:50px; object-fit: cover;">',
             url=self.continent_photo)
     image_tag.short_description = 'Image'
     image_tag.allow_tags = True
@@ -67,7 +67,7 @@ class Country (config_models.TimeStampedModel):
 
     def image_tag(self):
          return format_html(
-            '<img src="{url}" style="width:80px; height:80px; object-fit: cover;">',
+            '<img src="{url}" style="width:50px; height:50px; object-fit: cover;">',
             url=self.country_photo)
     image_tag.short_description = 'Image'
     image_tag.allow_tags = True
@@ -104,7 +104,7 @@ class City (config_models.TimeStampedModel):
     
     def image_tag(self):
         return format_html(
-            '<img src="{url}" style="width:80px; height:80px; object-fit: cover;">',
+            '<img src="{url}" style="width:50px; height:50px; object-fit: cover;">',
             url=self.city_photo)
     image_tag.short_description = 'Image'
     image_tag.allow_tags = True

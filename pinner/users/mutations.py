@@ -535,7 +535,6 @@ class FacebookConnect(graphene.Mutation):
         email = graphene.String()
         gender = graphene.String()
         cityId = graphene.String(required=True)
-        cityName = graphene.String(required=True)
         countryCode = graphene.String(required=True)
         fbId = graphene.String(required=True)
 
@@ -548,7 +547,6 @@ class FacebookConnect(graphene.Mutation):
         email = kwargs.get('email')
         gender = kwargs.get('gender')
         cityId = kwargs.get('cityId')
-        cityName = kwargs.get('cityName')
         countryCode = kwargs.get('countryCode')
         fbId = kwargs.get('fbId')
 
