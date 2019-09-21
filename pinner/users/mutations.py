@@ -355,6 +355,7 @@ class MarkAsMain(graphene.Mutation):
                 prevMainAvatar.is_main = False
                 newMainAvatar.is_main = True
                 user.profile.avatarUrl = newMainAvatar.thumbnail
+                user.profile.app_avatarlUrl = newMainAvatar.app_thumbnail
                 user.profile.save()
                 prevMainAvatar.save()
                 newMainAvatar.save()
@@ -363,6 +364,7 @@ class MarkAsMain(graphene.Mutation):
                 newMainAvatar = models.Avatar.objects.get(uuid=uuid)
                 newMainAvatar.is_main = True
                 user.profile.avatarUrl = newMainAvatar.thumbnail
+                user.profile.app_avatarlUrl = newMainAvatar.app_thumbnail
                 user.profile.save()
                 newMainAvatar.save()
                 return types.MarkAsMainResponse(ok=True, avatar=newMainAvatar,  preAvatarUUID=None, newAvatarUUID=uuid)
@@ -371,6 +373,7 @@ class MarkAsMain(graphene.Mutation):
             newMainAvatar = models.Avatar.objects.get(uuid=uuid)
             newMainAvatar.is_main = True
             user.profile.avatarUrl = newMainAvatar.thumbnail
+            user.profile.app_avatarlUrl = newMainAvatar.app_thumbnail
             user.profile.save()
             newMainAvatar.save()
             return types.MarkAsMainResponse(ok=True, avatar=newMainAvatar, preAvatarUUID=None, newAvatarUUID=uuid)
@@ -414,6 +417,7 @@ class UploadAvatar(graphene.Mutation):
             newMainAvatar = models.Avatar.objects.create(
                 is_main=True, image=file, thumbnail=file, creator=user)
             user.profile.avatarUrl = newMainAvatar.thumbnail
+            user.profile.app_avatarlUrl = newMainAvatar.app_thumbnail
             prevMainAvatar.save()
             user.profile.save()
             return types.UploadAvatarResponse(ok=True, preAvatarUUID=prevMainAvatar.uuid ,newAvatarUUID=newMainAvatar.uuid, avatar=newMainAvatar)
@@ -422,6 +426,7 @@ class UploadAvatar(graphene.Mutation):
             newMainAvatar = models.Avatar.objects.create(
                 is_main=True, image=file, thumbnail=file, creator=user)
             user.profile.avatarUrl = newMainAvatar.thumbnail
+            user.profile.app_avatarlUrl = newMainAvatar.app_thumbnail
             user.profile.save()
             return types.UploadAvatarResponse(ok=True, preAvatarUUID=None ,newAvatarUUID=newMainAvatar.uuid, avatar=newMainAvatar) 
 
@@ -683,6 +688,7 @@ class FacebookConnect(graphene.Mutation):
                     is_verified_email_address=True,
                     gender=gender,
                     avatarUrl=avatar.thumbnail,
+                    app_avatarlUrl=avatar.thumbnail,
                     current_city=city,
                     current_country = city.country,
                     current_continent = city.country.continent,

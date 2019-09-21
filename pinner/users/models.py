@@ -25,6 +25,11 @@ def upload_thumbnail(instance, filename):
     return os.path.join('profileAvatar/{}/thumbnail/{}{}').format(instance.creator.id, instance.uuid, extension.lower())
 
 
+def upload_app_thumbnail(instance, filename):
+    name, extension = os.path.splitext(filename)
+    return os.path.join('profileAvatar/{}/app_thumbnail/{}{}').format(instance.creator.id, instance.uuid, extension.lower())
+
+
 class Avatar(config_models.TimeStampedModel):
     is_main = models.BooleanField(default=False)
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, blank=True, null=True)
@@ -42,6 +47,14 @@ class Avatar(config_models.TimeStampedModel):
         null=True,
         blank=True,
         processors=[ResizeToFill(300, 300)],
+        format='JPEG',
+        options={'quality': 100}
+    )
+    app_thumbnail = ProcessedImageField(
+        upload_to=upload_app_thumbnail,
+        null=True,
+        blank=True,
+        processors=[ResizeToFill(40, 40)],
         format='JPEG',
         options={'quality': 100}
     )
@@ -104,6 +117,7 @@ class Profile(config_models.TimeStampedModel):
     nationality = models.ForeignKey(
         location_models.Country, blank=True, null=True, on_delete=models.SET_NULL, related_name='nationality')
     avatarUrl = models.CharField(max_length=300, blank=True, null=True)
+    app_avatarlUrl = models.CharField(max_length=300, blank=True, null=True)
     country_phone_code = models.CharField(max_length=20, blank=True, null=True)
     country_phone_number = models.CharField(max_length=20, blank=True, null=True)
     phone_number = models.CharField(max_length=20, blank=True, null=True, unique=True)
