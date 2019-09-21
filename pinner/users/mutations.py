@@ -415,7 +415,7 @@ class UploadAvatar(graphene.Mutation):
                 is_main=True, creator=user)
             prevMainAvatar.is_main = False
             newMainAvatar = models.Avatar.objects.create(
-                is_main=True, image=file, thumbnail=file, creator=user)
+                is_main=True, image=file, thumbnail=file, app_thumbnail=file, creator=user)
             user.profile.avatarUrl = newMainAvatar.thumbnail
             user.profile.app_avatarlUrl = newMainAvatar.app_thumbnail
             prevMainAvatar.save()
@@ -424,7 +424,7 @@ class UploadAvatar(graphene.Mutation):
 
         except models.Avatar.DoesNotExist:
             newMainAvatar = models.Avatar.objects.create(
-                is_main=True, image=file, thumbnail=file, creator=user)
+                is_main=True, image=file, thumbnail=file, app_thumbnail=file, creator=user)
             user.profile.avatarUrl = newMainAvatar.thumbnail
             user.profile.app_avatarlUrl = newMainAvatar.app_thumbnail
             user.profile.save()
