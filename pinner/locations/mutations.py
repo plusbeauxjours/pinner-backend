@@ -74,21 +74,26 @@ class CreateCity(graphene.Mutation):
                             continentName = continentData[continentCode]
 
                             try:
-                                gp = locationThumbnail.get_photos(term=continentName)
-                                continentPhotoURL = gp.get_urls()
+                                gp = locationThumbnail.get_photos(term=continentName).get_urls()
+                                continentPhotoURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max"
+                                continentThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=80&fit=max"
                             except:
                                 continentPhotoURL = None
+                                continentThumbnailURL = None
 
                             continent = models.Continent.objects.create(
                                 continent_name=continentName,
                                 continent_photo=continentPhotoURL,
+                                continent_thumbnail=continentThumbnailURL,
                                 continent_code=continentCode
                             )
                 try:
-                    gp = locationThumbnail.get_photos(term=countryName)
-                    countryPhotoURL = gp.get_urls()
+                    gp = locationThumbnail.get_photos(term=countryName).get_urls()
+                    countryPhotoURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max"
+                    countryThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=80&fit=max"
                 except:
                     countryPhotoURL = None
+                    countryThumbnailURL = None
                 country = models.Country.objects.create(
                     country_code=countryCode,
                     country_name=countryName,
@@ -98,21 +103,25 @@ class CreateCity(graphene.Mutation):
                     country_phone=countryPhone,
                     country_emoji=countryEmoji,
                     country_photo=countryPhotoURL,
+                    country_thumbnail=countryThumbnailURL,
                     continent=continent,
                     latitude=latitude,
                     longitude=longitude
                 )
 
             try:
-                gp = locationThumbnail.get_photos(term=cityName)
-                cityPhotoURL = gp.get_urls()
+                gp = locationThumbnail.get_photos(term=cityName).get_urls()
+                cityPhotoURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max"
+                cityThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=80&fit=max"
             except:
                 cityPhotoURL = None
+                cityThumbnailURL = None
             city = models.City.objects.create(
                 city_id=cityId,
                 city_name=cityName,
                 country=country,
                 city_photo=cityPhotoURL,
+                city_thumbnail=cityThumbnailURL,
                 latitude=cityLatitude,
                 longitude=cityLongitude
             )
@@ -190,21 +199,26 @@ class ReportLocation(graphene.Mutation):
                         continentName = continentData[continentCode]
 
                         try:
-                            gp = locationThumbnail.get_photos(term=continentName)
-                            continentPhotoURL = gp.get_urls()
+                            gp = locationThumbnail.get_photos(term=continentName).get_urls()
+                            continentPhotoURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max"
+                            continentThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=80&fit=max"
                         except:
                             continentPhotoURL = None
+                            continentThumbnailURL = None
 
                         continent = models.Continent.objects.create(
                             continent_name=continentName,
                             continent_photo=continentPhotoURL,
+                            continent_thumbnail=continentThumbnailURL,
                             continent_code=continentCode
                         )
             try:
-                gp = locationThumbnail.get_photos(term=countryName)
-                countryPhotoURL = gp.get_urls()
+                gp = locationThumbnail.get_photos(term=countryName).get_urls()
+                countryPhotoURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max"
+                countryThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=80&fit=max"
             except:
                 countryPhotoURL = None
+                countryThumbnailURL = None
 
             country = models.Country.objects.create(
                 country_code=currentCountryCode,
@@ -215,6 +229,7 @@ class ReportLocation(graphene.Mutation):
                 country_phone=countryPhone,
                 country_emoji=countryEmoji,
                 country_photo=countryPhotoURL,
+                country_thumbnail=countryThumbnailURL,
                 continent=continent,
                 latitude=latitude,
                 longitude=longitude
@@ -237,16 +252,19 @@ class ReportLocation(graphene.Mutation):
             nearCities = get_locations_nearby_coords(cityLatitude, cityLongitude, 3000)[:20]
 
             try:
-                gp = locationThumbnail.get_photos(term=currentCityName)
-                cityPhotoURL = gp.get_urls()
+                gp = locationThumbnail.get_photos(term=cityName).get_urls()
+                cityPhotoURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max"
+                cityThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=80&fit=max"
             except:
                 cityPhotoURL = None
+                cityThumbnailURL = None
 
             city = models.City.objects.create(
                 city_id=currentCityId,
                 city_name=currentCityName,
                 country=country,
                 city_photo=cityPhotoURL,
+                city_thumbnail=cityThumbnailURL,
                 latitude=cityLatitude,
                 longitude=cityLongitude
             )

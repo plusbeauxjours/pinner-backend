@@ -15,6 +15,7 @@ class Continent (config_models.TimeStampedModel):
 
     continent_name = models.CharField(max_length=100, null=True, blank=True)
     continent_photo = models.URLField(null=True, blank=True)
+    continent_thumbnail = models.URLField(null=True, blank=True)
     continent_code = models.CharField(max_length=20, null=True, blank=True)
 
     @cached_property
@@ -46,6 +47,7 @@ class Country (config_models.TimeStampedModel):
     country_capital = models.CharField(max_length=50, null=True, blank=True)
     country_currency = models.CharField(max_length=20, null=True, blank=True)
     country_photo = models.URLField(null=True, blank=True)
+    country_thumbnail = models.URLField(null=True, blank=True)
     country_emoji = models.CharField(max_length=20, null=True, blank=True)
     country_phone = models.CharField(max_length=20, null=True, blank=True)
     continent = models.ForeignKey(Continent, null=True, blank=True, on_delete=models.CASCADE, related_name='countries')
@@ -66,7 +68,7 @@ class Country (config_models.TimeStampedModel):
         return self.country_name
 
     def image_tag(self):
-         return format_html(
+        return format_html(
             '<img src="{url}" style="width:50px; height:50px; object-fit: cover;">',
             url=self.country_photo)
     image_tag.short_description = 'Image'
@@ -82,6 +84,7 @@ class City (config_models.TimeStampedModel):
     city_id = models.CharField(max_length=100, null=True, blank=True)
     city_name = models.CharField(max_length=100, null=True, blank=True)
     city_photo = models.URLField(null=True, blank=True)
+    city_thumbnail = models.URLField(null=True, blank=True)
     population = models.IntegerField(null=True, blank=True)
     info = models.TextField(null=True, blank=True)
     near_city = models.ManyToManyField(
@@ -101,7 +104,7 @@ class City (config_models.TimeStampedModel):
 
     def __str__(self):
         return self.city_name
-    
+
     def image_tag(self):
         return format_html(
             '<img src="{url}" style="width:50px; height:50px; object-fit: cover;">',
