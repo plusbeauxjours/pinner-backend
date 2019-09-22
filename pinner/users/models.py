@@ -117,7 +117,7 @@ class Profile(config_models.TimeStampedModel):
     nationality = models.ForeignKey(
         location_models.Country, blank=True, null=True, on_delete=models.SET_NULL, related_name='nationality')
     avatar_url = models.CharField(max_length=300, blank=True, null=True)
-    app_avatarl_url = models.CharField(max_length=300, blank=True, null=True)
+    app_avatar_url = models.CharField(max_length=300, blank=True, null=True)
     country_phone_code = models.CharField(max_length=20, blank=True, null=True)
     country_phone_number = models.CharField(max_length=20, blank=True, null=True)
     phone_number = models.CharField(max_length=20, blank=True, null=True, unique=True)
