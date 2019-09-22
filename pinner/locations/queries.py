@@ -435,7 +435,7 @@ def resolve_get_city_photo(self, info, **kwargs):
     cityId = kwargs.get('cityId')
     try:
         city = models.City.objects.get(city_id=cityId)
-        photo = city.city_photo
+        photo = city.city_thumbnail
         return types.PhotoResponse(photo=photo)
 
     except models.City.DoesNotExist:
