@@ -354,8 +354,8 @@ class MarkAsMain(graphene.Mutation):
                 newMainAvatar = models.Avatar.objects.get(uuid=uuid)
                 prevMainAvatar.is_main = False
                 newMainAvatar.is_main = True
-                user.profile.avatarUrl = newMainAvatar.thumbnail
-                user.profile.app_avatarlUrl = newMainAvatar.app_thumbnail
+                user.profile.avatar_url = newMainAvatar.thumbnail
+                user.profile.app_avatarl_url = newMainAvatar.app_thumbnail
                 user.profile.save()
                 prevMainAvatar.save()
                 newMainAvatar.save()
@@ -363,8 +363,8 @@ class MarkAsMain(graphene.Mutation):
             else:
                 newMainAvatar = models.Avatar.objects.get(uuid=uuid)
                 newMainAvatar.is_main = True
-                user.profile.avatarUrl = newMainAvatar.thumbnail
-                user.profile.app_avatarlUrl = newMainAvatar.app_thumbnail
+                user.profile.avatar_url = newMainAvatar.thumbnail
+                user.profile.app_avatarl_url = newMainAvatar.app_thumbnail
                 user.profile.save()
                 newMainAvatar.save()
                 return types.MarkAsMainResponse(ok=True, avatar=newMainAvatar,  preAvatarUUID=None, newAvatarUUID=uuid)
@@ -372,8 +372,8 @@ class MarkAsMain(graphene.Mutation):
         except models.Avatar.DoesNotExist:
             newMainAvatar = models.Avatar.objects.get(uuid=uuid)
             newMainAvatar.is_main = True
-            user.profile.avatarUrl = newMainAvatar.thumbnail
-            user.profile.app_avatarlUrl = newMainAvatar.app_thumbnail
+            user.profile.avatar_url = newMainAvatar.thumbnail
+            user.profile.app_avatarl_url = newMainAvatar.app_thumbnail
             user.profile.save()
             newMainAvatar.save()
             return types.MarkAsMainResponse(ok=True, avatar=newMainAvatar, preAvatarUUID=None, newAvatarUUID=uuid)
@@ -416,8 +416,8 @@ class UploadAvatar(graphene.Mutation):
             prevMainAvatar.is_main = False
             newMainAvatar = models.Avatar.objects.create(
                 is_main=True, image=file, thumbnail=file, app_thumbnail=file, creator=user)
-            user.profile.avatarUrl = newMainAvatar.thumbnail
-            user.profile.app_avatarlUrl = newMainAvatar.app_thumbnail
+            user.profile.avatar_url = newMainAvatar.thumbnail
+            user.profile.app_avatarl_url = newMainAvatar.app_thumbnail
             prevMainAvatar.save()
             user.profile.save()
             return types.UploadAvatarResponse(ok=True, preAvatarUUID=prevMainAvatar.uuid ,newAvatarUUID=newMainAvatar.uuid, avatar=newMainAvatar)
@@ -425,8 +425,8 @@ class UploadAvatar(graphene.Mutation):
         except models.Avatar.DoesNotExist:
             newMainAvatar = models.Avatar.objects.create(
                 is_main=True, image=file, thumbnail=file, app_thumbnail=file, creator=user)
-            user.profile.avatarUrl = newMainAvatar.thumbnail
-            user.profile.app_avatarlUrl = newMainAvatar.app_thumbnail
+            user.profile.avatar_url = newMainAvatar.thumbnail
+            user.profile.app_avatarl_url = newMainAvatar.app_thumbnail
             user.profile.save()
             return types.UploadAvatarResponse(ok=True, preAvatarUUID=None ,newAvatarUUID=newMainAvatar.uuid, avatar=newMainAvatar) 
 
@@ -673,8 +673,8 @@ class FacebookConnect(graphene.Mutation):
                 newUser.last_name = last_name
                 newUser.save()
 
-                avatarUrl = "https://graph.facebook.com/%s/picture?type=large" % fbId
-                thumbnail = BytesIO(urlopen(avatarUrl).read())
+                avatar_url = "https://graph.facebook.com/%s/picture?type=large" % fbId
+                thumbnail = BytesIO(urlopen(avatar_url).read())
                 avatar = models.Avatar.objects.create(
                     is_main=True,
                     creator=newUser,
@@ -687,8 +687,8 @@ class FacebookConnect(graphene.Mutation):
                     email_address=email,
                     is_verified_email_address=True,
                     gender=gender,
-                    avatarUrl=avatar.thumbnail,
-                    app_avatarlUrl=avatar.thumbnail,
+                    avatar_url=avatar.thumbnail,
+                    app_avatarl_url=avatar.thumbnail,
                     current_city=city,
                     current_country = city.country,
                     current_continent = city.country.continent,
