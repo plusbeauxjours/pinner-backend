@@ -5,6 +5,7 @@ from . import models, types
 import json
 from graphql_jwt.decorators import login_required
 from locations import models as location_models
+from locations import locationThumbnail
 from notifications import models as notification_models
 from django.utils import timezone
 
