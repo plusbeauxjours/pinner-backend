@@ -30,26 +30,29 @@ def resolve_header(self, info, **kwargs):
     cities = models.City.objects.all().order_by('-id')
     for i in cities:
         try:
-            gp = i.city_photo.split("?")[0]
-            ThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=80&fit=max"
-            i.city_thumbnail = ThumbnailURL
-            i.save()
+            if i.city_photo:
+                gp = i.city_photo.split("?")[0]
+                ThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=80&fit=max"
+                i.city_thumbnail = ThumbnailURL
+                i.save()
         except:
             i.city_thumbnail = None
             i.save()
     countries = models.Country.objects.all()
     for i in countries:
-        gp = i.country_photo.split("?")[0]
-        ThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=80&fit=max"
-        i.country_thumbnail = ThumbnailURL
-        i.save()
+        if i.country_photo:
+            gp = i.country_photo.split("?")[0]
+            ThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=80&fit=max"
+            i.country_thumbnail = ThumbnailURL
+            i.save()
 
     continents = models.Continent.objects.all()
     for i in continents:
-        gp = i.continent_photo.split("?")[0]
-        ThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=80&fit=max"
-        i.continent_thumbnail = ThumbnailURL
-        i.save()
+        if i.continent_photo:
+            gp = i.continent_photo.split("?")[0]
+            ThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=80&fit=max"
+            i.continent_thumbnail = ThumbnailURL
+            i.save()
 
     return types.HeaderResponse(city=city)
 
