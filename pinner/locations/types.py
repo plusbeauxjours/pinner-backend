@@ -94,16 +94,12 @@ class CountryProfileResponse(graphene.ObjectType):
     count = graphene.Int()
     country = graphene.Field(CountryType)
     cities = graphene.List(CityType)
-    usersNow = graphene.List(user_types.ProfileType)
-    usersBefore = graphene.List(notification_types.MoveNotificationType)
     hasNextPage = graphene.Boolean()
 
 
 class ContinentProfileResponse(graphene.ObjectType):
     count = graphene.Int()
     countries = graphene.List(CountryType)
-    usersNow = graphene.List(user_types.ProfileType)
-    usersBefore = graphene.List(notification_types.MoveNotificationType)
     continent = graphene.Field(ContinentType)
     continents = graphene.List(ContinentType)
     hasNextPage = graphene.Boolean()
