@@ -297,7 +297,7 @@ class ToggleLikeCity(graphene.Mutation):
     """ Like a City """
 
     class Arguments:
-        cityId = graphene.Int(required=True)
+        cityId = graphene.String(required=True)
 
     Output = types.ToggleLikeCityResponse
 
@@ -308,7 +308,7 @@ class ToggleLikeCity(graphene.Mutation):
         user = info.context.user
 
         try:
-            city = models.City.objects.get(id=cityId)
+            city = models.City.objects.get(city_id=cityId)
         except models.City.DoesNotExist:
             raise Exception("City Not Found")
 
