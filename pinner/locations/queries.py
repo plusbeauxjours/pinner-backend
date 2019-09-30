@@ -331,7 +331,7 @@ def resolve_get_countries(self, info, **kwargs):
 
     country = models.Country.objects.get(country_code=countryCode)
 
-    countries = country.continent.countries.all()[:20]
+    countries = country.continent.countries.all().exclude(country_code=countryCode)[:20]
 
     return types.CountriesResponse(countries=countries)
 
