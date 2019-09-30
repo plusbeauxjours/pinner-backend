@@ -354,7 +354,7 @@ def resolve_continent_profile(self, info, **kwargs):
     hasNextPage = 20 < countries.count()
     countries = countries[:20]
 
-    continents = models.Continent.objects.all()
+    continents = models.Continent.objects.all().exclude(continent_code=continentCode)
 
     return types.ContinentProfileResponse(count=count, countries=countries,  continent=continent, continents=continents, hasNextPage=hasNextPage)
 
