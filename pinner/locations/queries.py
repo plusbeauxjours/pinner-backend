@@ -30,19 +30,19 @@ def resolve_header(self, info, **kwargs):
     cities = models.City.objects.all().order_by('-id')
     for i in cities:
         if i.city_photo:
-            i.city_thumbnail.replace("w=400", "w=450")
+            i.city_photo.replace("w=400", "w=450")
             i.save()
 
     countries = models.Country.objects.all()
     for i in countries:
         if i.country_photo:
-            i.country_thumbnail.replace("w=400", "w=450")
+            i.country_photo.replace("w=400", "w=450")
             i.save()
 
     continents = models.Continent.objects.all()
     for i in continents:
         if i.continent_photo:
-            i.continent_thumbnail.replace("w=400", "w=450")
+            i.continent_photo.replace("w=400", "w=450")
             i.save()
 
     return types.HeaderResponse(city=city)
