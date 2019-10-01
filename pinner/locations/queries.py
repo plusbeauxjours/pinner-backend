@@ -31,7 +31,8 @@ def resolve_header(self, info, **kwargs):
     for i in cities:
         try:
             if i.city_photo:
-                gp = i.city_photo.replace("w=400", "w=450")
+                gp = i.city_photo.replace("w=450", "h=450&w=450").replace(
+                    "q=80", "q=100").replace("tinysrgb", "faces").replace("fit=max", "fit=crop")
                 i.city_photo = gp
                 i.save()
         except:
@@ -40,14 +41,16 @@ def resolve_header(self, info, **kwargs):
     countries = models.Country.objects.all()
     for i in countries:
         if i.country_photo:
-            gp = i.country_photo.replace("w=400", "w=450")
+            gp = i.country_photo.replace("w=450", "h=450&w=450").replace(
+                "q=80", "q=100").replace("tinysrgb", "faces").replace("fit=max", "fit=crop")
             i.country_photo = gp
             i.save()
 
     continents = models.Continent.objects.all()
     for i in continents:
         if i.continent_photo:
-            gp = i.continent_photo.replace("w=400", "w=450")
+            gp = i.continent_photo.replace("w=450", "h=450&w=450").replace(
+                "q=80", "q=100").replace("tinysrgb", "faces").replace("fit=max", "fit=crop")
             i.continent_photo = gp
             i.save()
 
