@@ -27,32 +27,32 @@ def resolve_header(self, info, **kwargs):
 
     city = models.City.objects.get(city_id=cityId)
 
-    cities = models.City.objects.all().order_by('-id')
-    for i in cities:
-        try:
-            if i.city_photo:
-                gp = i.city_photo.replace("w=450", "h=450&w=450").replace(
-                    "q=80", "q=100").replace("tinysrgb", "faces").replace("fit=max", "fit=crop")
-                i.city_photo = gp
-                i.save()
-        except:
-            i.city_thumbnail = None
-            i.save()
-    countries = models.Country.objects.all()
-    for i in countries:
-        if i.country_photo:
-            gp = i.country_photo.replace("w=450", "h=450&w=450").replace(
-                "q=80", "q=100").replace("tinysrgb", "faces").replace("fit=max", "fit=crop")
-            i.country_photo = gp
-            i.save()
+    # cities = models.City.objects.all().order_by('-id')
+    # for i in cities:
+    #     try:
+    #         if i.city_photo:
+    #             gp = i.city_photo.replace("w=450", "h=450&w=450").replace(
+    #                 "q=80", "q=100").replace("tinysrgb", "faces").replace("fit=max", "fit=crop")
+    #             i.city_photo = gp
+    #             i.save()
+    #     except:
+    #         i.city_thumbnail = None
+    #         i.save()
+    # countries = models.Country.objects.all()
+    # for i in countries:
+    #     if i.country_photo:
+    #         gp = i.country_photo.replace("w=450", "h=450&w=450").replace(
+    #             "q=80", "q=100").replace("tinysrgb", "faces").replace("fit=max", "fit=crop")
+    #         i.country_photo = gp
+    #         i.save()
 
-    continents = models.Continent.objects.all()
-    for i in continents:
-        if i.continent_photo:
-            gp = i.continent_photo.replace("w=450", "h=450&w=450").replace(
-                "q=80", "q=100").replace("tinysrgb", "faces").replace("fit=max", "fit=crop")
-            i.continent_photo = gp
-            i.save()
+    # continents = models.Continent.objects.all()
+    # for i in continents:
+    #     if i.continent_photo:
+    #         gp = i.continent_photo.replace("w=450", "h=450&w=450").replace(
+    #             "q=80", "q=100").replace("tinysrgb", "faces").replace("fit=max", "fit=crop")
+    #         i.continent_photo = gp
+    #         i.save()
 
     return types.HeaderResponse(city=city)
 
