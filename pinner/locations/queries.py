@@ -29,29 +29,20 @@ def resolve_header(self, info, **kwargs):
 
     cities = models.City.objects.all().order_by('-id')
     for i in cities:
-        try:
-            if i.city_photo:
-                gp = i.city_photo.split("?")[0]
-                ThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=80&fit=max"
-                i.city_thumbnail = ThumbnailURL
-                i.save()
-        except:
-            i.city_thumbnail = None
+        if i.city_photo:
+            i.city_thumbnail.replace("w=400", "w=450")
             i.save()
+
     countries = models.Country.objects.all()
     for i in countries:
         if i.country_photo:
-            gp = i.country_photo.split("?")[0]
-            ThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=80&fit=max"
-            i.country_thumbnail = ThumbnailURL
+            i.country_thumbnail.replace("w=400", "w=450")
             i.save()
 
     continents = models.Continent.objects.all()
     for i in continents:
         if i.continent_photo:
-            gp = i.continent_photo.split("?")[0]
-            ThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=80&fit=max"
-            i.continent_thumbnail = ThumbnailURL
+            i.continent_thumbnail.replace("w=400", "w=450")
             i.save()
 
     return types.HeaderResponse(city=city)
