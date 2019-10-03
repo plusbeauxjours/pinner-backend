@@ -54,6 +54,9 @@ class HeaderResponse(graphene.ObjectType):
 
 class CreateCityResponse(graphene.ObjectType):
     ok = graphene.Boolean()
+    cityId = graphene.String()
+    countryCode = graphene.String()
+    continentCode = graphene.String()
 
 
 class PhotoResponse(graphene.ObjectType):

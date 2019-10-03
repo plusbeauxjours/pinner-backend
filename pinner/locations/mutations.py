@@ -44,7 +44,7 @@ class CreateCity(graphene.Mutation):
 
         try:
             city = models.City.objects.get(city_id=cityId)
-            return types.CreateCityResponse(ok=True)
+            return types.CreateCityResponse(ok=True, cityId=city.city_id, countryCode=city.county.country_code, continentCode=city.county.continent.continent_code)
         except models.City.DoesNotExist:
             cityLatitude, cityLongitude, cityName, countryCode = reversePlace.reverse_place(cityId)
             nearCities = get_locations_nearby_coords(cityLatitude, cityLongitude, 3000)[:20]
@@ -129,7 +129,7 @@ class CreateCity(graphene.Mutation):
                 city.near_city.add(i)
                 city.save()
 
-        return types.CreateCityResponse(ok=True)
+        return types.CreateCityResponse(ok=True, cityId=city.city_id, countryCode=city.county.country_code, continentCode=city.county.continent.continent_code)
 
 
 class ReportLocation(graphene.Mutation):
