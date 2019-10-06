@@ -420,9 +420,11 @@ def resolve_near_cities(self, info, **kwargs):
     page = kwargs.get('page', 0)
     offset = 20 * page
 
+    print('nearcities', cityId)
     nextPage = page+1
 
     city = models.City.objects.prefetch_related('near_city').prefetch_related('near_cities').get(city_id=cityId)
+    print('nearcities', city)
 
     def get_locations_nearby_coords(latitude, longitude, max_distance=None):
 
@@ -441,6 +443,7 @@ def resolve_near_cities(self, info, **kwargs):
         return qs
 
     combined = get_locations_nearby_coords(city.latitude, city.longitude)
+    print('nearcities', combined)
 
     hasNextPage = offset < combined.count()
 
