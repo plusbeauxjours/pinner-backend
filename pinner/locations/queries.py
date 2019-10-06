@@ -447,9 +447,9 @@ def resolve_near_cities(self, info, **kwargs):
 
     hasNextPage = offset < combined.count()
 
-    combined = combined[offset:20 + offset]
+    cities = combined[offset:20 + offset]
 
-    return types.NearCitiesResponse(cities=combined, page=nextPage, hasNextPage=hasNextPage)
+    return types.NearCitiesResponse(cities=cities, page=nextPage, hasNextPage=hasNextPage)
 
 
 @login_required
