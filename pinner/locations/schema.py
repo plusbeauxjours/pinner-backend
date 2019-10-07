@@ -2,7 +2,6 @@ import graphene
 from . import types, mutations, queries
 from users import types as user_types
 from notifications import types as notification_types
-from locations import types as location_types
 
 
 class Query(object):
@@ -27,7 +26,7 @@ class Query(object):
         }
     )
     city_profile = graphene.Field(
-        location_types.CityProfileResponse,
+        types.CityProfileResponse,
         resolver=queries.resolve_city_profile,
         required=True,
         args={
@@ -54,7 +53,7 @@ class Query(object):
         }
     )
     country_profile = graphene.Field(
-        location_types.CountryProfileResponse,
+        types.CountryProfileResponse,
         resolver=queries.resolve_country_profile,
         required=True,
         args={
@@ -81,7 +80,7 @@ class Query(object):
         }
     )
     continent_profile = graphene.Field(
-        location_types.ContinentProfileResponse,
+        types.ContinentProfileResponse,
         resolver=queries.resolve_continent_profile,
         required=True,
         args={

@@ -17,6 +17,9 @@ class CityType(DjangoObjectType):
     diff = graphene.Int()
     is_liked = graphene.Boolean()
 
+    class Meta:
+        model = models.City
+
     def resolve_is_liked(self, info):
         user = info.context.user
         try:
@@ -24,9 +27,6 @@ class CityType(DjangoObjectType):
             return True
         except models.Like.DoesNotExist:
             return False
-
-    class Meta:
-        model = models.City
 
 
 class CountryType(DjangoObjectType):

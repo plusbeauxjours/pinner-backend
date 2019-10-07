@@ -112,22 +112,17 @@ def resolve_city_profile(self, info, **kwargs):
 
     user = info.context.user
     cityId = kwargs.get('cityId')
-    print("jijijiji")
-    print(cityId)
     try:
         city = models.City.objects.prefetch_related('coffee').prefetch_related('currentCity').get(city_id=cityId)
     except models.City.DoesNotExist:
         raise GraphQLError('City not found')
-    print(city)
     count = user.moveNotificationUser.values('id').filter(city__city_id=cityId).count()
 
     coffees = city.coffee.filter(expires__gt=timezone.now())
     usersNow = city.currentCity.order_by('-id').distinct('id')
-    print(usersNow)
     hasNextPage = 20 < usersNow.count()
     usersBefore = city.moveNotificationCity.exclude(
         actor__profile__in=usersNow).order_by('-actor_id').distinct('actor_id')[:20]
-    print(usersBefore)
     usersNow = usersNow[:20]
 
     return types.CityProfileResponse(count=count, usersNow=usersNow, usersBefore=usersBefore, city=city, hasNextPage=hasNextPage)
@@ -426,11 +421,9 @@ def resolve_near_cities(self, info, **kwargs):
     page = kwargs.get('page', 0)
     offset = 20 * page
 
-    print('nearcities', cityId)
     nextPage = page+1
 
     city = models.City.objects.prefetch_related('near_city').prefetch_related('near_cities').get(city_id=cityId)
-    print('nearcities', city)
 
     def get_locations_nearby_coords(latitude, longitude, max_distance=None):
 
@@ -449,7 +442,6 @@ def resolve_near_cities(self, info, **kwargs):
         return qs
 
     combined = get_locations_nearby_coords(city.latitude, city.longitude)
-    print('nearcities', combined)
 
     hasNextPage = offset < combined.count()
 
