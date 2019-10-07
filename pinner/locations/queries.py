@@ -210,6 +210,10 @@ def resolve_country_profile(self, info, **kwargs):
 
     user = info.context.user
     countryCode = kwargs.get('countryCode')
+    page = kwargs.get('page', 0)
+    offset = 20 * page
+
+    nextPage = page+1
 
     print("0", countryCode)
 
@@ -223,9 +227,11 @@ def resolve_country_profile(self, info, **kwargs):
     count = user.moveNotificationUser.values('id').filter(city__country__country_code=countryCode).count()
 
     cities = models.City.objects.filter(country__country_code=countryCode)
+
     print("2", cities)
     hasNextPage = 20 < cities.count()
-    cities = cities[:20]
+
+    cities = cities[offset:20 + offset]
     print("3", cities)
 
     return types.CountryProfileResponse(count=count, cities=cities,  country=country, hasNextPage=hasNextPage)
