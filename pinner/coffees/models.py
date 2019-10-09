@@ -37,7 +37,7 @@ class Coffee (config_models.TimeStampedModel):
         else:
             return 'requesting'
 
-    @cached_property
+    @property
     def match_count(self):
         return self.match.all().count()
 
@@ -65,7 +65,7 @@ class Match (config_models.TimeStampedModel):
     is_read_by_host = models.BooleanField(default=False)
     is_read_by_guest = models.BooleanField(default=False)
 
-    @cached_property
+    @property
     def country_count(self):
         return self.countries.all().count()
 
