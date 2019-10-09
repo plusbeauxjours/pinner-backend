@@ -8,6 +8,7 @@ from config import types as config_types
 class CoffeeType(DjangoObjectType):
     natural_time = graphene.String(source='natural_time')
     status = graphene.String(source='status')
+    match_count = graphene.Int(source='match_count')
 
     class Meta:
         model = models.Coffee
