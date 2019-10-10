@@ -4,6 +4,7 @@ from . import models
 from django.contrib.auth.models import User
 from config import types as config_types
 from locations import types as location_types
+from notifications import types as notification_types
 
 
 class UserType(DjangoObjectType):

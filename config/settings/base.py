@@ -375,8 +375,8 @@ AWS_ACCESS_KEY_ID = env('BUCKETEER_AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = env('BUCKETEER_AWS_SECRET_ACCESS_KEY')
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 MEDIA_URL = 'https://%s.s3.amazonaws.com/' % str(AWS_STORAGE_BUCKET_NAME)
-AWS_DEFAULT_ACL =  'public-read'
+AWS_DEFAULT_ACL = 'public-read'
 AWS_S3_OBJECT_PARAMETERS = {
-        'CacheControl': 'max-age=86400',
-    }
+    'CacheControl': 'max-age=86400',
+}
 AWS_LOCATION = 'media'

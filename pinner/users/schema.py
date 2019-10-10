@@ -76,6 +76,14 @@ class Query(object):
             'avatarId': graphene.String(required=True),
         }
     )
+    get_same_trips = graphene.Field(
+        location_types.GetSameTripsResponse,
+        resolver=queries.resolve_get_same_trips,
+        required=True,
+        args={
+            'username': graphene.String(required=True)
+        }
+    )
 
 
 class Mutation(object):

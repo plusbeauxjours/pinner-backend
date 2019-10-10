@@ -15,11 +15,28 @@ def resolve_profile(self, info, **kwargs):
     try:
         profile = User.objects.get(username=username)
         return types.UserProfileResponse(user=profile)
-        
+
     except User.DoesNotExist:
         return types.UserProfileResponse(user=None)
 
-    
+
+def resolve_get_same_trips(self, info, **kwargs):
+
+    username = kwargs.get('username')
+
+    Auser = info.context.user
+    Buser = User.objects.get(username=username)
+
+    try:
+        ATrips = Auser.moveNotificationUser.values('city')
+        BTrips = Buser.moveNotificationUser.values('city')
+        Trips = ATrips.intersection(BTrips)
+        cities = location_models.City.objects.filter(id__in=Trips)
+        count = cities.count()
+        return location_types.GetSameTripsResponse(ok=True, cities=cities, count=count)
+
+    except User.DoesNotExist:
+        return location_types.GetSameTripsResponse(ok=False, cities=None, count=None)
 
 
 def resolve_get_avatars(self, info, **kwargs):
@@ -124,14 +141,14 @@ def resolve_recommend_users(self, info, **kwargs):
     try:
         nationalityUser = user.profile.nationality.nationality.all().order_by('-distance')[:10]
         combined = combined | nationalityUser.exclude(id=user.profile.id).exclude(Q(user__host__in=userGuest) | Q(
-        user__host__in=userHost) | Q(user__guest__in=userGuest) | Q(user__guest__in=userHost)).order_by('id').distinct('id')
+            user__host__in=userHost) | Q(user__guest__in=userGuest) | Q(user__guest__in=userHost)).order_by('id').distinct('id')
     except:
         nationalityUser = models.Profile.objects.none()
 
     try:
         residenceUser = user.profile.residence.residence.all().order_by('-distance')[:10]
         combined = combined | residenceUser.exclude(id=user.profile.id).exclude(Q(user__host__in=userGuest) | Q(
-        user__host__in=userHost) | Q(user__guest__in=userGuest) | Q(user__guest__in=userHost)).order_by('id').distinct('id')
+            user__host__in=userHost) | Q(user__guest__in=userGuest) | Q(user__guest__in=userHost)).order_by('id').distinct('id')
     except:
         residenceUser = models.Profile.objects.none()
 
@@ -140,7 +157,7 @@ def resolve_recommend_users(self, info, **kwargs):
         for i in locationUser:
             userLocations = models.Profile.objects.filter(user__moveNotificationUser__city=i.city).order_by('-distance')
             combined = combined | userLocations.exclude(id=user.profile.id).exclude(Q(user__host__in=userGuest) | Q(
-        user__host__in=userHost) | Q(user__guest__in=userGuest) | Q(user__guest__in=userHost)).order_by('id').distinct('id')
+                user__host__in=userHost) | Q(user__guest__in=userGuest) | Q(user__guest__in=userHost)).order_by('id').distinct('id')
     except:
         locationUser = models.Profile.objects.none()
 

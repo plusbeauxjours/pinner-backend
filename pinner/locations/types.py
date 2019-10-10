@@ -149,3 +149,9 @@ class RecommendLocationsResponse(graphene.ObjectType):
     page = graphene.Int()
     hasNextPage = graphene.Boolean()
     cities = graphene.List(CityType)
+
+
+class GetSameTripsResponse(graphene.ObjectType):
+    ok = graphene.Boolean()
+    count = graphene.Int()
+    cities = graphene.List(CityType)
