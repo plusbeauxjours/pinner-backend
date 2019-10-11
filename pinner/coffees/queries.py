@@ -133,9 +133,6 @@ def resolve_get_matches(self, info, **kwargs):
     host = user.host.all()
     guest = user.guest.all()
 
-    if (matchPage is 0):
-        combined = host.union(guest).order_by('-created_at')[:20]
-    else:
-        combined = host.union(guest).order_by('-created_at')[20:]
+    combined = host.union(guest).order_by('coffee.city.city_name', '-created_at')
 
     return types.GetMatchesResponse(matches=combined)
