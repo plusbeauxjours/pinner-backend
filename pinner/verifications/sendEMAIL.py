@@ -21,5 +21,4 @@ def sendConfirmEMAIL(to, key):
     ctx = {'key': key}
     msg_html = render_to_string('account/email_confirm.html', ctx)
     send_mail(subject, msg_html, 'no-reply@www.pinner.fun', to, html_message=msg_html)
-    print('223')
     return "koko"
