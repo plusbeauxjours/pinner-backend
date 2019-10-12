@@ -9,6 +9,14 @@ class CoffeeType(DjangoObjectType):
     natural_time = graphene.String(source='natural_time')
     status = graphene.String(source='status')
     match_count = graphene.Int(source='match_count')
+    is_matching = graphene.Boolean()
+
+    def resolve_is_matching(self, info):
+        user = info.context.user
+        if self in user.host.all() or user.guest.all():
+            return True
+        else:
+            return False
 
     class Meta:
         model = models.Coffee
