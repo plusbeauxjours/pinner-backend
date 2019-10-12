@@ -268,8 +268,6 @@ class CompletePhoneVerification(graphene.Mutation):
                         verification.is_verified = True
                         verification.user = newUser
                         verification.save()
-                        print('ko')
-                        print(token)
                         return types.CompletePhoneVerificationResponse(ok=True, token=token)
 
         except models.Verification.DoesNotExist:
