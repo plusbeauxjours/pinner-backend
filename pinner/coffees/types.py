@@ -13,7 +13,8 @@ class CoffeeType(DjangoObjectType):
 
     def resolve_is_matching(self, info):
         user = info.context.user
-        if self in user.host.all() or user.guest.all():
+        # if self in user.host.all() or user.guest.all():
+        if user.host.filter(coffee=self) or user.guest.filter(coffee=self):
             return True
         else:
             return False
