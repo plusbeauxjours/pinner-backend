@@ -211,24 +211,22 @@ def resolve_country_profile(self, info, **kwargs):
     user = info.context.user
     countryCode = kwargs.get('countryCode')
     page = kwargs.get('page', 0)
-    offset = 20 * page
+    offset = 3 * page
 
     nextPage = page+1
-
 
     try:
         country = models.Country.objects.get(country_code=countryCode)
     except models.Country.DoesNotExist:
         raise GraphQLError('Country not found')
 
-
     count = user.moveNotificationUser.values('id').filter(city__country__country_code=countryCode).count()
 
     cities = models.City.objects.filter(country__country_code=countryCode)
 
-    hasNextPage = 20 < cities.count()
+    hasNextPage = 3 < cities.count()
 
-    cities = cities[offset:20 + offset]
+    cities = cities[offset:3 + offset]
 
     return types.CountryProfileResponse(count=count, cities=cities,  country=country, hasNextPage=hasNextPage)
 
