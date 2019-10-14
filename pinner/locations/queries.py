@@ -228,7 +228,7 @@ def resolve_country_profile(self, info, **kwargs):
 
     cities = cities[offset:3 + offset]
 
-    return types.CountryProfileResponse(count=count, cities=cities,  country=country, hasNextPage=hasNextPage)
+    return types.CountryProfileResponse(count=count, cities=cities, page=nextPage, country=country, hasNextPage=hasNextPage)
 
 
 @login_required
