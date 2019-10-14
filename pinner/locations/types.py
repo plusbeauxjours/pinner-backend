@@ -97,6 +97,7 @@ class CountryProfileResponse(graphene.ObjectType):
     count = graphene.Int()
     country = graphene.Field(CountryType)
     cities = graphene.List(CityType)
+    page = graphene.Int()
     hasNextPage = graphene.Boolean()
 
 
