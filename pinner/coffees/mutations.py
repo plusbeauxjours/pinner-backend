@@ -262,19 +262,19 @@ class UnMatch(graphene.Mutation):
             return types.UnMatchResponse(ok=False, matchId=None, coffee=None, cityId=None, countryCode=None,
                                          continentCode=None)
 
-        try:
-            coffee = match.coffee
-        except models.Match.DoesNotExist:
-            return types.UnMatchResponse(ok=False, matchId=None, coffee=None, cityId=None, countryCode=None,
-                                         continentCode=None)
-
         if match.host.id == user.id or match.guest.id == user.id:
             cityId = match.city.city_id
             countryCode = match.city.country.country_code
             continentCode = match.city.country.continent.continent_code
-            match.delete()
-            return types.UnMatchResponse(ok=True, matchId=matchId, coffee=coffee, cityId=cityId, countryCode=countryCode,
-                                         continentCode=continentCode)
+            try:
+                coffee = match.coffee
+                match.delete()
+                return types.UnMatchResponse(ok=True, matchId=matchId, coffee=coffee, cityId=cityId, countryCode=countryCode,
+                                             continentCode=continentCode)
+            except models.Match.DoesNotExist:
+                match.delete()
+                return types.UnMatchResponse(ok=True, matchId=matchId, coffee=None, cityId=cityId, countryCode=countryCode,
+                                             continentCode=continentCode)
 
         else:
             return types.UnMatchResponse(ok=False, matchId=None, coffee=None, cityId=None, countryCode=None,
