@@ -76,7 +76,7 @@ class CreateCity(graphene.Mutation):
                             try:
                                 gp = locationThumbnail.get_photos(term=continentName).get_urls()
                                 continentPhotoURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=faces&h=450&w=450&fit=crop"
-                                continentThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=faces&h=450&w=80&fit=crop"
+                                continentThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=80&fit=max"
                             except:
                                 continentPhotoURL = None
                                 continentThumbnailURL = None
@@ -90,7 +90,7 @@ class CreateCity(graphene.Mutation):
                 try:
                     gp = locationThumbnail.get_photos(term=countryName).get_urls()
                     countryPhotoURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=faces&h=450&w=450&fit=crop"
-                    countryThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=faces&h=450&w=80&fit=crop"
+                    countryThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=80&fit=max"
                 except:
                     countryPhotoURL = None
                     countryThumbnailURL = None
@@ -112,7 +112,7 @@ class CreateCity(graphene.Mutation):
             try:
                 gp = locationThumbnail.get_photos(term=cityName).get_urls()
                 cityPhotoURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=faces&h=450&w=450&fit=crop"
-                cityThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=faces&h=450&w=80&fit=crop"
+                cityThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=80&fit=max"
             except:
                 cityPhotoURL = None
                 cityThumbnailURL = None
@@ -201,7 +201,7 @@ class ReportLocation(graphene.Mutation):
                         try:
                             gp = locationThumbnail.get_photos(term=continentName).get_urls()
                             continentPhotoURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=faces&h=450&w=450&fit=crop"
-                            continentThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=faces&h=450&w=80&fit=crop"
+                            continentThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=80&fit=max"
                         except:
                             continentPhotoURL = None
                             continentThumbnailURL = None
@@ -215,7 +215,7 @@ class ReportLocation(graphene.Mutation):
             try:
                 gp = locationThumbnail.get_photos(term=countryName).get_urls()
                 countryPhotoURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=faces&h=450&w=450&fit=crop"
-                countryThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=faces&h=450&w=80&fit=crop"
+                countryThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=80&fit=max"
             except:
                 countryPhotoURL = None
                 countryThumbnailURL = None
@@ -254,7 +254,7 @@ class ReportLocation(graphene.Mutation):
             try:
                 gp = locationThumbnail.get_photos(term=cityName).get_urls()
                 cityPhotoURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=faces&h=450&w=450&fit=crop"
-                cityThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=faces&h=450&w=80&fit=crop"
+                cityThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=80&fit=max"
             except:
                 cityPhotoURL = None
                 cityThumbnailURL = None
