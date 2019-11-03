@@ -191,8 +191,8 @@ class CompletePhoneVerification(graphene.Mutation):
 
                                     try:
                                         gp = locationThumbnail.get_photos(term=continentName).get_urls()
-                                        continentPhotoURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=450&fit=max"
-                                        continentThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=80&fit=max"
+                                        continentPhotoURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=faces&h=450&w=450&fit=crop"
+                                        continentThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=faces&h=80&w=80&fit=crop"
                                     except:
                                         continentPhotoURL = None
                                         continentThumbnailURL = None
@@ -206,8 +206,8 @@ class CompletePhoneVerification(graphene.Mutation):
 
                         try:
                             gp = locationThumbnail.get_photos(term=countryName).get_urls()
-                            countryPhotoURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=450&fit=max"
-                            countryThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=80&fit=max"
+                            countryPhotoURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=faces&h=450&w=450&fit=crop"
+                            countryThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=faces&h=80&w=80&fit=crop"
                         except:
                             countryPhotoURL = None
                             countryThumbnailURL = None
@@ -228,8 +228,8 @@ class CompletePhoneVerification(graphene.Mutation):
 
                     try:
                         gp = locationThumbnail.get_photos(term=cityName).get_urls()
-                        cityPhotoURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=450&fit=max"
-                        cityThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=80&fit=max"
+                        cityPhotoURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=faces&h=450&w=450&fit=crop"
+                        cityThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=faces&h=80&w=80&fit=crop"
                     except:
                         cityPhotoURL = None
                         cityThumbnailURL = None
@@ -516,8 +516,8 @@ class CompleteEmailVerification(graphene.Mutation):
 
                                     try:
                                         gp = locationThumbnail.get_photos(term=continentName).get_urls()
-                                        continentPhotoURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=450&fit=max"
-                                        continentThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=80&fit=max"
+                                        continentPhotoURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=faces&h=450&w=450&fit=crop"
+                                        continentThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=faces&h=80&w=80&fit=crop"
                                     except:
                                         continentPhotoURL = None
                                         continentThumbnailURL = None
@@ -531,8 +531,8 @@ class CompleteEmailVerification(graphene.Mutation):
 
                         try:
                             gp = locationThumbnail.get_photos(term=countryName).get_urls()
-                            countryPhotoURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=450&fit=max"
-                            countryThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=80&fit=max"
+                            countryPhotoURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=faces&h=450&w=450&fit=crop"
+                            countryThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=faces&h=80&w=80&fit=crop"
                         except:
                             countryPhotoURL = None
                             countryThumbnailURL = None
@@ -553,8 +553,8 @@ class CompleteEmailVerification(graphene.Mutation):
 
                     try:
                         gp = locationThumbnail.get_photos(term=cityName).get_urls()
-                        cityPhotoURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=450&fit=max"
-                        cityThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=tinysrgb&w=80&fit=max"
+                        cityPhotoURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=faces&h=450&w=450&fit=crop"
+                        cityThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=faces&h=80&w=80&fit=crop"
                     except:
                         cityPhotoURL = None
                         cityThumbnailURL = None
