@@ -65,8 +65,6 @@ class GetCoffeesResponse(graphene.ObjectType):
 
 
 class GetMatchesResponse(graphene.ObjectType):
-    page = graphene.Int()
-    hasNextPage = graphene.Boolean()
     matches = graphene.List(MatchType)
 
 

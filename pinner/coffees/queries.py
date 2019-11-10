@@ -142,16 +142,10 @@ def resolve_get_matches(self, info, **kwargs):
 
     user = info.context.user
     page = kwargs.get('page', 0)
-    offset = 10 * page
-
-    nextPage = page+1
 
     host = user.host.all()
     guest = user.guest.all()
 
     combined = host.union(guest).order_by('-city')
 
-    hasNextPage = offset < combined.count()
-    usersNow = combined[offset:10 + offset]
-
-    return types.GetMatchesResponse(page=nextPage, hasNextPage=hasNextPage, matches=combined)
+    return types.GetMatchesResponse(matches=combined)

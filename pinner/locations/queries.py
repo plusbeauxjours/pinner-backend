@@ -372,7 +372,7 @@ def resolve_continent_profile(self, info, **kwargs):
     hasNextPage = offset < countries.count()
     countries = countries[offset:10 + offset]
 
-    return types.ContinentProfileResponse(count=count, countries=countries,  continent=continent, continents=continents, hasNextPage=hasNextPage)
+    return types.ContinentProfileResponse(page=nextPage, count=count, countries=countries,  continent=continent, continents=continents, hasNextPage=hasNextPage)
 
 
 @login_required
