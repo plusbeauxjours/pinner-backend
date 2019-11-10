@@ -113,7 +113,7 @@ def resolve_city_profile(self, info, **kwargs):
     user = info.context.user
     cityId = kwargs.get('cityId')
     page = kwargs.get('page', 0)
-    offset = 6 * page
+    offset = 10 * page
 
     nextPage = page+1
 
@@ -130,7 +130,7 @@ def resolve_city_profile(self, info, **kwargs):
         actor__profile__in=usersNow).order_by('-actor_id').distinct('actor_id')[:20]
 
     hasNextPage = offset < usersNow.count()
-    usersNow = usersNow[offset:6 + offset]
+    usersNow = usersNow[offset:10 + offset]
 
     return types.CityProfileResponse(page=nextPage, count=count, usersNow=usersNow, usersBefore=usersBefore, city=city, hasNextPage=hasNextPage)
 
@@ -168,7 +168,7 @@ def resolve_city_users_now(self, info, **kwargs):
     user = info.context.user
     cityId = kwargs.get('cityId')
     page = kwargs.get('page', 0)
-    offset = 20 * page
+    offset = 10 * page
 
     nextPage = page+1
 
@@ -181,7 +181,7 @@ def resolve_city_users_now(self, info, **kwargs):
 
     hasNextPage = offset < usersNow.count()
 
-    usersNow = usersNow[offset:20 + offset]
+    usersNow = usersNow[offset:10 + offset]
 
     return user_types.UsersNowResponse(usersNow=usersNow,  page=nextPage, hasNextPage=hasNextPage)
 
@@ -192,7 +192,7 @@ def resolve_city_users_before(self, info, **kwargs):
     user = info.context.user
     cityId = kwargs.get('cityId')
     page = kwargs.get('page', 0)
-    offset = 20 * page
+    offset = 10 * page
 
     nextPage = page+1
 
@@ -207,7 +207,7 @@ def resolve_city_users_before(self, info, **kwargs):
 
     hasNextPage = offset < usersBefore.count()
 
-    usersBefore = usersBefore[offset:20 + offset]
+    usersBefore = usersBefore[offset:10 + offset]
 
     return notification_types.usersBeforeResponse(usersBefore=usersBefore,  page=nextPage, hasNextPage=hasNextPage)
 
@@ -218,7 +218,7 @@ def resolve_country_profile(self, info, **kwargs):
     user = info.context.user
     countryCode = kwargs.get('countryCode')
     page = kwargs.get('page', 0)
-    offset = 6 * page
+    offset = 10 * page
 
     nextPage = page+1
 
@@ -233,7 +233,7 @@ def resolve_country_profile(self, info, **kwargs):
 
     hasNextPage = offset < cities.count()
 
-    cities = cities[offset:6 + offset]
+    cities = cities[offset:10 + offset]
 
     return types.CountryProfileResponse(count=count, cities=cities, page=nextPage, country=country, hasNextPage=hasNextPage)
 
@@ -244,7 +244,7 @@ def resolve_get_cities_page(self, info, **kwargs):
     user = info.context.user
     countryCode = kwargs.get('countryCode')
     page = kwargs.get('page', 0)
-    offset = 20 * page
+    offset = 10 * page
 
     nextPage = page+1
 
@@ -257,7 +257,7 @@ def resolve_get_cities_page(self, info, **kwargs):
     cityCount = cities.count()
     hasNextPage = offset < cities.count()
 
-    cities = cities[offset:20 + offset]
+    cities = cities[offset:10 + offset]
     return types.GetCitiesPageResponse(cities=cities, page=nextPage, hasNextPage=hasNextPage, cityCount=cityCount)
 
 
@@ -267,7 +267,7 @@ def resolve_get_countries_page(self, info, **kwargs):
     user = info.context.user
     continentCode = kwargs.get('continentCode')
     page = kwargs.get('page', 0)
-    offset = 20 * page
+    offset = 10 * page
 
     nextPage = page+1
 
@@ -280,7 +280,7 @@ def resolve_get_countries_page(self, info, **kwargs):
     countryCount = countries.count()
     hasNextPage = offset < countries.count()
 
-    countries = countries[offset:20 + offset]
+    countries = countries[offset:10 + offset]
     return types.GetCountriesPageResponse(countries=countries, page=nextPage, hasNextPage=hasNextPage, countryCount=countryCount)
 
 
@@ -290,7 +290,7 @@ def resolve_country_users_now(self, info, **kwargs):
     user = info.context.user
     countryCode = kwargs.get('countryCode')
     page = kwargs.get('page', 0)
-    offset = 20 * page
+    offset = 10 * page
 
     nextPage = page+1
 
@@ -303,7 +303,7 @@ def resolve_country_users_now(self, info, **kwargs):
 
     hasNextPage = offset < usersNow.count()
 
-    usersNow = usersNow[offset:20 + offset]
+    usersNow = usersNow[offset:10 + offset]
 
     return user_types.UsersNowResponse(usersNow=usersNow,  page=nextPage, hasNextPage=hasNextPage)
 
@@ -314,7 +314,7 @@ def resolve_country_users_before(self, info, **kwargs):
     user = info.context.user
     countryCode = kwargs.get('countryCode')
     page = kwargs.get('page', 0)
-    offset = 20 * page
+    offset = 10 * page
 
     nextPage = page+1
 
@@ -329,7 +329,7 @@ def resolve_country_users_before(self, info, **kwargs):
 
     hasNextPage = offset < usersBefore.count()
 
-    usersBefore = usersBefore[offset:20 + offset]
+    usersBefore = usersBefore[offset:10 + offset]
 
     return notification_types.usersBeforeResponse(usersBefore=usersBefore,  page=nextPage, hasNextPage=hasNextPage)
 
@@ -353,7 +353,7 @@ def resolve_continent_profile(self, info, **kwargs):
     user = info.context.user
     continentCode = kwargs.get('continentCode')
     page = kwargs.get('page', 0)
-    offset = 6 * page
+    offset = 10 * page
 
     nextPage = page+1
 
@@ -370,7 +370,7 @@ def resolve_continent_profile(self, info, **kwargs):
     continents = models.Continent.objects.all().exclude(continent_code=continentCode)
 
     hasNextPage = offset < countries.count()
-    countries = countries[offset:6 + offset]
+    countries = countries[offset:10 + offset]
 
     return types.ContinentProfileResponse(count=count, countries=countries,  continent=continent, continents=continents, hasNextPage=hasNextPage)
 
@@ -381,7 +381,7 @@ def resolve_continent_users_now(self, info, **kwargs):
     user = info.context.user
     continentCode = kwargs.get('continentCode')
     page = kwargs.get('page', 0)
-    offset = 20 * page
+    offset = 10 * page
 
     nextPage = page+1
 
@@ -394,7 +394,7 @@ def resolve_continent_users_now(self, info, **kwargs):
 
     hasNextPage = offset < usersNow.count()
 
-    usersNow = usersNow[offset:20 + offset]
+    usersNow = usersNow[offset:10 + offset]
 
     return user_types.UsersNowResponse(usersNow=usersNow,  page=nextPage, hasNextPage=hasNextPage)
 
@@ -405,7 +405,7 @@ def resolve_continent_users_before(self, info, **kwargs):
     user = info.context.user
     continentCode = kwargs.get('continentCode')
     page = kwargs.get('page', 0)
-    offset = 20 * page
+    offset = 10 * page
 
     nextPage = page+1
 
@@ -420,7 +420,7 @@ def resolve_continent_users_before(self, info, **kwargs):
 
     hasNextPage = offset < usersBefore.count()
 
-    usersBefore = usersBefore[offset:20 + offset]
+    usersBefore = usersBefore[offset:10 + offset]
 
     return notification_types.usersBeforeResponse(usersBefore=usersBefore,  page=nextPage, hasNextPage=hasNextPage)
 

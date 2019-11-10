@@ -69,7 +69,7 @@ def resolve_top_countries(self, info, **kwargs):
     user = info.context.user
     userName = kwargs.get('userName')
     page = kwargs.get('page', 0)
-    offset = 6 * page
+    offset = 10 * page
 
     nextPage = page+1
 
@@ -79,7 +79,7 @@ def resolve_top_countries(self, info, **kwargs):
         diff=Sum('cities__moveNotificationCity__diff_days')).order_by('-count', '-diff')
 
     hasNextPage = offset < countries.count()
-    usersNow = countries[offset:6 + offset]
+    usersNow = countries[offset:10 + offset]
 
     return location_types.CountriesResponse(page=nextPage, hasNextPage=hasNextPage, countries=countries)
 
@@ -90,7 +90,7 @@ def resolve_frequent_visits(self, info, **kwargs):
     user = info.context.user
     userName = kwargs.get('userName')
     page = kwargs.get('page', 0)
-    offset = 6 * page
+    offset = 10 * page
 
     nextPage = page+1
 
@@ -100,7 +100,7 @@ def resolve_frequent_visits(self, info, **kwargs):
         diff=Sum('moveNotificationCity__diff_days')).order_by('-count', '-diff')
 
     hasNextPage = offset < cities.count()
-    usersNow = cities[offset:6 + offset]
+    usersNow = cities[offset:10 + offset]
 
     return location_types.CitiesResponse(page=nextPage, hasNextPage=hasNextPage, cities=cities)
 
@@ -111,7 +111,7 @@ def resolve_top_continents(self, info, **kwargs):
     user = info.context.user
     userName = kwargs.get('userName')
     page = kwargs.get('page', 0)
-    offset = 6 * page
+    offset = 10 * page
 
     nextPage = page+1
 
@@ -121,7 +121,7 @@ def resolve_top_continents(self, info, **kwargs):
         diff=Sum('countries__cities__moveNotificationCity__diff_days')).order_by('-count', '-diff')
 
     hasNextPage = offset < continents.count()
-    usersNow = continents[offset:6 + offset]
+    usersNow = continents[offset:10 + offset]
 
     return location_types.ContinentsResponse(page=nextPage, hasNextPage=hasNextPage, continents=continents)
 
