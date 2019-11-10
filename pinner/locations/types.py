@@ -64,6 +64,7 @@ class PhotoResponse(graphene.ObjectType):
 
 
 class CityProfileResponse(graphene.ObjectType):
+    page = graphene.Int()
     count = graphene.Int()
     city = graphene.Field(CityType)
     usersNow = graphene.List(user_types.ProfileType)
@@ -94,14 +95,15 @@ class GetCountriesPageResponse(graphene.ObjectType):
 
 
 class CountryProfileResponse(graphene.ObjectType):
+    page = graphene.Int()
     count = graphene.Int()
     country = graphene.Field(CountryType)
     cities = graphene.List(CityType)
-    page = graphene.Int()
     hasNextPage = graphene.Boolean()
 
 
 class ContinentProfileResponse(graphene.ObjectType):
+    page = graphene.Int()
     count = graphene.Int()
     countries = graphene.List(CountryType)
     continent = graphene.Field(ContinentType)
@@ -110,6 +112,8 @@ class ContinentProfileResponse(graphene.ObjectType):
 
 
 class CitiesResponse(graphene.ObjectType):
+    page = graphene.Int()
+    hasNextPage = graphene.Boolean()
     cities = graphene.List(CityType)
 
 
@@ -120,10 +124,14 @@ class NearCitiesResponse(graphene.ObjectType):
 
 
 class CountriesResponse(graphene.ObjectType):
+    page = graphene.Int()
+    hasNextPage = graphene.Boolean()
     countries = graphene.List(CountryType)
 
 
 class ContinentsResponse(graphene.ObjectType):
+    page = graphene.Int()
+    hasNextPage = graphene.Boolean()
     continents = graphene.List(ContinentType)
 
 

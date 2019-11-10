@@ -112,6 +112,11 @@ def resolve_city_profile(self, info, **kwargs):
 
     user = info.context.user
     cityId = kwargs.get('cityId')
+    page = kwargs.get('page', 0)
+    offset = 6 * page
+
+    nextPage = page+1
+
     try:
         city = models.City.objects.prefetch_related('coffee').prefetch_related('currentCity').get(city_id=cityId)
     except models.City.DoesNotExist:
@@ -120,12 +125,14 @@ def resolve_city_profile(self, info, **kwargs):
 
     coffees = city.coffee.filter(expires__gt=timezone.now())
     usersNow = city.currentCity.order_by('-id').distinct('id')
-    hasNextPage = 20 < usersNow.count()
+
     usersBefore = city.moveNotificationCity.exclude(
         actor__profile__in=usersNow).order_by('-actor_id').distinct('actor_id')[:20]
-    usersNow = usersNow[:20]
 
-    return types.CityProfileResponse(count=count, usersNow=usersNow, usersBefore=usersBefore, city=city, hasNextPage=hasNextPage)
+    hasNextPage = offset < usersNow.count()
+    usersNow = usersNow[offset:6 + offset]
+
+    return types.CityProfileResponse(page=nextPage, count=count, usersNow=usersNow, usersBefore=usersBefore, city=city, hasNextPage=hasNextPage)
 
 
 @login_required
@@ -345,6 +352,10 @@ def resolve_continent_profile(self, info, **kwargs):
 
     user = info.context.user
     continentCode = kwargs.get('continentCode')
+    page = kwargs.get('page', 0)
+    offset = 6 * page
+
+    nextPage = page+1
 
     try:
         continent = models.Continent.objects.get(continent_code=continentCode)
@@ -355,10 +366,11 @@ def resolve_continent_profile(self, info, **kwargs):
         city__country__continent__continent_code=continentCode).count()
 
     countries = models.Country.objects.filter(continent__continent_code=continentCode)
-    hasNextPage = 20 < countries.count()
-    countries = countries[:20]
 
     continents = models.Continent.objects.all().exclude(continent_code=continentCode)
+
+    hasNextPage = offset < countries.count()
+    countries = countries[offset:6 + offset]
 
     return types.ContinentProfileResponse(count=count, countries=countries,  continent=continent, continents=continents, hasNextPage=hasNextPage)
 

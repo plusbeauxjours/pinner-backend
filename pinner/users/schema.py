@@ -41,6 +41,7 @@ class Query(object):
         resolver=queries.resolve_top_countries,
         required=True,
         args={
+            'page': graphene.Int(),
             'userName': graphene.String(required=True),
         }
     )
@@ -49,6 +50,7 @@ class Query(object):
         resolver=queries.resolve_frequent_visits,
         required=True,
         args={
+            'page': graphene.Int(),
             'userName': graphene.String(required=True),
         }
     )
@@ -57,6 +59,7 @@ class Query(object):
         resolver=queries.resolve_top_continents,
         required=True,
         args={
+            'page': graphene.Int(),
             'userName': graphene.String(required=True),
         }
     )

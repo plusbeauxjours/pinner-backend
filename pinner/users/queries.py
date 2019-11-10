@@ -68,13 +68,20 @@ def resolve_top_countries(self, info, **kwargs):
 
     user = info.context.user
     userName = kwargs.get('userName')
+    page = kwargs.get('page', 0)
+    offset = 6 * page
+
+    nextPage = page+1
 
     countries = location_models.Country.objects.filter(
         cities__moveNotificationCity__actor__username=userName).annotate(
         count=Count('cities__moveNotificationCity', distinct=True)).annotate(
         diff=Sum('cities__moveNotificationCity__diff_days')).order_by('-count', '-diff')
 
-    return location_types.CountriesResponse(countries=countries)
+    hasNextPage = offset < countries.count()
+    usersNow = countries[offset:6 + offset]
+
+    return location_types.CountriesResponse(page=nextPage, hasNextPage=hasNextPage, countries=countries)
 
 
 @login_required
@@ -82,13 +89,20 @@ def resolve_frequent_visits(self, info, **kwargs):
 
     user = info.context.user
     userName = kwargs.get('userName')
+    page = kwargs.get('page', 0)
+    offset = 6 * page
+
+    nextPage = page+1
 
     cities = location_models.City.objects.filter(
         moveNotificationCity__actor__username=userName).annotate(
         count=Count('moveNotificationCity', distinct=True)).annotate(
         diff=Sum('moveNotificationCity__diff_days')).order_by('-count', '-diff')
 
-    return location_types.CitiesResponse(cities=cities)
+    hasNextPage = offset < cities.count()
+    usersNow = cities[offset:6 + offset]
+
+    return location_types.CitiesResponse(page=nextPage, hasNextPage=hasNextPage, cities=cities)
 
 
 @login_required
@@ -96,13 +110,20 @@ def resolve_top_continents(self, info, **kwargs):
 
     user = info.context.user
     userName = kwargs.get('userName')
+    page = kwargs.get('page', 0)
+    offset = 6 * page
+
+    nextPage = page+1
 
     continents = location_models.Continent.objects.filter(
         countries__cities__moveNotificationCity__actor__username=userName).annotate(
         count=Count('countries__cities__moveNotificationCity', distinct=True)).annotate(
         diff=Sum('countries__cities__moveNotificationCity__diff_days')).order_by('-count', '-diff')
 
-    return location_types.ContinentsResponse(continents=continents)
+    hasNextPage = offset < continents.count()
+    usersNow = continents[offset:6 + offset]
+
+    return location_types.ContinentsResponse(page=nextPage, hasNextPage=hasNextPage, continents=continents)
 
 
 @login_required

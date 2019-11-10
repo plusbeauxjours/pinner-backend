@@ -9,6 +9,7 @@ class Query(object):
         resolver=queries.resolve_get_coffees,
         required=True,
         args={
+            'page': graphene.Int(),
             'location': graphene.String(required=True),
             'cityId': graphene.String(),
             'countryCode': graphene.String(),
@@ -29,7 +30,7 @@ class Query(object):
         resolver=queries.resolve_get_matches,
         required=True,
         args={
-            'matchPage': graphene.Int()
+            'page': graphene.Int(),
         }
     )
 
