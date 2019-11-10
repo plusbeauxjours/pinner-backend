@@ -211,7 +211,7 @@ def resolve_country_profile(self, info, **kwargs):
     user = info.context.user
     countryCode = kwargs.get('countryCode')
     page = kwargs.get('page', 0)
-    offset = 1 * page
+    offset = 6 * page
 
     nextPage = page+1
 
@@ -224,10 +224,9 @@ def resolve_country_profile(self, info, **kwargs):
 
     cities = models.City.objects.filter(country__country_code=countryCode)
 
-    hasNextPage = 1 < cities.count()
+    hasNextPage = offset < cities.count()
 
-    cities = cities[offset:1 + offset]
-    print(cities)
+    cities = cities[offset:6 + offset]
 
     return types.CountryProfileResponse(count=count, cities=cities, page=nextPage, country=country, hasNextPage=hasNextPage)
 
