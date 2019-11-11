@@ -112,8 +112,6 @@ class ContinentProfileResponse(graphene.ObjectType):
 
 
 class CitiesResponse(graphene.ObjectType):
-    page = graphene.Int()
-    hasNextPage = graphene.Boolean()
     cities = graphene.List(CityType)
 
 
@@ -124,14 +122,10 @@ class NearCitiesResponse(graphene.ObjectType):
 
 
 class CountriesResponse(graphene.ObjectType):
-    page = graphene.Int()
-    hasNextPage = graphene.Boolean()
     countries = graphene.List(CountryType)
 
 
 class ContinentsResponse(graphene.ObjectType):
-    page = graphene.Int()
-    hasNextPage = graphene.Boolean()
     continents = graphene.List(ContinentType)
 
 

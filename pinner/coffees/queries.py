@@ -40,7 +40,7 @@ def resolve_get_coffees(self, info, **kwargs):
                                           Q(target='gender', host__profile__gender=profile.gender)) &
                                          Q(expires__gte=timezone.now())).exclude(host__id__in=matchedGuests).exclude(host__id__in=matchedHosts).order_by('-created_at')
             hasNextPage = offset < coffees.count()
-            usersNow = coffees[offset:10 + offset]
+            coffees = coffees[offset:10 + offset]
             return types.GetCoffeesResponse(page=nextPage, hasNextPage=hasNextPage, coffees=coffees)
 
         except models.Coffee.DoesNotExist:
@@ -56,7 +56,7 @@ def resolve_get_coffees(self, info, **kwargs):
             coffees = models.Coffee.objects.filter(host=user, expires__gte=timezone.now()).order_by(
                 '-created_at')
             hasNextPage = offset < coffees.count()
-            usersNow = coffees[offset:10 + offset]
+            coffees = coffees[offset:10 + offset]
             return types.GetCoffeesResponse(page=nextPage, hasNextPage=hasNextPage, coffees=coffees)
 
         except models.Coffee.DoesNotExist:
@@ -71,7 +71,7 @@ def resolve_get_coffees(self, info, **kwargs):
         try:
             coffees = user.coffee.all()
             hasNextPage = offset < coffees.count()
-            usersNow = coffees[offset:10 + offset]
+            coffees = coffees[offset:10 + offset]
             return types.GetCoffeesResponse(page=nextPage, hasNextPage=hasNextPage, coffees=coffees)
         except models.Coffee.DoesNotExist:
             return types.GetCoffeesResponse(page=None, hasNextPage=None, coffees=None)
@@ -92,7 +92,7 @@ def resolve_get_coffees(self, info, **kwargs):
                                                            Q(target='gender', host__profile__gender=profile.gender)) &
                                                           Q(expires__gte=timezone.now()) & Q(city__id__in=allCities)).exclude(match__id__in=matchedMatch).order_by('-created_at')
             hasNextPage = offset < coffees.count()
-            usersNow = coffees[offset:10 + offset]
+            coffees = coffees[offset:10 + offset]
             return types.GetCoffeesResponse(page=nextPage, hasNextPage=hasNextPage, coffees=coffees)
 
         except models.Coffee.DoesNotExist:
@@ -115,7 +115,7 @@ def resolve_get_coffees(self, info, **kwargs):
                                                            Q(target='gender', host__profile__gender=profile.gender)) &
                                                           Q(expires__gte=timezone.now()) & Q(city__id__in=allCities)).exclude(match__id__in=matchedMatch).order_by('-created_at')
             hasNextPage = offset < coffees.count()
-            usersNow = coffees[offset:10 + offset]
+            coffees = coffees[offset:10 + offset]
             return types.GetCoffeesResponse(page=nextPage, hasNextPage=hasNextPage, coffees=coffees)
 
         except models.Coffee.DoesNotExist:

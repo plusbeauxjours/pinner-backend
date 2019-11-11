@@ -14,11 +14,17 @@ def resolve_get_trips(self, info, **kwargs):
 
     username = kwargs.get('username')
     page = kwargs.get('page', 0)
+    offset = 10 * page
+
+    nextPage = page+1
 
     try:
         user = User.objects.prefetch_related('moveNotificationUser').get(username=username)
         trip = user.moveNotificationUser.all().order_by('-start_date', '-created_at')
 
-        return location_types.TripResponse(trip=trip)
+        hasNextPage = offset < trip.count()
+        trip = trip[offset:10 + offset]
+
+        return location_types.TripResponse(page=nextPage, hasNextPage=hasNextPage, trip=trip)
     except models.City.DoesNotExist:
-        return location_types.TripResponse(trip=None)
+        return location_types.TripResponse(page=None, hasNextPage=None, trip=None)
