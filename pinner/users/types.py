@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from config import types as config_types
 from locations import types as location_types
 from notifications import types as notification_types
+from django.utils import timezone
+import datetime
 
 
 class UserType(DjangoObjectType):
@@ -27,8 +29,9 @@ class ProfileType(DjangoObjectType):
 
     def resolve_requested_coffee(self, info):
         user = info.context.user
-        if user.host.filter(status="requesting"):
-            return user.host.filter(status="requesting").uuid
+        coffee = user.coffee.filter(created_at__gte=timezone.now()-datetime.timedelta(days=1))
+        if coffee:
+            return coffee
         else:
             return None
 
