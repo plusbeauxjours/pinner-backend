@@ -25,7 +25,7 @@ class ProfileType(DjangoObjectType):
     is_self = graphene.Boolean()
     requested_coffee = graphene.String()
 
-    def requested_coffee(self, info):
+    def resolve_requested_coffee(self, info):
         user = info.context.user
         if user.host.filter(status="requesting"):
             return user.host.filter(status="requesting").uuid
