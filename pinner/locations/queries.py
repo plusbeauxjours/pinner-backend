@@ -115,8 +115,6 @@ def resolve_city_profile(self, info, **kwargs):
     page = kwargs.get('page', 0)
     offset = 10 * page
 
-    nextPage = page+1
-
     try:
         city = models.City.objects.prefetch_related('coffee').prefetch_related('currentCity').get(city_id=cityId)
     except models.City.DoesNotExist:
@@ -129,10 +127,18 @@ def resolve_city_profile(self, info, **kwargs):
     usersBefore = city.moveNotificationCity.exclude(
         actor__profile__in=usersNow).order_by('-actor_id').distinct('actor_id')[:20]
 
-    hasNextPage = offset < usersNow.count()
-    usersNow = usersNow[offset:10 + offset]
+    if page == 1:
+        nextPage = page+1
+        hasNextPage = offset < usersNow.count()
 
-    return types.CityProfileResponse(page=nextPage, count=count, usersNow=usersNow, usersBefore=usersBefore, city=city, hasNextPage=hasNextPage)
+        return types.CityProfileResponse(page=nextPage, count=count, usersNow=usersNow, usersBefore=usersBefore, city=city, hasNextPage=hasNextPage)
+
+    else:
+        nextPage = page+1
+        hasNextPage = offset < usersNow.count()
+        usersNow = usersNow[offset:10 + offset]
+
+        return types.CityProfileResponse(page=nextPage, count=count, usersNow=usersNow, usersBefore=usersBefore, city=city, hasNextPage=hasNextPage)
 
 
 @login_required
@@ -220,8 +226,6 @@ def resolve_country_profile(self, info, **kwargs):
     page = kwargs.get('page', 0)
     offset = 10 * page
 
-    nextPage = page+1
-
     try:
         country = models.Country.objects.get(country_code=countryCode)
     except models.Country.DoesNotExist:
@@ -231,11 +235,18 @@ def resolve_country_profile(self, info, **kwargs):
 
     cities = models.City.objects.filter(country__country_code=countryCode)
 
-    hasNextPage = offset < cities.count()
+    if page == 1:
+        nextPage = page+1
+        hasNextPage = offset < cities.count()
 
-    cities = cities[offset:10 + offset]
+        return types.CountryProfileResponse(count=count, cities=cities, page=nextPage, country=country, hasNextPage=hasNextPage)
 
-    return types.CountryProfileResponse(count=count, cities=cities, page=nextPage, country=country, hasNextPage=hasNextPage)
+    else:
+        nextPage = page+1
+        hasNextPage = offset < cities.count()
+        cities = cities[offset:10 + offset]
+
+        return types.CountryProfileResponse(count=count, cities=cities, page=nextPage, country=country, hasNextPage=hasNextPage)
 
 
 @login_required
@@ -355,8 +366,6 @@ def resolve_continent_profile(self, info, **kwargs):
     page = kwargs.get('page', 0)
     offset = 10 * page
 
-    nextPage = page+1
-
     try:
         continent = models.Continent.objects.get(continent_code=continentCode)
     except models.Continent.DoesNotExist:
@@ -369,10 +378,18 @@ def resolve_continent_profile(self, info, **kwargs):
 
     continents = models.Continent.objects.all().exclude(continent_code=continentCode)
 
-    hasNextPage = offset < countries.count()
-    countries = countries[offset:10 + offset]
+    if page == 1:
+        nextPage = page+1
+        hasNextPage = offset < countries.count()
 
-    return types.ContinentProfileResponse(page=nextPage, count=count, countries=countries,  continent=continent, continents=continents, hasNextPage=hasNextPage)
+        return types.ContinentProfileResponse(page=nextPage, count=count, countries=countries,  continent=continent, continents=continents, hasNextPage=hasNextPage)
+
+    else:
+        nextPage = page+1
+        hasNextPage = offset < countries.count()
+        countries = countries[offset:10 + offset]
+
+        return types.ContinentProfileResponse(page=nextPage, count=count, countries=countries,  continent=continent, continents=continents, hasNextPage=hasNextPage)
 
 
 @login_required
