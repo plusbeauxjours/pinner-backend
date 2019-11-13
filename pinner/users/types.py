@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from config import types as config_types
 from locations import types as location_types
 from notifications import types as notification_types
+from coffees import types as coffee_types
 from django.utils import timezone
 import datetime
 
@@ -25,7 +26,7 @@ class ProfileType(DjangoObjectType):
     trip_count = graphene.Int(source='trip_count')
     coffee_count = graphene.Int(source='coffee_count')
     is_self = graphene.Boolean()
-    requested_coffee = graphene.String()
+    requested_coffee = graphene.List(coffee_types.CoffeeType)
 
     def resolve_requested_coffee(self, info):
         user = info.context.user
