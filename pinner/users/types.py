@@ -23,6 +23,14 @@ class ProfileType(DjangoObjectType):
     trip_count = graphene.Int(source='trip_count')
     coffee_count = graphene.Int(source='coffee_count')
     is_self = graphene.Boolean()
+    is_requested_coffee = graphene.Boolean()
+
+    def is_requested_coffee(self, info):
+        user = info.context.user
+        if user.host.filter(status="requesting"):
+            return True
+        else:
+            return False
 
     def resolve_is_self(self, info):
         user = info.context.user
