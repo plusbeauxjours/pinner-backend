@@ -26,12 +26,6 @@ class ProfileType(DjangoObjectType):
     trip_count = graphene.Int(source='trip_count')
     coffee_count = graphene.Int(source='coffee_count')
     is_self = graphene.Boolean()
-    requested_coffee = graphene.List(coffee_types.CoffeeType)
-
-    def resolve_requested_coffee(self, info):
-        user = info.context.user
-        coffee = user.coffee.filter(created_at__gte=timezone.now()-datetime.timedelta(days=1))
-        return coffee
 
     def resolve_is_self(self, info):
         user = info.context.user
