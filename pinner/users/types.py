@@ -31,10 +31,7 @@ class ProfileType(DjangoObjectType):
     def resolve_requested_coffee(self, info):
         user = info.context.user
         coffee = user.coffee.filter(created_at__gte=timezone.now()-datetime.timedelta(days=1))
-        if coffee:
-            return coffee
-        else:
-            return None
+        return coffee
 
     def resolve_is_self(self, info):
         user = info.context.user
