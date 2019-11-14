@@ -11,7 +11,6 @@ from django.db.models import Q
 @login_required
 def resolve_get_coffees(self, info, **kwargs):
 
-    user = info.context.user
     me = info.context.user
 
     location = kwargs.get('location')
