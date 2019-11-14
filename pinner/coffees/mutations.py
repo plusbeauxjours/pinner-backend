@@ -93,8 +93,9 @@ class RequestCoffee(graphene.Mutation):
                             latitude=latitude,
                             longitude=longitude
                         )
-                    user.profile.nationality = country
-                    user.profile.save()
+                    if not user.profile.nationality:
+                        user.profile.nationality = country
+                        user.profile.save()
 
                 elif target == "residence" and countryCode:
                     try:
@@ -157,8 +158,9 @@ class RequestCoffee(graphene.Mutation):
                             latitude=latitude,
                             longitude=longitude
                         )
-                    user.profile.residence = country
-                    user.profile.save()
+                    if not user.profile.residence:
+                        user.profile.residence = country
+                        user.profile.save()
 
                 elif target == "gender" and gender:
                     user.profile.gender = gender
