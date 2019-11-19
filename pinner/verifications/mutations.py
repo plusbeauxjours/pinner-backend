@@ -610,7 +610,7 @@ class StartEditEmailVerification(graphene.Mutation):
     @login_required
     def mutate(self, info, **kwargs):
 
-        emailAddress = kwargs.get('emailAddress').lowercase()
+        emailAddress = kwargs.get('emailAddress').lower()
         print(emailAddress)
         user = info.context.user
 

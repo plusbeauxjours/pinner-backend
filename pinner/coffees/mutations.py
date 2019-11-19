@@ -32,14 +32,9 @@ class RequestCoffee(graphene.Mutation):
 
             try:
                 currentCity = location_models.City.objects.get(city_id=currentCityId)
-                print(currentCityId)
-                print(countryCode)
-                print(user.username)
-                print(target)
                 if target == "nationality" and countryCode:
                     try:
                         country = location_models.Country.objects.get(country_code=countryCode)
-                        print("1")
 
                     except location_models.Country.DoesNotExist:
                         with open('pinner/locations/countryData.json', mode='rt', encoding='utf-8') as file:
@@ -98,11 +93,9 @@ class RequestCoffee(graphene.Mutation):
                             latitude=latitude,
                             longitude=longitude
                         )
-                    print("2")
                     if not user.profile.nationality:
                         user.profile.nationality = country
                         user.profile.save()
-                        print("0000000")
 
                 elif target == "residence" and countryCode:
                     try:
@@ -172,13 +165,11 @@ class RequestCoffee(graphene.Mutation):
                 elif target == "gender" and gender:
                     user.profile.gender = gender
                     user.profile.save()
-                print("3")
                 coffee = models.Coffee.objects.create(
                     city=currentCity,
                     host=user,
                     target=target,
                 )
-                print("4")
                 return types.RequestCoffeeResponse(ok=True, coffee=coffee)
 
             except IntegrityError as e:
