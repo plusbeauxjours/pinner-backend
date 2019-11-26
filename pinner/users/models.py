@@ -147,6 +147,10 @@ class Profile(config_models.TimeStampedModel):
         return self.user.username
 
     @cached_property
+    def id(self):
+        return self.user.id
+
+    @cached_property
     def city_count(self):
         return self.user.moveNotificationUser.all().order_by('city').distinct('city').count()
 
