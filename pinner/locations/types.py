@@ -130,6 +130,7 @@ class ContinentsResponse(graphene.ObjectType):
 
 
 class TripResponse(graphene.ObjectType):
+    count = graphene.Int()
     trip = graphene.List(notification_types.MoveNotificationType)
 
 
