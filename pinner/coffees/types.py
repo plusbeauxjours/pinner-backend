@@ -59,6 +59,7 @@ class RequestCoffeeResponse(graphene.ObjectType):
 
 
 class GetCoffeesResponse(graphene.ObjectType):
+    count = graphene.Int()
     coffees = graphene.List(CoffeeType)
 
 

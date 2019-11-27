@@ -35,26 +35,26 @@ def resolve_get_coffees(self, info, **kwargs):
                                           Q(target='residence', host__profile__residence=profile.residence) |
                                           Q(target='gender', host__profile__gender=profile.gender)) &
                                          Q(expires__gte=timezone.now())).exclude(host__id__in=matchedGuests).exclude(host__id__in=matchedHosts).order_by('-created_at')
-            return types.GetCoffeesResponse(coffees=coffees)
+            count = coffees.count()
+            return types.GetCoffeesResponse(coffees=coffees, count=count)
 
         except models.Coffee.DoesNotExist:
-            return types.GetCoffeesResponse(coffees=None)
+            return types.GetCoffeesResponse(coffees=None, count=None)
 
     elif location == "profile":
         try:
             user = User.objects.prefetch_related('coffee').get(username=userName)
         except User.DoesNotExist:
-            return types.GetCoffeesResponse(coffees=None)
+            return types.GetCoffeesResponse(coffees=None, count=None)
 
         try:
             coffees = models.Coffee.objects.filter(host=user, expires__gte=timezone.now()).order_by(
                 '-created_at')
-            hasNextPage = offset < coffees.count()
-            coffees = coffees[offset:10 + offset]
-            return types.GetCoffeesResponse(coffees=coffees)
+            count = coffees.count()
+            return types.GetCoffeesResponse(coffees=coffees, count=count)
 
         except models.Coffee.DoesNotExist:
-            return types.GetCoffeesResponse(coffees=None)
+            return types.GetCoffeesResponse(coffees=None, count=None)
 
     # elif location == "history":
     #     try:
