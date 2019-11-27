@@ -59,8 +59,6 @@ class RequestCoffeeResponse(graphene.ObjectType):
 
 
 class GetCoffeesResponse(graphene.ObjectType):
-    page = graphene.Int()
-    hasNextPage = graphene.Boolean()
     coffees = graphene.List(CoffeeType)
 
 
