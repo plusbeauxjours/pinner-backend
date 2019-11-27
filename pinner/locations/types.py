@@ -1,4 +1,5 @@
 import graphene
+from django.utils import timezone
 from graphene_django.types import DjangoObjectType
 from . import models
 
@@ -12,7 +13,7 @@ class CityType(DjangoObjectType):
     user_count = graphene.Int(source='user_count')
     user_log_count = graphene.Int(source='user_log_count')
     like_count = graphene.Int(source='like_count')
-    coffee_count = graphene.Int(source='coffee_count')
+    has_coffee = graphene.Boolean()
     distance = graphene.Int()
     count = graphene.Int()
     diff = graphene.Int()
@@ -28,6 +29,12 @@ class CityType(DjangoObjectType):
             return True
         except models.Like.DoesNotExist:
             return False
+
+    def resolve_has_coffee(self, info):
+        me = info.context.user
+        matchedGuests = me.guest.values('host__id').all()
+        matchedHosts = me.host.values('guest__id').all()
+        return self.coffee.values('id').filter(expires__gte=timezone.now()).exclude(host__id__in=matchedGuests).exclude(host__id__in=matchedHosts).exists()
 
 
 class CountryType(DjangoObjectType):
