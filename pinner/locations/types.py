@@ -12,6 +12,7 @@ class CityType(DjangoObjectType):
     user_count = graphene.Int(source='user_count')
     user_log_count = graphene.Int(source='user_log_count')
     like_count = graphene.Int(source='like_count')
+    coffee_count = graphene.Int(source='coffee_count')
     distance = graphene.Int()
     count = graphene.Int()
     diff = graphene.Int()
@@ -130,6 +131,7 @@ class ContinentsResponse(graphene.ObjectType):
 
 
 class TripResponse(graphene.ObjectType):
+    count = graphene.Int()
     trip = graphene.List(notification_types.MoveNotificationType)
 
 

@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.humanize.templatetags.humanize import naturaltime
 from django.utils.html import escape, format_html
 from config import models as config_models
+from django.utils import timezone
 
 from cached_property import cached_property
 
@@ -90,9 +91,13 @@ class City (config_models.TimeStampedModel):
     near_city = models.ManyToManyField(
         'self',  blank=True, symmetrical=False, related_name='near_cities')
 
-    @property
+    @cached_property
     def like_count(self):
         return self.likes.all().count()
+
+    @cached_property
+    def coffee_count(self):
+        return self.coffee.values('id').filter(expires__gte=timezone.now()).count()
 
     @cached_property
     def user_count(self):
