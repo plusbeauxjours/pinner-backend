@@ -21,5 +21,5 @@ def resolve_get_trips(self, info, **kwargs):
         count = trip.count()
 
         return location_types.TripResponse(trip=trip, count=count)
-    except models.City.DoesNotExist:
+    except models.User.DoesNotExist:
         return location_types.TripResponse(trip=None, count=None)
