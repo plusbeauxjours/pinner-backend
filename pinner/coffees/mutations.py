@@ -247,7 +247,7 @@ class Match(graphene.Mutation):
 class UnMatch(graphene.Mutation):
 
     class Arguments:
-        matchId = graphene.String(required=True)
+        matchId = graphene.Int(required=True)
 
     Output = types.UnMatchResponse
 
@@ -260,6 +260,7 @@ class UnMatch(graphene.Mutation):
         try:
             match = models.Match.objects.get(id=matchId)
             print("1")
+
             cityId = match.city.city_id
             print(cityId)
             countryCode = match.city.country.country_code
@@ -288,7 +289,7 @@ class UnMatch(graphene.Mutation):
 class MarkAsReadMatch(graphene.Mutation):
 
     class Arguments:
-        matchId = graphene.String(required=True)
+        matchId = graphene.Int(required=True)
 
     Output = types.MarkAsReadMatchResponse
 
