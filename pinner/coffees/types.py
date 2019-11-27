@@ -82,7 +82,7 @@ class MatchResponse(graphene.ObjectType):
 
 class UnMatchResponse(graphene.ObjectType):
     ok = graphene.Boolean()
-    matchId = graphene.String()
+    matchId = graphene.Int()
     cityId = graphene.String()
     countryCode = graphene.String()
     continentCode = graphene.String()
