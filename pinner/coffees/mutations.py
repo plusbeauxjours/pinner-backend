@@ -256,22 +256,34 @@ class UnMatch(graphene.Mutation):
 
         user = info.context.user
         matchId = kwargs.get('matchId')
+        print(matchId)
 
         try:
+            print("1")
             match = models.Match.objects.get(id=matchId)
+            print("2")
             cityId = match.city.city_id
+            print("3", cityId)
             countryCode = match.city.country.country_code
+            print("4", countryCode)
             continentCode = match.city.country.continent.continent_code
+            print("5", continentCode)
             try:
+                print("6")
                 coffee = match.coffee
+                print("7", coffee)
                 match.delete()
+                print("8")
                 return types.UnMatchResponse(ok=True, matchId=matchId, coffee=coffee, cityId=cityId, countryCode=countryCode,
                                              continentCode=continentCode)
             except models.Match.DoesNotExist:
+                print("9")
                 match.delete()
+                print("10")
                 return types.UnMatchResponse(ok=True, matchId=matchId, coffee=None, cityId=cityId, countryCode=countryCode,
                                              continentCode=continentCode)
         except models.Match.DoesNotExist:
+            print("11")
             return types.UnMatchResponse(ok=False, matchId=None, coffee=None, cityId=None, countryCode=None,
                                          continentCode=None)
 
