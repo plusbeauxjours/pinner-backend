@@ -152,7 +152,7 @@ class ReportLocation(graphene.Mutation):
         currentCityId = kwargs.get('currentCityId')
         currentCityName = kwargs.get('currentCityName')
         currentCountryCode = kwargs.get('currentCountryCode')
-        print(currentLat,currentLng,currentCityId,currentCityName,currentCountryCode)
+
         def get_locations_nearby_coords(latitude, longitude, max_distance=3000):
             gcd_formula = "6371 * acos(cos(radians(%s)) * \
             cos(radians(latitude)) \
@@ -279,7 +279,7 @@ class ReportLocation(graphene.Mutation):
 
         if profile.is_auto_location_report is True:
             try:
-                latest = user.moveNotificationUser.latest('start_date', 'created_at')
+                latest = notification_models.MoveNotification.filter(actor=user).latest('start_date', 'created_at')
                 if latest.city != city:
                     notification_models.MoveNotification.objects.create(
                         actor=user, city=city, country=country, continent=continent)
