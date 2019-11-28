@@ -152,7 +152,7 @@ class ReportLocation(graphene.Mutation):
         currentCityId = kwargs.get('currentCityId')
         currentCityName = kwargs.get('currentCityName')
         currentCountryCode = kwargs.get('currentCountryCode')
-
+        print(currentLat,currentLng,currentCityId,currentCityName,currentCountryCode)
         def get_locations_nearby_coords(latitude, longitude, max_distance=3000):
             gcd_formula = "6371 * acos(cos(radians(%s)) * \
             cos(radians(latitude)) \
