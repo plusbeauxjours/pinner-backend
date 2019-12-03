@@ -569,6 +569,6 @@ def resolve_recommend_locations(self, info, **kwargs):
         cities = get_locations_nearby_coords(city.latitude, city.longitude)
 
     hasNextPage = offset < cities.count()
-    cities = cities.order_by('distance')[offset:20 + offset]
+    cities = cities[offset:20 + offset].order_by('distance')
 
     return types.RecommendLocationsResponse(cities=cities, page=nextPage, hasNextPage=hasNextPage)
