@@ -559,8 +559,9 @@ def resolve_recommend_locations(self, info, **kwargs):
     if combined.count() < 10:
         combined = combined | models.City.objects.order_by('-created_at')[:5]
         combined = combined | models.City.objects.order_by('likes')[:5]
-
-    cities = get_locations_nearby_coords(city.latitude, city.longitude)
+        cities = get_locations_nearby_coords(city.latitude, city.longitude)
+    else:
+        cities = get_locations_nearby_coords(city.latitude, city.longitude)
 
     hasNextPage = offset < cities.count()
     cities = cities[offset:20 + offset]
