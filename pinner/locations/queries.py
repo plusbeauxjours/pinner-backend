@@ -515,26 +515,24 @@ def resolve_recommend_locations(self, info, **kwargs):
             gcd_formula,
             (latitude, longitude, latitude)
         )
-        qs = combined.annotate(distance=distance_raw_sql).order_by('distance')
+        print("combined in function", combined, combined.count())
+        qs = combined.annotate(distance=distance_raw_sql)
+        print("qs", qs)
         return qs
 
     try:
         nationalityUser = user.profile.nationality.nationality.all()[:10]
         for i in nationalityUser:
-            nationalityUsers = models.City.objects.filter(id=i.user.profile.current_city.id)
-            print("nationalityUsers", nationalityUsers)
-            combined = combined | nationalityUsers.exclude(id=city.id)
-            print("combined11", combined)
+            nationalityUsers = models.City.objects.filter(id=i.user.profile.current_city.id).exclude(id=city.id)
+            combined = combined | nationalityUsers
     except:
         nationalityUser = models.City.objects.none()
 
     try:
         residenceUser = user.profile.residence.residence.all()[:10]
         for i in residenceUser:
-            residenceUsers = models.City.objects.filter(id=i.user.profile.current_city.id)
-            print("residenceUsers", residenceUsers)
-            combined = combined | residenceUsers.exclude(id=city.id)
-            print("combined22", combined)
+            residenceUsers = models.City.objects.filter(id=i.user.profile.current_city.id).exclude(id=city.id)
+            combined = combined | residenceUsers
     except:
         residenceUser = models.City.objects.none()
 
@@ -542,47 +540,37 @@ def resolve_recommend_locations(self, info, **kwargs):
         locationUser = user_models.Profile.objects.filter(
             user__moveNotificationUser__city=city).order_by('-distance')[:10]
         for i in locationUser:
-            locationUsers = models.City.objects.filter(id=i.user.profile.current_city.id)
-            print("locationUsers", locationUsers)
-            combined = combined | locationUsers.exclude(id=city.id)
-            print("combined33", combined)
+            locationUsers = models.City.objects.filter(id=i.user.profile.current_city.id).exclude(id=city.id)
+            combined = combined | locationUsers
     except:
         locationUser = models.City.objects.none()
 
     try:
         likeUser = user_models.Profile.objects.filter(user__likes__city=city).order_by('-distance')[:20]
         for i in likeUser:
-            likeUsers = models.City.objects.filter(id=i.user.profile.current_city.id)
-            print("likeUsers", likeUsers)
-            combined = combined | likeUsers.exclude(id=city.id)
-            print("combined44", combined)
+            likeUsers = models.City.objects.filter(id=i.user.profile.current_city.id).exclude(id=city.id)
+            combined = combined | likeUsers
     except:
         likeUser = models.City.objects.none()
 
-    print("combined55", combined)
     if combined.count() < 10:
         print("less than 10")
         createdCities = models.City.objects.exclude(id=city.id).order_by('-created_at')[:5]
         print("createdCities", createdCities, createdCities.count())
-        combined = combined.union(createdCities)
+        combined = combined | createdCities
         print("combined1", combined, combined.count())
         likedCities = models.City.objects.exclude(id=city.id).order_by('likes')[:5]
         print("likedCities", likedCities, likedCities.count())
-        combined = combined.union(likedCities)
+        combined = combined | likedCities
         print("combined2", combined, combined.count())
 
-        cities = get_locations_nearby_coords(city.latitude, city.longitude)
-        print("cities", cities, cities.count())
-
-        hasNextPage = offset < cities.count()
-        cities = cities[offset:20 + offset]
-
-        return types.RecommendLocationsResponse(cities=cities, page=nextPage, hasNextPage=hasNextPage)
     else:
         print("more than 10")
 
-        cities = get_locations_nearby_coords(city.latitude, city.longitude)
-        hasNextPage = offset < cities.count()
-        cities = cities[offset:20 + offset]
+    print("jidjidjidjdijdijdidjidji")
+    cities = get_locations_nearby_coords(city.latitude, city.longitude)
+    print("cities", cities)
+    hasNextPage = offset < cities.count()
+    # cities = cities[offset:20 + offset]
 
-        return types.RecommendLocationsResponse(cities=cities, page=nextPage, hasNextPage=hasNextPage)
+    return types.RecommendLocationsResponse(cities=cities, page=nextPage, hasNextPage=hasNextPage)
