@@ -555,6 +555,7 @@ def resolve_recommend_locations(self, info, **kwargs):
 
     if combined.count() < 10:
         print("less than 10")
+        combined = models.City.objects.none()
         createdCities = models.City.objects.exclude(id=city.id).order_by('-created_at')[:5]
         print("createdCities", createdCities, createdCities.count())
         combined = combined | createdCities
@@ -567,10 +568,8 @@ def resolve_recommend_locations(self, info, **kwargs):
     else:
         print("more than 10")
 
-    print("jidjidjidjdijdijdidjidji")
     cities = get_locations_nearby_coords(city.latitude, city.longitude)
-    print("cities", cities)
     hasNextPage = offset < cities.count()
-    # cities = cities[offset:20 + offset]
+    cities = cities[offset:20 + offset]
 
     return types.RecommendLocationsResponse(cities=cities, page=nextPage, hasNextPage=hasNextPage)
