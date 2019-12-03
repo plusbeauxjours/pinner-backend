@@ -558,9 +558,12 @@ def resolve_recommend_locations(self, info, **kwargs):
 
     if combined.count() < 10:
         print("less than 10")
-        combined = combined | models.City.objects.order_by('-created_at').exclude(id=city.id)[:5]
-        combined = combined | models.City.objects.order_by('likes').exclude(id=city.id)[:5]
+        combined = combined | models.City.objects.all().order_by('-created_at').exclude(id=city.id)[:5]
+        print(combined)
+        combined = combined | models.City.objects.all().order_by('likes').exclude(id=city.id)[:5]
+        print(combined)
         cities = get_locations_nearby_coords(city.latitude, city.longitude)
+        print(cities)
     else:
         print("more than 10")
         cities = get_locations_nearby_coords(city.latitude, city.longitude)
