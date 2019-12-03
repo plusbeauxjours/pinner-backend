@@ -523,6 +523,7 @@ def resolve_recommend_locations(self, info, **kwargs):
         nationalityUser = user.profile.nationality.nationality.all().order_by('-distance')[:10]
         for i in nationalityUser:
             nationalityUsers = models.City.objects.filter(id=i.user.profile.current_city.id)
+            print("nationalityUsers", nationalityUsers)
             combined = combined | nationalityUsers.exclude(id=city.id)
     except:
         nationalityUser = models.City.objects.none()
@@ -531,15 +532,17 @@ def resolve_recommend_locations(self, info, **kwargs):
         residenceUser = user.profile.residence.residence.all().order_by('-distance')[:10]
         for i in residenceUser:
             residenceUsers = models.City.objects.filter(id=i.user.profile.current_city.id)
+            print("residenceUsers", residenceUsers)
             combined = combined | residenceUsers.exclude(id=city.id)
     except:
         residenceUser = models.City.objects.none()
 
     try:
         locationUser = user_models.Profile.objects.filter(
-            user__moveNotificationUser__city=city).order_by('-distance')[:20]
+            user__moveNotificationUser__city=city).order_by('-distance')[:10]
         for i in locationUser:
             locationUsers = models.City.objects.filter(id=i.user.profile.current_city.id)
+            print("locationUsers", locationUsers)
             combined = combined | locationUsers.exclude(id=city.id)
     except:
         locationUser = models.City.objects.none()
@@ -548,6 +551,7 @@ def resolve_recommend_locations(self, info, **kwargs):
         likeUser = user_models.Profile.objects.filter(user__likes__city=city).order_by('-distance')[:20]
         for i in likeUser:
             likeUsers = models.City.objects.filter(id=i.user.profile.current_city.id)
+            print("likeUsers", likeUsers)
             combined = combined | likeUsers.exclude(id=city.id)
     except:
         likeUser = models.City.objects.none()
