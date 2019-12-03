@@ -564,11 +564,11 @@ def resolve_recommend_locations(self, info, **kwargs):
         print("less than 10")
         createdCities = models.City.objects.exclude(id=city.id).order_by('-created_at')[:5]
         print("createdCities", createdCities, createdCities.count())
-        combined = combined | createdCities
+        combined = combined.union(createdCities)
         print("combined1", combined, combined.count())
         likedCities = models.City.objects.exclude(id=city.id).order_by('likes')[:5]
         print("likedCities", likedCities, likedCities.count())
-        combined = combined | likedCities
+        combined = combined.union(likedCities)
         print("combined2", combined, combined.count())
         cities = get_locations_nearby_coords(city.latitude, city.longitude)
         print("cities", cities, cities.count())
