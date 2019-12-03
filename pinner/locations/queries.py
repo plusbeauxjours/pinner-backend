@@ -556,14 +556,8 @@ def resolve_recommend_locations(self, info, **kwargs):
     if combined.count() < 10:
         print("less than 10")
         combined = models.City.objects.none()
-        createdCities = models.City.objects.exclude(id=city.id).order_by('-created_at')[:5]
-        print("createdCities", createdCities, createdCities.count())
-        combined = combined | createdCities
-        print("combined1", combined, combined.count())
-        likedCities = models.City.objects.exclude(id=city.id).order_by('likes')[:5]
-        print("likedCities", likedCities, likedCities.count())
-        combined = combined | likedCities
-        print("combined2", combined, combined.count())
+        combined = combined | models.City.objects.exclude(id=city.id).order_by('-created_at')[:5]
+        combined = combined | models.City.objects.exclude(id=city.id).order_by('likes')[:5]
 
     else:
         print("more than 10")
