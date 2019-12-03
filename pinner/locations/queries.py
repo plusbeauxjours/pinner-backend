@@ -553,8 +553,8 @@ def resolve_recommend_locations(self, info, **kwargs):
         likeUser = models.City.objects.none()
 
     if combined.count() < 10:
-        combined = combined | models.City.objects.order_by(
-            '-created_at')[:5] | models.City.objects.order_by('-likes')[:5]
+        combined = combined | models.City.objects.order_by('-created_at')[:5]
+        combined = combined | models.City.objects.order_by('-likes')[:5]
 
     cities = get_locations_nearby_coords(city.latitude, city.longitude)
 
