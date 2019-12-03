@@ -558,9 +558,9 @@ def resolve_recommend_locations(self, info, **kwargs):
 
     if combined.count() < 10:
         print("less than 10")
-        combined = combined | models.City.objects.all().order_by('-created_at').exclude(id=city.id)[:5]
+        combined = combined | models.City.objects.all().exclude(id=city.id).order_by('-created_at')[:5]
         print("combined1", combined)
-        combined = combined | models.City.objects.all().order_by('likes').exclude(id=city.id)[:5]
+        combined = combined | models.City.objects.all().exclude(id=city.id).order_by('likes')[:5]
         print("combined2", combined)
         cities = get_locations_nearby_coords(city.latitude, city.longitude)
         print("cities", cities)
@@ -569,6 +569,6 @@ def resolve_recommend_locations(self, info, **kwargs):
         cities = get_locations_nearby_coords(city.latitude, city.longitude)
 
     hasNextPage = offset < cities.count()
-    cities = cities[offset:20 + offset].order_by('distance')
+    cities = cities.order_by('distance')[offset:20 + offset]
 
     return types.RecommendLocationsResponse(cities=cities, page=nextPage, hasNextPage=hasNextPage)
