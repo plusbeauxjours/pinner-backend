@@ -515,9 +515,7 @@ def resolve_recommend_locations(self, info, **kwargs):
             gcd_formula,
             (latitude, longitude, latitude)
         )
-        print("combined in function", combined, combined.count())
         qs = combined.annotate(distance=distance_raw_sql)
-        print("qs", qs)
         return qs
 
     try:
@@ -555,7 +553,6 @@ def resolve_recommend_locations(self, info, **kwargs):
 
     if combined.count() < 10:
         print("less than 10")
-        combined = models.City.objects.none()
         combined = combined | models.City.objects.exclude(id=city.id).order_by('-created_at')[:5]
         combined = combined | models.City.objects.exclude(id=city.id).order_by('likes')[:5]
 
