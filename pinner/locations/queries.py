@@ -515,7 +515,7 @@ def resolve_recommend_locations(self, info, **kwargs):
             gcd_formula,
             (latitude, longitude, latitude)
         )
-        qs = combined.annotate(distance=distance_raw_sql)
+        qs = combined.annotate(distance=distance_raw_sql).order_by('distance')
         return qs
 
     try:
@@ -575,7 +575,7 @@ def resolve_recommend_locations(self, info, **kwargs):
         print("cities", cities, cities.count())
 
         hasNextPage = offset < cities.count()
-        cities = cities.order_by('distance')[offset:20 + offset]
+        cities = cities[offset:20 + offset]
 
         return types.RecommendLocationsResponse(cities=cities, page=nextPage, hasNextPage=hasNextPage)
     else:
@@ -583,6 +583,6 @@ def resolve_recommend_locations(self, info, **kwargs):
 
         cities = get_locations_nearby_coords(city.latitude, city.longitude)
         hasNextPage = offset < cities.count()
-        cities = cities.order_by('distance')[offset:20 + offset]
+        cities = cities[offset:20 + offset]
 
         return types.RecommendLocationsResponse(cities=cities, page=nextPage, hasNextPage=hasNextPage)
