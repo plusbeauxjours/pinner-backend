@@ -503,8 +503,7 @@ def resolve_recommend_locations(self, info, **kwargs):
     nextPage = page+1
 
     city = user.profile.current_city
-
-    combined = models.City.objects.order_by('-created_at')[:3]
+    combined = models.City.objects.none()
 
     def get_locations_nearby_coords(latitude, longitude, max_distance=None):
 
@@ -517,7 +516,7 @@ def resolve_recommend_locations(self, info, **kwargs):
             (latitude, longitude, latitude)
         )
 
-        qs = combined.annotate(distance=distance_raw_sql)
+        qs = combined.annotate(distance=distance_raw_sql).order_by('distance')
         return qs
 
     try:
@@ -552,6 +551,10 @@ def resolve_recommend_locations(self, info, **kwargs):
             combined = combined | likeUsers.exclude(id=city.id)
     except:
         likeUser = models.City.objects.none()
+
+    if combined.count() < 10:
+        combined = combined | models.City.objects.order_by(
+            '-created_at')[:5] | models.City.objects.order_by('-likes')[:5]
 
     cities = get_locations_nearby_coords(city.latitude, city.longitude)
 
