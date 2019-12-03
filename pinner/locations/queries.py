@@ -520,7 +520,7 @@ def resolve_recommend_locations(self, info, **kwargs):
         return qs
 
     try:
-        nationalityUser = user.profile.nationality.nationality.all().order_by('-distance')[:10]
+        nationalityUser = user.profile.nationality.nationality.all()[:10]
         for i in nationalityUser:
             nationalityUsers = models.City.objects.filter(id=i.user.profile.current_city.id)
             print("nationalityUsers", nationalityUsers)
@@ -529,7 +529,7 @@ def resolve_recommend_locations(self, info, **kwargs):
         nationalityUser = models.City.objects.none()
 
     try:
-        residenceUser = user.profile.residence.residence.all().order_by('-distance')[:10]
+        residenceUser = user.profile.residence.residence.all()[:10]
         for i in residenceUser:
             residenceUsers = models.City.objects.filter(id=i.user.profile.current_city.id)
             print("residenceUsers", residenceUsers)
@@ -569,6 +569,6 @@ def resolve_recommend_locations(self, info, **kwargs):
         cities = get_locations_nearby_coords(city.latitude, city.longitude)
 
     hasNextPage = offset < cities.count()
-    cities = cities[offset:20 + offset]
+    cities = cities.order_by('distance')[offset:20 + offset]
 
     return types.RecommendLocationsResponse(cities=cities, page=nextPage, hasNextPage=hasNextPage)
