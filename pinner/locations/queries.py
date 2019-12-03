@@ -515,7 +515,7 @@ def resolve_recommend_locations(self, info, **kwargs):
             gcd_formula,
             (latitude, longitude, latitude)
         )
-        qs = combined.annotate(distance=distance_raw_sql).order_by('-id').distinct('id').order_by('distance')
+        qs = combined.annotate(distance=distance_raw_sql).order_by('-id').distinct('id')
         return qs
 
     try:
