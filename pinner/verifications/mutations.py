@@ -252,7 +252,6 @@ class CompletePhoneVerification(graphene.Mutation):
                         nouns = json.load(nouns)
                         username = random.choice(adjectives) + random.choice(nouns).capitalize()
                         newUser = User.objects.create_user(username=username)
-                        token = get_token(newUser)
                         city = location_models.City.objects.get(city_id=cityId)
                         newUserProfile = users_models.Profile.objects.create(
                             user=newUser,
@@ -263,6 +262,7 @@ class CompletePhoneVerification(graphene.Mutation):
                             current_country=city.country,
                             current_continent=city.country.continent,
                         )
+                        token = get_token(newUser)
                         newUserProfile.is_verified_phone_number = True
                         newUserProfile.save()
                         verification.is_verified = True
@@ -577,7 +577,6 @@ class CompleteEmailVerification(graphene.Mutation):
                         nouns = json.load(nouns)
                         username = random.choice(adjectives) + random.choice(nouns).capitalize()
                         newUser = User.objects.create_user(username=username)
-                        token = get_token(newUser)
                         city = location_models.City.objects.get(city_id=cityId)
                         newUserProfile = users_models.Profile.objects.create(
                             user=newUser,
@@ -586,6 +585,7 @@ class CompleteEmailVerification(graphene.Mutation):
                             current_country=city.country,
                             current_continent=city.country.continent,
                         )
+                        token = get_token(newUser)
                         newUserProfile.is_verified_email_address = True
                         newUserProfile.save()
                         verification.is_verified = True
