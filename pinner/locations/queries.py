@@ -515,7 +515,6 @@ def resolve_recommend_locations(self, info, **kwargs):
             gcd_formula,
             (latitude, longitude, latitude)
         )
-        print("combined in function", combined)
         qs = combined.annotate(distance=distance_raw_sql)
         return qs
 
@@ -525,6 +524,7 @@ def resolve_recommend_locations(self, info, **kwargs):
             nationalityUsers = models.City.objects.filter(id=i.user.profile.current_city.id)
             print("nationalityUsers", nationalityUsers)
             combined = combined | nationalityUsers.exclude(id=city.id)
+            print("combined11", combined)
     except:
         nationalityUser = models.City.objects.none()
 
@@ -534,6 +534,7 @@ def resolve_recommend_locations(self, info, **kwargs):
             residenceUsers = models.City.objects.filter(id=i.user.profile.current_city.id)
             print("residenceUsers", residenceUsers)
             combined = combined | residenceUsers.exclude(id=city.id)
+            print("combined22", combined)
     except:
         residenceUser = models.City.objects.none()
 
@@ -544,6 +545,7 @@ def resolve_recommend_locations(self, info, **kwargs):
             locationUsers = models.City.objects.filter(id=i.user.profile.current_city.id)
             print("locationUsers", locationUsers)
             combined = combined | locationUsers.exclude(id=city.id)
+            print("combined33", combined)
     except:
         locationUser = models.City.objects.none()
 
@@ -553,9 +555,11 @@ def resolve_recommend_locations(self, info, **kwargs):
             likeUsers = models.City.objects.filter(id=i.user.profile.current_city.id)
             print("likeUsers", likeUsers)
             combined = combined | likeUsers.exclude(id=city.id)
+            print("combined44", combined)
     except:
         likeUser = models.City.objects.none()
 
+    print("combined55", combined)
     if combined.count() < 10:
         print("less than 10")
         createdCities = models.City.objects.exclude(id=city.id).order_by('-created_at')[:5]
