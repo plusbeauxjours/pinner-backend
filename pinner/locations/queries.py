@@ -570,13 +570,19 @@ def resolve_recommend_locations(self, info, **kwargs):
         print("likedCities", likedCities, likedCities.count())
         combined = combined.union(likedCities)
         print("combined2", combined, combined.count())
+
         cities = get_locations_nearby_coords(city.latitude, city.longitude)
         print("cities", cities, cities.count())
+
+        hasNextPage = offset < cities.count()
+        cities = cities.order_by('distance')[offset:20 + offset]
+
+        return types.RecommendLocationsResponse(cities=cities, page=nextPage, hasNextPage=hasNextPage)
     else:
         print("more than 10")
+
         cities = get_locations_nearby_coords(city.latitude, city.longitude)
+        hasNextPage = offset < cities.count()
+        cities = cities.order_by('distance')[offset:20 + offset]
 
-    hasNextPage = offset < cities.count()
-    cities = cities.order_by('distance')[offset:20 + offset]
-
-    return types.RecommendLocationsResponse(cities=cities, page=nextPage, hasNextPage=hasNextPage)
+        return types.RecommendLocationsResponse(cities=cities, page=nextPage, hasNextPage=hasNextPage)
