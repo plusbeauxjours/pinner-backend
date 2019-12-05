@@ -105,7 +105,7 @@ class Profile(config_models.TimeStampedModel):
         ('FEMALE', 'Female'),
         ('OTHER', 'Other')
     )
-
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, blank=True, null=True)
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, related_name='profile')
     bio = models.TextField(default='', blank=True, null=True)

@@ -8,6 +8,9 @@ from locations import models as location_models
 from notifications import models as notification_models
 
 
+import uuid
+
+
 def resolve_profile(self, info, **kwargs):
 
     username = kwargs.get('username')
@@ -112,6 +115,10 @@ def resolve_top_continents(self, info, **kwargs):
 def resolve_me(self, info):
 
     user = info.context.user
+    users = models.Profile.objects.all()
+    for i in users:
+        i.uuid = uuid.uuid4()
+        i.save()
 
     return types.UserProfileResponse(user=user)
 

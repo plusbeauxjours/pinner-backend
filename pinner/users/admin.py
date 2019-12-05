@@ -7,6 +7,7 @@ class ProfileAdmin(admin.ModelAdmin):
 
     list_display = (
         'id',
+        'uuid',
         'username',
         'gender',
         'phone_number',

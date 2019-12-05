@@ -279,7 +279,8 @@ class ReportLocation(graphene.Mutation):
 
         if profile.is_auto_location_report is True:
             try:
-                latest = notification_models.MoveNotification.objects.filter(actor=user).latest('start_date', 'created_at')
+                latest = notification_models.MoveNotification.objects.filter(
+                    actor=user).latest('start_date', 'created_at')
                 if latest.city != city:
                     notification_models.MoveNotification.objects.create(
                         actor=user, city=city, country=country, continent=continent)
