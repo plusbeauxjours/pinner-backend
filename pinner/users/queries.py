@@ -8,9 +8,6 @@ from locations import models as location_models
 from notifications import models as notification_models
 
 
-import uuid
-
-
 def resolve_profile(self, info, **kwargs):
 
     username = kwargs.get('username')
@@ -116,9 +113,6 @@ def resolve_me(self, info):
 
     user = info.context.user
     users = models.Profile.objects.all()
-    for i in users:
-        i.uuid = uuid.uuid4()
-        i.save()
 
     return types.UserProfileResponse(user=user)
 
@@ -173,6 +167,9 @@ def resolve_recommend_users(self, info, **kwargs):
 
     hasNextPage = offset < combined.count()
     combined = combined[offset:20 + offset]
+
+    if combined.count() < 10:
+        combined = combined | models.Profile.objects.all().order_by('-created_at')[:5]
 
     return types.RecommendUsersResponse(users=combined, page=nextPage, hasNextPage=hasNextPage)
 
