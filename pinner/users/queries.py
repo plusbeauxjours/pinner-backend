@@ -169,7 +169,8 @@ def resolve_recommend_users(self, info, **kwargs):
     combined = combined[offset:20 + offset]
 
     if combined.count() < 10:
-        combined = combined | models.Profile.objects.all().order_by('-created_at')[:5]
+        combined = combined | models.Profile.objects.exclude(id=user.profile.id).exclude(id=user.profile.id).exclude(Q(user__host__in=userGuest) | Q(
+            user__host__in=userHost) | Q(user__guest__in=userGuest) | Q(user__guest__in=userHost)).order_by('id').distinct('id')[:5]
 
     return types.RecommendUsersResponse(users=combined, page=nextPage, hasNextPage=hasNextPage)
 
