@@ -14,7 +14,7 @@ class Query(object):
             'cityId': graphene.String(),
             'countryCode': graphene.String(),
             'continentCode': graphene.String(),
-            'userName': graphene.String(),
+            'uuid': graphene.String(),
         }
     )
     coffee_detail = graphene.Field(

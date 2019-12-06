@@ -17,7 +17,7 @@ def resolve_get_coffees(self, info, **kwargs):
     cityId = kwargs.get('cityId')
     countryCode = kwargs.get('countryCode')
     continentCode = kwargs.get('continentCode')
-    userName = kwargs.get('userName')
+    uuid = kwargs.get('uuid')
     page = kwargs.get('page', 0)
 
     if location == "city":
@@ -43,7 +43,7 @@ def resolve_get_coffees(self, info, **kwargs):
 
     elif location == "profile":
         try:
-            user = User.objects.prefetch_related('coffee').get(username=userName)
+            user = User.objects.prefetch_related('coffee').get(profile__uuid=uuid)
         except User.DoesNotExist:
             return types.GetCoffeesResponse(coffees=None, count=None)
 
@@ -55,65 +55,6 @@ def resolve_get_coffees(self, info, **kwargs):
 
         except models.Coffee.DoesNotExist:
             return types.GetCoffeesResponse(coffees=None, count=None)
-
-    # elif location == "history":
-    #     try:
-    #         user = User.objects.prefetch_related('coffee').get(username=userName)
-    #     except User.DoesNotExist:
-    #         return types.GetCoffeesResponse(page=None, hasNextPage=None, coffees=None)
-
-    #     try:
-    #         coffees = user.coffee.all()
-    #         hasNextPage = offset < coffees.count()
-    #         coffees = coffees[offset:10 + offset]
-    #         return types.GetCoffeesResponse(page=nextPage, hasNextPage=hasNextPage, coffees=coffees)
-    #     except models.Coffee.DoesNotExist:
-    #         return types.GetCoffeesResponse(page=None, hasNextPage=None, coffees=None)
-
-    # elif location == "country":
-    #     try:
-    #         allCities = location_models.City.objects.values('id').filter(country__country_code=countryCode)
-    #     except location_models.City.DoesNotExist:
-    #         return types.GetCoffeesResponse(page=None, hasNextPage=None, coffees=None)
-
-    #     try:
-    #         profile = me.profile
-    #         matchedMatch = me.guest.values('id').all()
-
-    #         coffees = coffee_models.Coffee.objects.filter((Q(target='everyone') |
-    #                                                        Q(target='nationality', host__profile__nationality=profile.nationality) |
-    #                                                        Q(target='residence', host__profile__residence=profile.residence) |
-    #                                                        Q(target='gender', host__profile__gender=profile.gender)) &
-    #                                                       Q(expires__gte=timezone.now()) & Q(city__id__in=allCities)).exclude(match__id__in=matchedMatch).order_by('-created_at')
-    #         hasNextPage = offset < coffees.count()
-    #         coffees = coffees[offset:10 + offset]
-    #         return types.GetCoffeesResponse(page=nextPage, hasNextPage=hasNextPage, coffees=coffees)
-
-    #     except models.Coffee.DoesNotExist:
-    #         return types.GetCoffeesResponse(page=None, hasNextPage=None, coffees=None)
-
-    # elif location == "continent":
-
-    #     try:
-    #         allCities = location_models.City.objects.values('id').filter(
-    #             country__continent__continent_code=continentCode)
-    #     except location_models.City.DoesNotExist:
-    #         return types.GetCoffeesResponse(page=None, hasNextPage=None, coffees=None)
-
-    #     try:
-    #         profile = me.profile
-    #         matchedMatch = me.guest.values('id').all()
-    #         coffees = coffee_models.Coffee.objects.filter((Q(target='everyone') |
-    #                                                        Q(target='nationality', host__profile__nationality=profile.nationality) |
-    #                                                        Q(target='residence', host__profile__residence=profile.residence) |
-    #                                                        Q(target='gender', host__profile__gender=profile.gender)) &
-    #                                                       Q(expires__gte=timezone.now()) & Q(city__id__in=allCities)).exclude(match__id__in=matchedMatch).order_by('-created_at')
-    #         hasNextPage = offset < coffees.count()
-    #         coffees = coffees[offset:10 + offset]
-    #         return types.GetCoffeesResponse(page=nextPage, hasNextPage=hasNextPage, coffees=coffees)
-
-    #     except models.Coffee.DoesNotExist:
-    #         return types.GetCoffeesResponse(page=None, hasNextPage=hasNextPage, coffees=None)
 
 
 @login_required
