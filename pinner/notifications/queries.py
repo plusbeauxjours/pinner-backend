@@ -32,7 +32,7 @@ def resolve_get_trip_cities(self, info, **kwargs):
 
     try:
         user = User.objects.prefetch_related('moveNotificationUser').get(username=username)
-        trip = user.moveNotificationUser.all().order_by('city').distinct('city').order_by('-start_date', '-created_at')
+        trip = user.moveNotificationUser.all().order_by('city', '-start_date', '-created_at').distinct('city')
         return location_types.TripResponse(trip=trip)
     except models.User.DoesNotExist:
         return location_types.TripResponse(trip=None)
