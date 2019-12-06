@@ -19,7 +19,6 @@ class Query(object):
         resolver=queries.resolve_get_trip_cities,
         required=True,
         args={
-            'username': graphene.String(required=True),
             'page': graphene.Int(),
         }
     )

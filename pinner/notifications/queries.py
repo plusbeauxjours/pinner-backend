@@ -27,12 +27,11 @@ def resolve_get_trips(self, info, **kwargs):
 @login_required
 def resolve_get_trip_cities(self, info, **kwargs):
 
-    username = kwargs.get('username')
+    user = info.context.user
     page = kwargs.get('page', 0)
 
     try:
-        user = User.objects.prefetch_related('moveNotificationUser').get(username=username)
-        trip = user.moveNotificationUser.all().order_by('city', '-start_date', '-created_at').distinct('city')
+        trip = user.moveNotificationUser.all().order_by('city',).distinct('city')
         return location_types.TripResponse(trip=trip)
     except models.User.DoesNotExist:
         return location_types.TripResponse(trip=None)
