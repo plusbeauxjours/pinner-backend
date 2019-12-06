@@ -262,17 +262,11 @@ class UnMatch(graphene.Mutation):
             cityId = match.city.city_id
             countryCode = match.city.country.country_code
             continentCode = match.city.country.continent.continent_code
-            try:
-                coffee = match.coffee
-                match.delete()
-                return types.UnMatchResponse(ok=True, matchId=matchId, coffee=coffee, cityId=cityId, countryCode=countryCode,
-                                             continentCode=continentCode)
-            except models.Match.DoesNotExist:
-                match.delete()
-                return types.UnMatchResponse(ok=True, matchId=matchId, coffee=None, cityId=cityId, countryCode=countryCode,
-                                             continentCode=continentCode)
+            match.delete()
+            return types.UnMatchResponse(ok=True, matchId=matchId,  cityId=cityId, countryCode=countryCode,
+                                            continentCode=continentCode)
         except models.Match.DoesNotExist:
-            return types.UnMatchResponse(ok=False, matchId=None, coffee=None, cityId=None, countryCode=None,
+            return types.UnMatchResponse(ok=False, matchId=None,  cityId=None, countryCode=None,
                                          continentCode=None)
 
 

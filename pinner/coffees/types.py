@@ -86,7 +86,6 @@ class UnMatchResponse(graphene.ObjectType):
     cityId = graphene.String()
     countryCode = graphene.String()
     continentCode = graphene.String()
-    coffee = graphene.Field(CoffeeType)
 
 
 class DeleteCoffeeResponse(graphene.ObjectType):
