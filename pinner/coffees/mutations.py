@@ -196,15 +196,15 @@ class DeleteCoffee(graphene.Mutation):
         try:
             coffee = models.Coffee.objects.get(uuid=coffeeId)
         except models.Coffee.DoesNotExist:
-            return types.DeleteCoffeeResponse(ok=False, coffeeId=None, username=user.username)
+            return types.DeleteCoffeeResponse(ok=False, coffeeId=None, uuid=user.profile.uuid)
 
         if coffee.host.id == user.id:
 
             coffee.delete()
-            return types.DeleteCoffeeResponse(ok=True, coffeeId=coffeeId, username=user.username)
+            return types.DeleteCoffeeResponse(ok=True, coffeeId=coffeeId, uuid=user.profile.uuid)
 
         else:
-            return types.DeleteCoffeeResponse(ok=False, coffeeId=None, username=user.username)
+            return types.DeleteCoffeeResponse(ok=False, coffeeId=None, uuid=user.profile.uuid)
 
 
 class Match(graphene.Mutation):
@@ -264,7 +264,7 @@ class UnMatch(graphene.Mutation):
             continentCode = match.city.country.continent.continent_code
             match.delete()
             return types.UnMatchResponse(ok=True, matchId=matchId,  cityId=cityId, countryCode=countryCode,
-                                            continentCode=continentCode)
+                                         continentCode=continentCode)
         except models.Match.DoesNotExist:
             return types.UnMatchResponse(ok=False, matchId=None,  cityId=None, countryCode=None,
                                          continentCode=None)

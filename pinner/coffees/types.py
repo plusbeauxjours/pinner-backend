@@ -89,7 +89,7 @@ class UnMatchResponse(graphene.ObjectType):
 
 
 class DeleteCoffeeResponse(graphene.ObjectType):
-    username = graphene.String()
+    uuid = graphene.String()
     coffeeId = graphene.String()
     ok = graphene.Boolean()
 
