@@ -10,10 +10,10 @@ from notifications import models as notification_models
 
 def resolve_profile(self, info, **kwargs):
 
-    username = kwargs.get('username')
+    uuid = kwargs.get('uuid')
 
     try:
-        profile = User.objects.get(username=username)
+        profile = User.objects.get(profile__uuid=uuid)
         return types.UserProfileResponse(user=profile)
 
     except User.DoesNotExist:
@@ -22,10 +22,10 @@ def resolve_profile(self, info, **kwargs):
 
 def resolve_get_same_trips(self, info, **kwargs):
 
-    username = kwargs.get('username')
+    uuid = kwargs.get('uuid')
 
     Auser = info.context.user
-    Buser = User.objects.get(username=username)
+    Buser = User.objects.get(profile__uuid=uuid)
 
     try:
         ATrips = Auser.moveNotificationUser.values('city')
@@ -42,10 +42,10 @@ def resolve_get_same_trips(self, info, **kwargs):
 def resolve_get_avatars(self, info, **kwargs):
 
     user = info.context.user
-    userName = kwargs.get('userName')
+    uuid = kwargs.get('uuid')
 
     try:
-        avatars = models.Avatar.objects.filter(creator__username=userName)
+        avatars = models.Avatar.objects.filter(creator__profile__uuid=uuid)
         return types.AvatarListResponse(avatars=avatars)
     except models.Avatar.DoesNotExist:
         return types.AvatarListResponse(avatars=None)
@@ -67,11 +67,11 @@ def resolve_get_avatar_detail(self, info, **kwargs):
 def resolve_top_countries(self, info, **kwargs):
 
     user = info.context.user
-    userName = kwargs.get('userName')
+    uuid = kwargs.get('uuid')
     page = kwargs.get('page', 0)
 
     countries = location_models.Country.objects.filter(
-        cities__moveNotificationCity__actor__username=userName).annotate(
+        cities__moveNotificationCity__actor__profile__uuid=uuid).annotate(
         count=Count('cities__moveNotificationCity', distinct=True)).annotate(
         diff=Sum('cities__moveNotificationCity__diff_days')).order_by('-count', '-diff')
 
@@ -82,11 +82,11 @@ def resolve_top_countries(self, info, **kwargs):
 def resolve_frequent_visits(self, info, **kwargs):
 
     user = info.context.user
-    userName = kwargs.get('userName')
+    uuid = kwargs.get('uuid')
     page = kwargs.get('page', 0)
 
     cities = location_models.City.objects.filter(
-        moveNotificationCity__actor__username=userName).annotate(
+        moveNotificationCity__actor__profile__uuid=uuid).annotate(
         count=Count('moveNotificationCity', distinct=True)).annotate(
         diff=Sum('moveNotificationCity__diff_days')).order_by('-count', '-diff')
 
@@ -97,11 +97,11 @@ def resolve_frequent_visits(self, info, **kwargs):
 def resolve_top_continents(self, info, **kwargs):
 
     user = info.context.user
-    userName = kwargs.get('userName')
+    uuid = kwargs.get('uuid')
     page = kwargs.get('page', 0)
 
     continents = location_models.Continent.objects.filter(
-        countries__cities__moveNotificationCity__actor__username=userName).annotate(
+        countries__cities__moveNotificationCity__actor__profile__uuid=uuid).annotate(
         count=Count('countries__cities__moveNotificationCity', distinct=True)).annotate(
         diff=Sum('countries__cities__moveNotificationCity__diff_days')).order_by('-count', '-diff')
 

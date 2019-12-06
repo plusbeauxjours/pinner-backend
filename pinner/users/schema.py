@@ -11,7 +11,7 @@ class Query(object):
         resolver=queries.resolve_profile,
         required=True,
         args={
-            'username': graphene.String(required=True),
+            'uuid': graphene.String(required=True),
         }
     )
     me = graphene.Field(
@@ -42,7 +42,7 @@ class Query(object):
         required=True,
         args={
             'page': graphene.Int(),
-            'userName': graphene.String(required=True),
+            'uuid': graphene.String(required=True),
         }
     )
     frequent_visits = graphene.Field(
@@ -51,7 +51,7 @@ class Query(object):
         required=True,
         args={
             'page': graphene.Int(),
-            'userName': graphene.String(required=True),
+            'uuid': graphene.String(required=True),
         }
     )
     top_continents = graphene.Field(
@@ -60,7 +60,7 @@ class Query(object):
         required=True,
         args={
             'page': graphene.Int(),
-            'userName': graphene.String(required=True),
+            'uuid': graphene.String(required=True),
         }
     )
     get_avatars = graphene.Field(
@@ -68,7 +68,7 @@ class Query(object):
         resolver=queries.resolve_get_avatars,
         required=True,
         args={
-            'userName': graphene.String(required=True),
+            'uuid': graphene.String(required=True),
         }
     )
     get_avatar_detail = graphene.Field(
@@ -84,7 +84,7 @@ class Query(object):
         resolver=queries.resolve_get_same_trips,
         required=True,
         args={
-            'username': graphene.String(required=True)
+            'uuid': graphene.String(required=True)
         }
     )
 
