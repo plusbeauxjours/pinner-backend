@@ -12,11 +12,11 @@ from locations import types as location_types
 @login_required
 def resolve_get_trips(self, info, **kwargs):
 
-    username = kwargs.get('username')
+    uuid = kwargs.get('uuid')
     page = kwargs.get('page', 0)
 
     try:
-        user = User.objects.prefetch_related('moveNotificationUser').get(username=username)
+        user = User.objects.prefetch_related('moveNotificationUser').get(profile__uuid=uuid)
         trip = user.moveNotificationUser.all().order_by('-start_date', '-created_at')
 
         return location_types.TripResponse(trip=trip)

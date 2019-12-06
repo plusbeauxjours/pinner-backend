@@ -10,7 +10,7 @@ class Query(object):
         resolver=queries.resolve_get_trips,
         required=True,
         args={
-            'username': graphene.String(required=True),
+            'uuid': graphene.String(required=True),
             'page': graphene.Int(),
         }
     )
