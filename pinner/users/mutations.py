@@ -466,84 +466,6 @@ class DeleteAvatar(graphene.Mutation):
             return types.DeleteAvatarResponse(ok=False, uuid=uuid)
 
 
-class ChangePassword(graphene.Mutation):
-
-    class Arguments:
-
-        oldPassword = graphene.String(required=True)
-        newPassword = graphene.String(required=True)
-
-    Output = types.ChangePasswordResponse
-
-    @login_required
-    def mutate(self, info, **kwargs):
-
-        user = info.context.user
-        oldPassword = kwargs.get('oldPassword')
-        newPassword = kwargs.get('newPassword')
-
-        ok = True
-        error = None
-
-        if user.check_password(oldPassword):
-
-            user.set_password(newPassword)
-
-            user.save()
-
-            return types.ChangePasswordResponse(ok=ok, error=error)
-
-        else:
-
-            error = 'Current password is wrong'
-            return types.ChangePasswordResponse(ok=not ok, error=error)
-
-
-class CreateAccount(graphene.Mutation):
-
-    class Arguments:
-        first_name = graphene.String(required=True)
-        last_name = graphene.String(required=True)
-        username = graphene.String(required=True)
-        email = graphene.String(required=True)
-        password = graphene.String(required=True)
-
-    Output = types.CreateAccountResponse
-
-    def mutate(self, info, **kwargs):
-
-        first_name = kwargs.get('first_name')
-        last_name = kwargs.get('last_name')
-        username = kwargs.get('username')
-        email = kwargs.get('email')
-        password = kwargs.get('password')
-
-        try:
-            existing_user = User.objects.get(username=username)
-            raise Exception("Username is already taken")
-        except User.DoesNotExist:
-            pass
-
-        try:
-            user = User.objects.create_user(username, email, password)
-            user.first_name = first_name
-            user.last_name = last_name
-            user.save()
-        except IntegrityError as e:
-            print(e)
-            raise Exception("Can't Create Account")
-
-        try:
-            profile = models.Profile.objects.create(
-                user=user,
-            )
-            token = get_token(user)
-            return types.CreateAccountResponse(token=token)
-        except IntegrityError as e:
-            print(e)
-            raise Exception("Can't Create Account")
-
-
 class FacebookConnect(graphene.Mutation):
 
     class Arguments:
@@ -723,7 +645,7 @@ class FacebookConnect(graphene.Mutation):
 class SlackReportUsers(graphene.Mutation):
 
     class Arguments:
-        targetUsername = graphene.String(required=True)
+        targetUuid = graphene.String(required=True)
         payload = graphene.String(required=True)
 
     Output = types.SlackReportUsersResponse
@@ -731,7 +653,8 @@ class SlackReportUsers(graphene.Mutation):
     def mutate(self, info, **kwargs):
 
         reportUsername = info.context.user.username
-        targetUsername = kwargs.get('targetUsername')
+        targetUuid = kwargs.get('targetUsername')
+        targetUsername = User.objects.get(profile__uuid=targetUuid).username
         payload = kwargs.get('payload')
 
         if payload == "PHOTO":

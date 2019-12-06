@@ -97,16 +97,8 @@ class DeleteAvatarResponse(graphene.ObjectType):
     uuid = graphene.String()
 
 
-class ChangePasswordResponse(graphene.ObjectType, config_types.ResponseFields):
-    pass
-
-
 class SearchUsersResponse(graphene.ObjectType):
     users = graphene.List(UserType)
-
-
-class CreateAccountResponse(graphene.ObjectType):
-    token = graphene.String()
 
 
 class FacebookConnectResponse(graphene.ObjectType):

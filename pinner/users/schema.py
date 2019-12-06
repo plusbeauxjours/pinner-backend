@@ -93,9 +93,7 @@ class Mutation(object):
 
     edit_profile = mutations.EditProfile.Field(required=True)
     delete_profile = mutations.DeleteProfile.Field(required=True)
-    change_password = mutations.ChangePassword.Field(required=True)
     log_in = graphql_jwt.ObtainJSONWebToken.Field(required=True)
-    create_account = mutations.CreateAccount.Field(required=True)
     facebook_connect = mutations.FacebookConnect.Field(required=True)
     upload_avatar = mutations.UploadAvatar.Field(required=True)
     delete_avatar = mutations.DeleteAvatar.Field(required=True)
