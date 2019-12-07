@@ -24,7 +24,7 @@ def resolve_get_coffees(self, info, **kwargs):
         try:
             city = location_models.City.objects.prefetch_related('coffee').get(city_id=cityId)
         except location_models.City.DoesNotExist:
-            return types.GetCoffeesResponse(coffees=None)
+            return types.GetCoffeesResponse(coffees=None, count=None)
 
         try:
             profile = me.profile
