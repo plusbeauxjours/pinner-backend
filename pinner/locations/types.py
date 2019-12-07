@@ -143,7 +143,7 @@ class TripResponse(graphene.ObjectType):
 
 class TripCitiesResponse(graphene.ObjectType):
     trip = graphene.List(notification_types.MoveNotificationType)
-    hasCoffees = graphene.Boolean()
+    coffeeId = graphene.String()
 
 
 class ReportLocationResponse(graphene.ObjectType):

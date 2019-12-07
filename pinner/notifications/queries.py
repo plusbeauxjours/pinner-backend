@@ -8,7 +8,7 @@ from graphql_jwt.decorators import login_required
 from locations import models as location_models
 from django.contrib.auth.models import User
 from locations import types as location_types
-from coffees import models as coffees_types
+from coffees import models as coffees_models
 
 
 @login_required
@@ -33,9 +33,11 @@ def resolve_get_trip_cities(self, info, **kwargs):
 
     try:
         trip = user.moveNotificationUser.all().order_by('city',).distinct('city')
-        coffees = coffees_types.Coffee.objects.filter(host=user, expires__gte=timezone.now()).order_by(
-            '-created_at')
-        hasCoffees = coffees.exists()
-        return location_types.TripCitiesResponse(trip=trip, hasCoffees=hasCoffees)
+        try:
+            coffees = coffees_models.Coffee.objects.get(host=user, expires__gte=timezone.now())
+            coffeeId = coffees.uuid
+            return location_types.TripCitiesResponse(trip=trip, coffeeId=coffeeId)
+        except coffees_models.Coffee.DoesNotExist:
+            return location_types.TripCitiesResponse(trip=trip, coffeeId=None)
     except models.User.DoesNotExist:
-        return location_types.TripCitiesResponse(trip=None, hasCoffees=None)
+        return location_types.TripCitiesResponse(trip=None, coffeeId=None)
