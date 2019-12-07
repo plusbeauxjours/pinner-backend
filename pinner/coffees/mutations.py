@@ -28,6 +28,11 @@ class RequestCoffee(graphene.Mutation):
         target = kwargs.get('target', 'everyone')
         countryCode = kwargs.get('countryCode')
         gender = kwargs.get('gender')
+
+        print("currentCityId", currentCityId)
+        print("target", target)
+        print("countryCode", countryCode)
+        print("gender", gender)
         if not user.coffee.filter(expires__gte=timezone.now()):
 
             try:
@@ -170,6 +175,7 @@ class RequestCoffee(graphene.Mutation):
                     host=user,
                     target=target,
                 )
+                print(coffee)
                 return types.RequestCoffeeResponse(ok=True, coffee=coffee)
 
             except IntegrityError as e:
