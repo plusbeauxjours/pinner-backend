@@ -138,8 +138,12 @@ class ContinentsResponse(graphene.ObjectType):
 
 
 class TripResponse(graphene.ObjectType):
-    count = graphene.Int()
     trip = graphene.List(notification_types.MoveNotificationType)
+
+
+class TripCitiesResponse(graphene.ObjectType):
+    trip = graphene.List(notification_types.MoveNotificationType)
+    hasCoffees = graphene.Boolean()
 
 
 class ReportLocationResponse(graphene.ObjectType):

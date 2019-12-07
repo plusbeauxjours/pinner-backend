@@ -15,12 +15,9 @@ class Query(object):
         }
     )
     get_trip_cities = graphene.Field(
-        location_types.TripResponse,
+        location_types.TripCitiesResponse,
         resolver=queries.resolve_get_trip_cities,
         required=True,
-        args={
-            'page': graphene.Int(),
-        }
     )
 
 
