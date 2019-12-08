@@ -27,7 +27,6 @@ class MatchType(DjangoObjectType):
     is_host = graphene.Boolean()
     is_guest = graphene.Boolean()
     is_matching = graphene.Boolean()
-    last_message_at = graphene.String()
 
     def resolve_is_host(self, info):
         user = info.context.user

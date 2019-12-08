@@ -81,6 +81,6 @@ def resolve_get_matches(self, info, **kwargs):
     host = user.host.all()
     guest = user.guest.all()
 
-    combined = host.union(guest).order_by('-city')
+    combined = host.union(guest).order_by('-created_at')
 
     return types.GetMatchesResponse(matches=combined)
