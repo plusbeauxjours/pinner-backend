@@ -51,6 +51,21 @@ class ToggleSettings(graphene.Mutation):
                     return types.ToggleSettingsResponse(ok=True, user=user)
                 except:
                     return types.ToggleSettingsResponse(ok=False, user=None)
+        elif payload == "HIDE_PHOTOS":
+            if user.profile.is_hide_photos == True:
+                try:
+                    user.profile.is_hide_photos = False
+                    user.profile.save()
+                    return types.ToggleSettingsResponse(ok=True, user=user)
+                except:
+                    return types.ToggleSettingsResponse(ok=False, user=None)
+            elif user.profile.is_hide_photos == False:
+                try:
+                    user.profile.is_hide_photos = True
+                    user.profile.save()
+                    return types.ToggleSettingsResponse(ok=True, user=user)
+                except:
+                    return types.ToggleSettingsResponse(ok=False, user=None)
         elif payload == "HIDE_TRIPS":
             if user.profile.is_hide_trips == True:
                 try:

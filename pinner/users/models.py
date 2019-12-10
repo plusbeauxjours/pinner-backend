@@ -126,6 +126,7 @@ class Profile(config_models.TimeStampedModel):
     email_address = models.EmailField(blank=True, null=True, max_length=50)
     fbId = models.CharField(blank=True, null=True, max_length=20)
     is_dark_mode = models.BooleanField(default=True)
+    is_hide_photos = models.BooleanField(default=False)
     is_hide_trips = models.BooleanField(default=False)
     is_hide_coffees = models.BooleanField(default=False)
     is_hide_cities = models.BooleanField(default=False)
@@ -149,6 +150,10 @@ class Profile(config_models.TimeStampedModel):
     @cached_property
     def id(self):
         return self.user.id
+
+    @cached_property
+    def photo_count(self):
+        return self.user.avatar.all().order_by('-created_at').count()
 
     @cached_property
     def city_count(self):
