@@ -54,7 +54,7 @@ class LikeType(DjangoObjectType):
 
 class ToggleSettingsResponse(graphene.ObjectType):
     ok = graphene.Boolean()
-    profile = graphene.Field(ProfileType)
+    user = graphene.Field(UserType)
 
 
 class AvatarListResponse(graphene.ObjectType):
