@@ -23,6 +23,7 @@ class ProfileAdmin(admin.ModelAdmin):
         'current_city',
         'current_country',
         'current_continent',
+        'photo_count',
         'city_count',
         'trip_count',
         'country_count',
