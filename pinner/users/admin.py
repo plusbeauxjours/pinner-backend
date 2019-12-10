@@ -13,6 +13,7 @@ class ProfileAdmin(admin.ModelAdmin):
         'phone_number',
         'email_address',
         'is_dark_mode',
+        'is_hide_photos',
         'is_hide_trips',
         'is_hide_coffees',
         'is_hide_cities',
