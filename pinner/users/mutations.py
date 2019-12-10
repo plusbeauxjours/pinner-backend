@@ -36,6 +36,7 @@ class ToggleSettings(graphene.Mutation):
 
         user = info.context.user
         payload = kwargs.get('payload')
+        print("0",payload)
         if payload == "DARK_MODE":
             if user.profile.is_dark_mode == True:
                 try:
@@ -56,15 +57,19 @@ class ToggleSettings(graphene.Mutation):
                 try:
                     user.profile.is_hide_photos = False
                     user.profile.save()
+                    print("1",user.profile.is_hide_photos)
                     return types.ToggleSettingsResponse(ok=True, user=user)
                 except:
+                    print("2",user.profile.is_hide_photos)
                     return types.ToggleSettingsResponse(ok=False, user=None)
             elif user.profile.is_hide_photos == False:
                 try:
+                    print("3",user.profile.is_hide_photos)
                     user.profile.is_hide_photos = True
                     user.profile.save()
                     return types.ToggleSettingsResponse(ok=True, user=user)
                 except:
+                    print("4",user.profile.is_hide_photos)
                     return types.ToggleSettingsResponse(ok=False, user=None)
         elif payload == "HIDE_TRIPS":
             if user.profile.is_hide_trips == True:
