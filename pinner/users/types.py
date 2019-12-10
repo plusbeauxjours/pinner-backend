@@ -19,6 +19,7 @@ class UserType(DjangoObjectType):
 
 class ProfileType(DjangoObjectType):
     username = graphene.String(source='username')
+    photo_count =graphene.Int(source='photo_count') 
     city_count = graphene.Int(source='city_count')
     country_count = graphene.Int(source='country_count')
     continent_count = graphene.Int(source='continent_count')
