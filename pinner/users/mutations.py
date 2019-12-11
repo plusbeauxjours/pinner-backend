@@ -412,6 +412,31 @@ class MarkAsMain(graphene.Mutation):
             newMainAvatar.save()
             return types.MarkAsMainResponse(ok=True, avatar=newMainAvatar, preAvatarUUID=None, newAvatarUUID=uuid)
 
+class  RegisterPush(graphene.Mutation):
+
+    class Arguments:
+        push_token = graphene.String()
+
+    Output = types.RegisterPushResponse
+
+    @login_required
+    def mutate(self, info, **kwargs):
+
+        user = info.context.user
+        push_token = kwargs.get('push_token')
+
+        try:
+            if user.profile.push_token == push_token:
+                return types.RegisterPushResponse(ok=True)
+            else: 
+                user.profile.push_token = push_token
+                user.profile.save()
+                return types.RegisterPushResponse(ok=True)
+
+        except IntegrityError as e:
+            print(e)
+            return types.RegisterPushResponse(ok=False)
+
 
 class DeleteProfile(graphene.Mutation):
 

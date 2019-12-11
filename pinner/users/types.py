@@ -129,3 +129,7 @@ class UsersNowResponse(graphene.ObjectType):
     page = graphene.Int()
     hasNextPage = graphene.Boolean()
     usersNow = graphene.List(ProfileType)
+
+
+class RegisterPushResponse (graphene.ObjectType):
+    ok = graphene.Boolean()
