@@ -415,7 +415,7 @@ class MarkAsMain(graphene.Mutation):
 class  RegisterPush(graphene.Mutation):
 
     class Arguments:
-        push_token = graphene.String()
+        push_token = graphene.String(required=True)
 
     Output = types.RegisterPushResponse
 
