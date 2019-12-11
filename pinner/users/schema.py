@@ -100,4 +100,4 @@ class Mutation(object):
     mark_as_main = mutations.MarkAsMain.Field(required=True)
     toggle_settings = mutations.ToggleSettings.Field(required=True)
     slack_report_users = mutations.SlackReportUsers.Field(required=True)
-    register_push = mutations.RegisterPush.Filed(required=True)
+    register_push = mutations.RegisterPush.Field(required=True)
