@@ -140,8 +140,8 @@ class Profile(config_models.TimeStampedModel):
         location_models.Country, on_delete=models.SET_NULL, null=True, blank=True, related_name='currentCountry', )
     current_continent = models.ForeignKey(
         location_models.Continent, on_delete=models.SET_NULL, null=True, blank=True, related_name='currentContinent', )
-    blocked_user = models.ManyToManyField('self',  blank=True, symmetrical=False, related_name='blocked_user')
-    blocking_user = models.ManyToManyField('self',  blank=True, symmetrical=False, related_name='blocking_user')
+    blocked_user = models.ManyToManyField('self',  blank=True, symmetrical=False, related_name='user_blocked')
+    blocking_user = models.ManyToManyField('self',  blank=True, symmetrical=False, related_name='user_blocking')
 
     def __str__(self):
         return self.user.username

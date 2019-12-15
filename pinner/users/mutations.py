@@ -784,8 +784,8 @@ class AddBlockUser(graphene.Mutation):
         blockingUser = models.Profile.get(uuid=uuid)
 
         try:
-            profile.blocking_user.add(blockingUser)
-            blockingUser.blocked_user.add(profile)
+            profile.user_blocked.add(blockingUser)
+            blockingUser.user_blocking.add(profile)
             profile.save()
             blockingUser.save()
             return types.BlockUserResponse(ok=True)
@@ -810,8 +810,8 @@ class DeleteBlockUser(graphene.Mutation):
         blockingUser = models.Profile.get(uuid=uuid)
 
         try:
-            profile.blocking_user.delete(blockingUser)
-            blockingUser.blocked_user.delete(profile)
+            profile.user_blocked.delete(blockingUser)
+            blockingUser.user_blocking.delete(profile)
             profile.save()
             blockingUser.save()
             return types.BlockUserResponse(ok=True)
