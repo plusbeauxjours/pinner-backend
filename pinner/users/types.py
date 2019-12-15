@@ -28,7 +28,7 @@ class ProfileType(DjangoObjectType):
     coffee_count = graphene.Int(source='coffee_count')
     blocking_user_count = graphene.Int(source='blocking_user_count')
     is_self = graphene.Boolean()
-
+    
     def resolve_is_self(self, info):
         user = info.context.user
         if self.user.id == user.id:

@@ -160,7 +160,7 @@ class Profile(config_models.TimeStampedModel):
 
     @cached_property
     def blocking_user_count(self):
-        return self.user.blocking_user.all().order_by('-created_at').count()
+        return self.user.user_blocking.all().order_by('-created_at').count()
 
     @cached_property
     def city_count(self):
