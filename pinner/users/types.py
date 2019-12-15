@@ -141,4 +141,4 @@ class BlockUserResponse (graphene.ObjectType):
 
 
 class GetBlockingUserResponse(graphene.ObjectType):
-    blocking_user = graphene.List(ProfileType)
+    blocking_users = graphene.List(ProfileType)
