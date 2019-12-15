@@ -88,7 +88,7 @@ class Query(object):
         }
     )
     get_blocked_user = graphene.Field(
-        location_types.GetBlockedUserResponse,
+        types.GetBlockedUserResponse,
         resolver=queries.resolve_get_blocked_user,
         required=True,
     )
