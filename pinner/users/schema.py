@@ -87,9 +87,9 @@ class Query(object):
             'uuid': graphene.String(required=True)
         }
     )
-    get_blocking_user = graphene.Field(
-        types.GetBlockingUserResponse,
-        resolver=queries.resolve_get_blocking_user,
+    get_blocked_user = graphene.Field(
+        types.GetBlockedUserResponse,
+        resolver=queries.resolve_get_blocked_user,
         required=True,
     )
 
