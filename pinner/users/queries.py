@@ -184,3 +184,15 @@ def resolve_user_list(self, info):
         '-date_joined')
 
     return types.UserListResponse(users=users)
+
+
+@login_required
+def resolve_get_blocked_user(self, info, **kwargs):
+
+    profile = info.context.user.profile
+
+    try:
+        blocked_users = profile.blocking_user.all()
+        return type.GetBlockedUserResponse(blocked_users=blocked_users)
+    except User.DoesNotExist:
+        return type.GetBlockedUserResponse(blocked_users=None)

@@ -766,3 +766,52 @@ class SlackReportUsers(graphene.Mutation):
             return types.SlackReportUsersResponse(ok=True)
         else:
             return types.SlackReportUsersResponse(ok=False)
+
+
+class AddBlockUser(graphene.Mutation):
+
+    class Arguments:
+        uuid = graphene.String(required=True)
+
+    Output = types.BlockUserResponse
+
+    @login_required
+    def mutate(self, info, **kwargs):
+
+        user = info.context.user
+
+        uuid = kwargs.get('uuid')
+        blockedUser = models.Profile.get(uuid=uuid)
+
+        try:
+            user.profile.blocked_user.add(blockedUser)
+            user.profile.save()
+            return types.BlockUserResponse(ok=True)
+
+        except IntegrityError as e:
+            print(e)
+            return types.BlockUserResponse(ok=False)
+
+class DeleteBlockUser(graphene.Mutation):
+
+    class Arguments:
+        uuid = graphene.String(required=True)
+
+    Output = types.BlockUserResponse
+
+    @login_required
+    def mutate(self, info, **kwargs):
+
+        user = info.context.user
+
+        uuid = kwargs.get('uuid')
+        blockedUser = models.Profile.get(uuid=uuid)
+
+        try:
+            user.profile.blocked_user.delete(blockedUser)
+            user.profile.save()
+            return types.BlockUserResponse(ok=True)
+
+        except IntegrityError as e:
+            print(e)
+            return types.BlockUserResponse(ok=False)

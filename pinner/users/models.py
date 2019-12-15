@@ -140,6 +140,7 @@ class Profile(config_models.TimeStampedModel):
         location_models.Country, on_delete=models.SET_NULL, null=True, blank=True, related_name='currentCountry', )
     current_continent = models.ForeignKey(
         location_models.Continent, on_delete=models.SET_NULL, null=True, blank=True, related_name='currentContinent', )
+    blocked_user = models.ManyToManyField('self',  blank=True, symmetrical=False, related_name='blocking_user')
 
     def __str__(self):
         return self.user.username
@@ -155,6 +156,10 @@ class Profile(config_models.TimeStampedModel):
     @cached_property
     def photo_count(self):
         return self.user.avatar.all().order_by('-created_at').count()
+
+    @cached_property
+    def blocked_user_count(self):
+        return self.user.blocking_user.all().order_by('-created_at').count()
 
     @cached_property
     def city_count(self):

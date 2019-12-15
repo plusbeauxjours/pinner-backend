@@ -87,6 +87,11 @@ class Query(object):
             'uuid': graphene.String(required=True)
         }
     )
+    get_blocked_user = graphene.Field(
+        location_types.GetBlockedUserResponse,
+        resolver=queries.resolve_get_blocked_user,
+        required=True,
+    )
 
 
 class Mutation(object):
@@ -101,3 +106,5 @@ class Mutation(object):
     toggle_settings = mutations.ToggleSettings.Field(required=True)
     slack_report_users = mutations.SlackReportUsers.Field(required=True)
     register_push = mutations.RegisterPush.Field(required=True)
+    add_block_user = mutations.AddBlockUser.Field(required=True)
+    delete_block_user = mutations.DeleteBlockUser.Field(required=True)
