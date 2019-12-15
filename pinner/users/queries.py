@@ -187,12 +187,12 @@ def resolve_user_list(self, info):
 
 
 @login_required
-def resolve_get_blocked_user(self, info, **kwargs):
+def resolve_get_blocking_user(self, info, **kwargs):
 
     profile = info.context.user.profile
 
     try:
         blocking_users = profile.blocking_user.all()
-        return types.GetBlockedUserResponse(blocking_users=blocking_users)
+        return types.GetBlockingUserResponse(blocking_users=blocking_users)
     except User.DoesNotExist:
-        return types.GetBlockedUserResponse(blocking_users=None)
+        return types.GetBlockingUserResponse(blocking_users=None)

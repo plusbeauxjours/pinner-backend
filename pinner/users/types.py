@@ -140,5 +140,5 @@ class BlockUserResponse (graphene.ObjectType):
     ok = graphene.Boolean()
 
 
-class GetBlockedUserResponse(graphene.ObjectType):
+class GetBlockingUserResponse(graphene.ObjectType):
     blocking_user = graphene.List(ProfileType)
