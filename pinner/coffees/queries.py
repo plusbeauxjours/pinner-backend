@@ -28,7 +28,6 @@ def resolve_get_coffees(self, info, **kwargs):
 
         try:
             profile = me.profile
-            blockingUser = profile.blocking_user.values('id').all()
             blockedUser = profile.blocked_user.values('id').all()
             matchedGuests = me.guest.values('host__id').all()
             matchedHosts = me.host.values('guest__id').all()
@@ -36,7 +35,7 @@ def resolve_get_coffees(self, info, **kwargs):
                                           Q(target='nationality', host__profile__nationality=profile.nationality) |
                                           Q(target='residence', host__profile__residence=profile.residence) |
                                           Q(target='gender', host__profile__gender=profile.gender)) &
-                                         Q(expires__gte=timezone.now())).exclude(host__id__in=matchedGuests).exclude(host__profile__id__in=blockingUser).exclude(host__profile__id__in=blockedUser).exclude(host__id__in=matchedHosts).order_by('-created_at')
+                                         Q(expires__gte=timezone.now())).exclude(host__id__in=matchedGuests).exclude(host__profile__id__in=blockedUser).exclude(host__id__in=matchedHosts).order_by('-created_at')
             count = coffees.count()
             return types.GetCoffeesResponse(coffees=coffees, count=count)
 
@@ -81,10 +80,9 @@ def resolve_get_matches(self, info, **kwargs):
     profile = user.profile
     page = kwargs.get('page', 0)
 
-    blockingUser = profile.blocking_user.values('id').all()
     blockedUser = profile.blocked_user.values('id').all()
-    host = user.host.exclude((Q(host__profile__id__in=blockingUser)| Q(host__profile__id__in=blockedUser)| Q(guest__profile__id__in=blockingUser)| Q(guest__profile__id__in=blockedUser))).all()
-    guest = user.guest.exclude((Q(host__profile__id__in=blockingUser)| Q(host__profile__id__in=blockedUser)| Q(guest__profile__id__in=blockingUser)| Q(guest__profile__id__in=blockedUser))).all()
+    host = user.host.exclude(( Q(host__profile__id__in=blockedUser)|  Q(guest__profile__id__in=blockedUser))).all()
+    guest = user.guest.exclude(( Q(host__profile__id__in=blockedUser)|  Q(guest__profile__id__in=blockedUser))).all()
 
     combined = host.union(guest).order_by('-created_at')
 

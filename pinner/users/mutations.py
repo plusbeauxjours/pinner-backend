@@ -781,10 +781,10 @@ class AddBlockUser(graphene.Mutation):
         profile = info.context.user.profile
 
         uuid = kwargs.get('uuid')
-        blockingUser = models.Profile.objects.get(uuid=uuid)
+        blockedUser = models.Profile.objects.get(uuid=uuid)
 
         try:
-            profile.blocked_user.add(blockingUser)
+            profile.blocked_user.add(blockedUser)
             profile.save()
             return types.BlockUserResponse(ok=True)
 
@@ -805,10 +805,10 @@ class DeleteBlockUser(graphene.Mutation):
         profile = info.context.user.profile
 
         uuid = kwargs.get('uuid')
-        blockingUser = models.Profile.objects.get(uuid=uuid)
+        blockedUser = models.Profile.objects.get(uuid=uuid)
 
         try:
-            profile.blocked_user.remove(blockingUser)
+            profile.blocked_user.remove(blockedUser)
             return types.BlockUserResponse(ok=True)
 
         except IntegrityError as e:
