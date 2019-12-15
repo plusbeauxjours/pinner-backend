@@ -26,7 +26,7 @@ class ProfileType(DjangoObjectType):
     post_count = graphene.Int(source='post_count')
     trip_count = graphene.Int(source='trip_count')
     coffee_count = graphene.Int(source='coffee_count')
-    blocked_user_count = graphene.Int(source='blocked_user_count')
+    blocking_user_count = graphene.Int(source='blocking_user_count')
     is_self = graphene.Boolean()
 
     def resolve_is_self(self, info):
@@ -141,4 +141,4 @@ class BlockUserResponse (graphene.ObjectType):
 
 
 class GetBlockedUserResponse(graphene.ObjectType):
-    blocked_users = graphene.List(ProfileType)
+    blocking_user = graphene.List(ProfileType)
