@@ -781,7 +781,7 @@ class AddBlockUser(graphene.Mutation):
         profile = info.context.user.profile
 
         uuid = kwargs.get('uuid')
-        blockingUser = models.Profile.get(uuid=uuid)
+        blockingUser = models.Profile.objects.get(uuid=uuid)
 
         try:
             profile.user_blocked.add(blockingUser)
@@ -807,7 +807,7 @@ class DeleteBlockUser(graphene.Mutation):
         profile = info.context.user.profile
 
         uuid = kwargs.get('uuid')
-        blockingUser = models.Profile.get(uuid=uuid)
+        blockingUser = models.Profile.objects.get(uuid=uuid)
 
         try:
             profile.user_blocked.delete(blockingUser)
