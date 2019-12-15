@@ -193,6 +193,6 @@ def resolve_get_blocked_user(self, info, **kwargs):
 
     try:
         blocking_user = profile.blocking_user.all()
-        return type.GetBlockedUserResponse(blocking_user=blocking_user)
+        return types.GetBlockedUserResponse(blocking_user=blocking_user)
     except User.DoesNotExist:
-        return type.GetBlockedUserResponse(blocking_user=None)
+        return types.GetBlockedUserResponse(blocking_user=None)
