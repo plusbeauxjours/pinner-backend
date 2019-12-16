@@ -106,7 +106,7 @@ class Profile(config_models.TimeStampedModel):
         ('OTHER', 'Other')
     )
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, blank=True, null=True)
-    push_token = models.CharField(max_length=200, default='')
+    push_token = models.CharField(blank=True, null=True, max_length=200)
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, related_name='profile')
     bio = models.TextField(default='', blank=True, null=True)
@@ -141,6 +141,19 @@ class Profile(config_models.TimeStampedModel):
     current_continent = models.ForeignKey(
         location_models.Continent, on_delete=models.SET_NULL, null=True, blank=True, related_name='currentContinent', )
     blocked_user = models.ManyToManyField('self',  blank=True, related_name='user_blocked')
+
+    send_instagram = models.CharField(blank=True, null=True, max_length=200)
+    send_phone = models.CharField(blank=True, null=True, max_length=200)
+    send_email = models.EmailField(blank=True, null=True, max_length=200)
+    send_kakao = models.CharField(blank=True, null=True, max_length=200)
+    send_facebook = models.CharField(blank=True, null=True, max_length=200)
+    send_snapchat = models.CharField(blank=True, null=True, max_length=200)
+    send_line = models.CharField(blank=True, null=True, max_length=200)
+    send_wechat = models.CharField(blank=True, null=True, max_length=200)
+    send_kik = models.CharField(blank=True, null=True, max_length=200)
+    send_vk = models.CharField(blank=True, null=True, max_length=200)
+    send_whatsapp = models.CharField(blank=True, null=True, max_length=200)
+    
 
     def __str__(self):
         return self.user.username
