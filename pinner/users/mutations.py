@@ -809,8 +809,8 @@ class DeleteBlockUser(graphene.Mutation):
 
         try:
             profile.blocked_user.remove(blockedUser)
-            return types.DeleteBlockUserResponse(ok=True)
+            return types.DeleteBlockUserResponse(ok=True, uuid=uuid)
 
         except IntegrityError as e:
             print(e)
-            return types.DeleteBlockUserResponse(ok=False)
+            return types.DeleteBlockUserResponse(ok=False, uuid=None)

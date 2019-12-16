@@ -142,6 +142,7 @@ class AddBlockUserResponse (graphene.ObjectType):
 
 class DeleteBlockUserResponse (graphene.ObjectType):
     ok = graphene.Boolean()
+    uuid = graphene.String()
 
 
 class GetBlockedUserResponse(graphene.ObjectType):
