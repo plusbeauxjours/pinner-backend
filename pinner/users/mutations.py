@@ -773,7 +773,7 @@ class AddBlockUser(graphene.Mutation):
     class Arguments:
         uuid = graphene.String(required=True)
 
-    Output = types.BlockUserResponse
+    Output = types.AddBlockUserResponse
 
     @login_required
     def mutate(self, info, **kwargs):
@@ -786,18 +786,18 @@ class AddBlockUser(graphene.Mutation):
         try:
             profile.blocked_user.add(blockedUser)
             profile.save()
-            return types.BlockUserResponse(ok=True)
+            return types.AddBlockUserResponse(ok=True, blockedUser=blockedUser)
 
         except IntegrityError as e:
             print(e)
-            return types.BlockUserResponse(ok=False)
+            return types.AddBlockUserResponse(ok=False, blockedUser=None)
 
 class DeleteBlockUser(graphene.Mutation):
 
     class Arguments:
         uuid = graphene.String(required=True)
 
-    Output = types.BlockUserResponse
+    Output = types.DeleteBlockUserResponse
 
     @login_required
     def mutate(self, info, **kwargs):
@@ -809,8 +809,8 @@ class DeleteBlockUser(graphene.Mutation):
 
         try:
             profile.blocked_user.remove(blockedUser)
-            return types.BlockUserResponse(ok=True)
+            return types.DeleteBlockUserResponse(ok=True)
 
         except IntegrityError as e:
             print(e)
-            return types.BlockUseremove
+            return types.DeleteBlockUserResponse(ok=False)

@@ -136,7 +136,11 @@ class RegisterPushResponse (graphene.ObjectType):
     ok = graphene.Boolean()
 
 
-class BlockUserResponse (graphene.ObjectType):
+class AddBlockUserResponse (graphene.ObjectType):
+    ok = graphene.Boolean()
+    blockedUser=graphene.Field(ProfileType)
+
+class DeleteBlockUserResponse (graphene.ObjectType):
     ok = graphene.Boolean()
 
 
