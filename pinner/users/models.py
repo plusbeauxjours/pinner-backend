@@ -153,6 +153,9 @@ class Profile(config_models.TimeStampedModel):
     send_kik = models.CharField(blank=True, null=True, max_length=200)
     send_vk = models.CharField(blank=True, null=True, max_length=200)
     send_whatsapp = models.CharField(blank=True, null=True, max_length=200)
+    send_twitter = models.CharField(blank=True, null=True, max_length=200)
+    send_youtube = models.CharField(blank=True, null=True, max_length=200)
+    send_telegram = models.CharField(blank=True, null=True, max_length=200)
     
 
     def __str__(self):
