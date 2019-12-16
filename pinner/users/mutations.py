@@ -75,7 +75,7 @@ class UpdateSNS(graphene.Mutation):
                 return types.UpdateSNSResponse(ok=False, user=None)
         if payload == "YOUTUBE":
             try:
-                user.profile.send_snapchat = username
+                user.profile.send_youtube = username
                 user.profile.save()
                 return types.UpdateSNSResponse(ok=True, user=user)
             except:
