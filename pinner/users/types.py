@@ -53,6 +53,10 @@ class LikeType(DjangoObjectType):
         model = models.Like
 
 
+class UpdateSNSResponse(graphene.ObjectType):
+    ok = graphene.Boolean()
+    user = graphene.Field(UserType)
+
 class ToggleSettingsResponse(graphene.ObjectType):
     ok = graphene.Boolean()
     user = graphene.Field(UserType)

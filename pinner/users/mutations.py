@@ -23,6 +23,156 @@ from django.core.files.base import ContentFile
 from io import BytesIO
 from urllib.request import urlopen
 
+class UpdateSNS(graphene.Mutation):
+
+    class Arguments:
+        payload = graphene.String(required=True)
+        username = graphene.String(required=True)
+
+    Output = types.UpdateSNSResponse
+
+    @login_required
+    def mutate(self, info,  **kwargs):
+
+        user = info.context.user
+        payload = kwargs.get('payload')
+        username = kwargs.get('username')
+
+        if payload == "INSTAGRAM":
+            try:
+                user.profile.send_instagram = username
+                user.profile.save()
+                return types.UpdateSNSResponse(ok=True, user=user)
+            except:
+                return types.UpdateSNSResponse(ok=False, user=None)
+        if payload == "PHONE":
+            try:
+                user.profile.send_phone = username
+                user.profile.save()
+                return types.UpdateSNSResponse(ok=True, user=user)
+            except:
+                return types.UpdateSNSResponse(ok=False, user=None)
+        if payload == "EMAIL":
+            try:
+                user.profile.send_email = username
+                user.profile.save()
+                return types.UpdateSNSResponse(ok=True, user=user)
+            except:
+                return types.UpdateSNSResponse(ok=False, user=None)
+        if payload == "KAKAOTALK":
+            try:
+                user.profile.send_kakao = username
+                user.profile.save()
+                return types.UpdateSNSResponse(ok=True, user=user)
+            except:
+                return types.UpdateSNSResponse(ok=False, user=None)
+        if payload == "FACEBOOK":
+            try:
+                user.profile.send_facebook = username
+                user.profile.save()
+                return types.UpdateSNSResponse(ok=True, user=user)
+            except:
+                return types.UpdateSNSResponse(ok=False, user=None)
+        if payload == "YOUTUBE":
+            try:
+                user.profile.send_snapchat = username
+                user.profile.save()
+                return types.UpdateSNSResponse(ok=True, user=user)
+            except:
+                return types.UpdateSNSResponse(ok=False, user=None)
+        if payload == "TWITTER":
+            try:
+                user.profile.send_line = username
+                user.profile.save()
+                return types.UpdateSNSResponse(ok=True, user=user)
+            except:
+                return types.UpdateSNSResponse(ok=False, user=None)
+        if payload == "TELEGRAM":
+            try:
+                user.profile.send_wechat = username
+                user.profile.save()
+                return types.UpdateSNSResponse(ok=True, user=user)
+            except:
+                return types.UpdateSNSResponse(ok=False, user=None)
+        if payload == "SNAPCHAT":
+            try:
+                user.profile.send_kik = username
+                user.profile.save()
+                return types.UpdateSNSResponse(ok=True, user=user)
+            except:
+                return types.UpdateSNSResponse(ok=False, user=None)
+        if payload == "LINE":
+            try:
+                user.profile.send_vk = username
+                user.profile.save()
+                return types.UpdateSNSResponse(ok=True, user=user)
+            except:
+                return types.UpdateSNSResponse(ok=False, user=None)
+        if payload == "WECHAT":
+            try:
+                user.profile.send_whatsapp = username
+                user.profile.save()
+                return types.UpdateSNSResponse(ok=True, user=user)
+            except:
+                return types.UpdateSNSResponse(ok=False, user=None)
+        if payload == "KIK":
+            try:
+                user.profile.send_twitter = username
+                user.profile.save()
+                return types.UpdateSNSResponse(ok=True, user=user)
+            except:
+                return types.UpdateSNSResponse(ok=False, user=None)
+        if payload =="VK":
+            try:
+                user.profile.send_youtube = username
+                user.profile.save()
+                return types.UpdateSNSResponse(ok=True, user=user)
+            except:
+                return types.UpdateSNSResponse(ok=False, user=None)
+        if payload =="WHATSAPP":
+            try:
+                user.profile.send_telegram = username
+                user.profile.save()
+                return types.UpdateSNSResponse(ok=True, user=user)
+            except:
+                return types.UpdateSNSResponse(ok=False, user=None)
+        if payload =="BEHANCE":
+            try:
+                user.profile.send_behance = username
+                user.profile.save()
+                return types.UpdateSNSResponse(ok=True, user=user)
+            except:
+                return types.UpdateSNSResponse(ok=False, user=None)
+        if payload =="LINKEDIN":
+            try:
+                user.profile.send_linkedin = username
+                user.profile.save()
+                return types.UpdateSNSResponse(ok=True, user=user)
+            except:
+                return types.UpdateSNSResponse(ok=False, user=None)
+        if payload =="PINTEREST":
+            try:
+                user.profile.send_pinterest = username
+                user.profile.save()
+                return types.UpdateSNSResponse(ok=True, user=user)
+            except:
+                return types.UpdateSNSResponse(ok=False, user=None)
+        if payload =="VINE":
+            try:
+                user.profile.send_vine = username
+                user.profile.save()
+                return types.UpdateSNSResponse(ok=True, user=user)
+            except:
+                return types.UpdateSNSResponse(ok=False, user=None)
+        if payload =="TUMBLR":
+            try:
+                user.profile.send_tumblr = username
+                user.profile.save()
+                return types.UpdateSNSResponse(ok=True, user=user)
+            except:
+                return types.UpdateSNSResponse(ok=False, user=None)
+
+         
 
 class ToggleSettings(graphene.Mutation):
 
@@ -36,7 +186,6 @@ class ToggleSettings(graphene.Mutation):
 
         user = info.context.user
         payload = kwargs.get('payload')
-        print("0",payload)
         if payload == "DARK_MODE":
             if user.profile.is_dark_mode == True:
                 try:
@@ -55,23 +204,17 @@ class ToggleSettings(graphene.Mutation):
         elif payload == "HIDE_PHOTOS":
             if user.profile.is_hide_photos == True:
                 try:
-                    print("1.1",user.profile.is_hide_photos)
                     user.profile.is_hide_photos = False
                     user.profile.save()
-                    print("1.1",user.profile.is_hide_photos)
                     return types.ToggleSettingsResponse(ok=True, user=user)
                 except:
-                    print("2",user.profile.is_hide_photos)
                     return types.ToggleSettingsResponse(ok=False, user=None)
             elif user.profile.is_hide_photos == False:
                 try:
-                    print("3.1",user.profile.is_hide_photos)
                     user.profile.is_hide_photos = True
                     user.profile.save()
-                    print("3.2",user.profile.is_hide_photos)
                     return types.ToggleSettingsResponse(ok=True, user=user)
                 except:
-                    print("4",user.profile.is_hide_photos)
                     return types.ToggleSettingsResponse(ok=False, user=None)
         elif payload == "HIDE_TRIPS":
             if user.profile.is_hide_trips == True:

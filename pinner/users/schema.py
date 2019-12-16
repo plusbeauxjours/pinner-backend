@@ -108,3 +108,4 @@ class Mutation(object):
     register_push = mutations.RegisterPush.Field(required=True)
     add_block_user = mutations.AddBlockUser.Field(required=True)
     delete_block_user = mutations.DeleteBlockUser.Field(required=True)
+    update_sns = mutations.UpdateSNS.Field(required=True)
