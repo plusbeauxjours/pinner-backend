@@ -156,7 +156,11 @@ class Profile(config_models.TimeStampedModel):
     send_twitter = models.CharField(blank=True, null=True, max_length=200)
     send_youtube = models.CharField(blank=True, null=True, max_length=200)
     send_telegram = models.CharField(blank=True, null=True, max_length=200)
-    
+    send_behance = models.CharField(blank=True, null=True, max_length=200)
+    send_linkedin = models.CharField(blank=True, null=True, max_length=200)
+    send_pinterest = models.CharField(blank=True, null=True, max_length=200)
+    send_vine = models.CharField(blank=True, null=True, max_length=200)
+    send_tumblr = models.CharField(blank=True, null=True, max_length=200)
 
     def __str__(self):
         return self.user.username
