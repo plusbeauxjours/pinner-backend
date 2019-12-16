@@ -82,56 +82,56 @@ class UpdateSNS(graphene.Mutation):
                 return types.UpdateSNSResponse(ok=False, user=None)
         if payload == "TWITTER":
             try:
-                user.profile.send_line = username
+                user.profile.send_twitter = username
                 user.profile.save()
                 return types.UpdateSNSResponse(ok=True, user=user)
             except:
                 return types.UpdateSNSResponse(ok=False, user=None)
         if payload == "TELEGRAM":
             try:
-                user.profile.send_wechat = username
+                user.profile.send_telegram = username
                 user.profile.save()
                 return types.UpdateSNSResponse(ok=True, user=user)
             except:
                 return types.UpdateSNSResponse(ok=False, user=None)
         if payload == "SNAPCHAT":
             try:
-                user.profile.send_kik = username
+                user.profile.send_snapchat = username
                 user.profile.save()
                 return types.UpdateSNSResponse(ok=True, user=user)
             except:
                 return types.UpdateSNSResponse(ok=False, user=None)
         if payload == "LINE":
             try:
-                user.profile.send_vk = username
+                user.profile.send_line = username
                 user.profile.save()
                 return types.UpdateSNSResponse(ok=True, user=user)
             except:
                 return types.UpdateSNSResponse(ok=False, user=None)
         if payload == "WECHAT":
             try:
-                user.profile.send_whatsapp = username
+                user.profile.send_wechat = username
                 user.profile.save()
                 return types.UpdateSNSResponse(ok=True, user=user)
             except:
                 return types.UpdateSNSResponse(ok=False, user=None)
         if payload == "KIK":
             try:
-                user.profile.send_twitter = username
+                user.profile.send_kik = username
                 user.profile.save()
                 return types.UpdateSNSResponse(ok=True, user=user)
             except:
                 return types.UpdateSNSResponse(ok=False, user=None)
         if payload =="VK":
             try:
-                user.profile.send_youtube = username
+                user.profile.send_vk = username
                 user.profile.save()
                 return types.UpdateSNSResponse(ok=True, user=user)
             except:
                 return types.UpdateSNSResponse(ok=False, user=None)
         if payload =="WHATSAPP":
             try:
-                user.profile.send_telegram = username
+                user.profile.send_whatsapp = username
                 user.profile.save()
                 return types.UpdateSNSResponse(ok=True, user=user)
             except:
