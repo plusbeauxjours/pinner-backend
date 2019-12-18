@@ -15,4 +15,4 @@ def sendSMS(to, body):
 
 
 def sendVerificationSMS(to, key):
-    return sendSMS(to, "Your verification key is: {}".format(key))
+    return sendSMS(to, "Your Pinner key is: {}".format(key))
