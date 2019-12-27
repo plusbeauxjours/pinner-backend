@@ -112,6 +112,11 @@ class FacebookConnectResponse(graphene.ObjectType):
     token = graphene.String()
 
 
+class AppleConnectResponse(graphene.ObjectType):
+    ok = graphene.Boolean()
+    token = graphene.String()
+
+
 class RecommendUsersResponse(graphene.ObjectType):
     page = graphene.Int()
     hasNextPage = graphene.Boolean()

@@ -100,6 +100,7 @@ class Mutation(object):
     delete_profile = mutations.DeleteProfile.Field(required=True)
     log_in = graphql_jwt.ObtainJSONWebToken.Field(required=True)
     facebook_connect = mutations.FacebookConnect.Field(required=True)
+    apple_connect = mutations.AppleConnect.Field(required=True)
     upload_avatar = mutations.UploadAvatar.Field(required=True)
     delete_avatar = mutations.DeleteAvatar.Field(required=True)
     mark_as_main = mutations.MarkAsMain.Field(required=True)
