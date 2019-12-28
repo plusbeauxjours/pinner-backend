@@ -827,6 +827,12 @@ class FacebookConnect(graphene.Mutation):
                     current_country = city.country,
                     current_continent = city.country.continent,
                 )
+                moveNotification = notification_models.MoveNotification.objects.create(
+                    actor=newUser,
+                    city=city,
+                    country=city.country,
+                    continent=city.country.continent,
+                )
 
                 token = get_token(profile.user)
                 return types.FacebookConnectResponse(ok=True, token=token)
@@ -1001,6 +1007,12 @@ class AppleConnect(graphene.Mutation):
                         current_city=city,
                         current_country = city.country,
                         current_continent = city.country.continent,
+                    )
+                    moveNotification = notification_models.MoveNotification.objects.create(
+                        actor=newUser,
+                        city=city,
+                        country=city.country,
+                        continent=city.country.continent,
                     )
 
                     token = get_token(profile.user)

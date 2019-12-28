@@ -263,6 +263,12 @@ class CompletePhoneVerification(graphene.Mutation):
                             current_country=city.country,
                             current_continent=city.country.continent,
                         )
+                        moveNotification = notification_models.MoveNotification.objects.create(
+                            actor=newUser,
+                            city=city,
+                            country=city.country,
+                            continent=city.country.continent,
+                        )
                         newUserProfile.is_verified_phone_number = True
                         newUserProfile.save()
                         verification.is_verified = True
