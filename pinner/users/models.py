@@ -54,7 +54,7 @@ class Avatar(config_models.TimeStampedModel):
         upload_to=upload_app_thumbnail,
         null=True,
         blank=True,
-        processors=[ResizeToFill(40, 40)],
+        processors=[ResizeToFill(120, 120)],
         format='JPEG',
         options={'quality': 100}
     )
