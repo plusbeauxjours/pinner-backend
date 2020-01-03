@@ -9,6 +9,7 @@ from django.db import IntegrityError
 from graphql_jwt.decorators import login_required
 from graphql_jwt.shortcuts import get_token
 from users import models as users_models
+from notifications import models as notification_models
 from locations import models as location_models
 from locations import types as location_types
 from locations import reversePlace
