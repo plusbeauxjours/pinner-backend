@@ -113,7 +113,7 @@ class Query(object):
         args={
             'cityId': graphene.String(required=True),
             'page': graphene.Int(),
-            "payload": graphene.String
+            "payload": graphene.String()
         }
     )
     search_countries = graphene.Field(
