@@ -448,6 +448,7 @@ def resolve_near_cities(self, info, **kwargs):
     user = info.context.user
     cityId = kwargs.get('cityId')
     page = kwargs.get('page', 0)
+    payload = kwargs.get('payload')
     offset = 20 * page
 
     nextPage = page+1
@@ -473,8 +474,10 @@ def resolve_near_cities(self, info, **kwargs):
     combined = get_locations_nearby_coords(city.latitude, city.longitude)
 
     hasNextPage = offset < combined.count()
-
-    cities = combined[offset:20 + offset]
+    if payload == "PIN":
+        cities = combined[:3]
+    else: 
+        cities = combined[offset:20 + offset]
 
     return types.NearCitiesResponse(cities=cities, page=nextPage, hasNextPage=hasNextPage)
 
