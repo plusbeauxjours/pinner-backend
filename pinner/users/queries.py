@@ -134,7 +134,7 @@ def resolve_recommend_users(self, info, **kwargs):
 
     user = info.context.user
     page = kwargs.get('page', 0)
-    offset = 20 * page
+    offset = 15 * page
 
     nextPage = page+1
     userGuest = user.guest.all()
@@ -170,7 +170,7 @@ def resolve_recommend_users(self, info, **kwargs):
             user__host__in=userHost) | Q(user__guest__in=userGuest) | Q(user__guest__in=userHost)).order_by('id').distinct('id')[:5]
 
     hasNextPage = offset < combined.count()
-    combined = combined[offset:20 + offset]
+    combined = combined[offset:15 + offset]
 
     return types.RecommendUsersResponse(users=combined, page=nextPage, hasNextPage=hasNextPage)
 
