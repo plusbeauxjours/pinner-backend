@@ -125,7 +125,7 @@ def resolve_city_profile(self, info, **kwargs):
     usersNow = city.currentCity.order_by('-id').distinct('id')
 
     usersBefore = city.moveNotificationCity.exclude(
-        actor__profile__in=usersNow).order_by('-actor_id').distinct('actor_id')[:20]
+        actor__profile__in=usersNow).order_by('-actor_id').distinct('actor_id')[:15]
 
     if page == 1:
         nextPage = page+1
@@ -353,7 +353,7 @@ def resolve_get_countries(self, info, **kwargs):
 
     country = models.Country.objects.get(country_code=countryCode)
 
-    countries = country.continent.countries.all().exclude(country_code=countryCode)[:20]
+    countries = country.continent.countries.all().exclude(country_code=countryCode)[:15]
 
     return types.CountriesResponse(countries=countries)
 
@@ -449,7 +449,7 @@ def resolve_near_cities(self, info, **kwargs):
     cityId = kwargs.get('cityId')
     page = kwargs.get('page', 0)
     payload = kwargs.get('payload')
-    offset = 20 * page
+    offset = 15 * page
 
     nextPage = page+1
 
@@ -477,7 +477,7 @@ def resolve_near_cities(self, info, **kwargs):
     if payload == "PIN":
         cities = combined[:3]
     else: 
-        cities = combined[offset:20 + offset]
+        cities = combined[offset:15 + offset]
 
     return types.NearCitiesResponse(cities=cities, page=nextPage, hasNextPage=hasNextPage)
 
@@ -501,7 +501,7 @@ def resolve_recommend_locations(self, info, **kwargs):
 
     user = info.context.user
     page = kwargs.get('page', 0)
-    offset = 20 * page
+    offset = 15 * page
 
     nextPage = page+1
 
@@ -547,7 +547,7 @@ def resolve_recommend_locations(self, info, **kwargs):
         locationUser = models.City.objects.none()
 
     try:
-        likeUser = user_models.Profile.objects.filter(user__likes__city=city).order_by('-distance')[:20]
+        likeUser = user_models.Profile.objects.filter(user__likes__city=city).order_by('-distance')[:15]
         for i in likeUser:
             likeUsers = models.City.objects.filter(id=i.user.profile.current_city.id).exclude(id=city.id)
             combined = combined | likeUsers
@@ -560,6 +560,6 @@ def resolve_recommend_locations(self, info, **kwargs):
 
     cities = get_locations_nearby_coords(city.latitude, city.longitude)
     hasNextPage = offset < cities.count()
-    cities = cities[offset:20 + offset]
+    cities = cities[offset:15 + offset]
 
     return types.RecommendLocationsResponse(cities=cities, page=nextPage, hasNextPage=hasNextPage)
