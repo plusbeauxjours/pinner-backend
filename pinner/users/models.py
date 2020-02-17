@@ -1,6 +1,5 @@
 import os
 import uuid
-from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.contrib.auth.models import User
 from config import models as config_models
@@ -95,114 +94,6 @@ class Like(config_models.TimeStampedModel):
         User, on_delete=models.CASCADE, null=True, related_name='avatar_likes')
     avatar = models.ForeignKey(
         Avatar, on_delete=models.CASCADE, null=True, related_name='likes')
-
-
-class User(AbstractUser):
-
-    """ Profile Model """
-
-    GENDERS = (
-        ('MALE', 'Male'),
-        ('FEMALE', 'Female'),
-        ('OTHER', 'Other')
-    )
-    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, blank=True, null=True)
-    push_token = models.CharField(blank=True, null=True, max_length=200)
-    bio = models.TextField(default='', blank=True, null=True)
-    distance = models.IntegerField(default=0, blank=True, null=True)
-    website = models.URLField(blank=True, null=True)
-    gender = models.CharField(max_length=15, blank=True, null=True, choices=GENDERS)
-    residence = models.ForeignKey(
-        location_models.Country, blank=True, null=True, on_delete=models.SET_NULL, related_name='residence')
-    nationality = models.ForeignKey(
-        location_models.Country, blank=True, null=True, on_delete=models.SET_NULL, related_name='nationality')
-    avatar_url = models.CharField(max_length=300, blank=True, null=True)
-    app_avatar_url = models.CharField(max_length=300, blank=True, null=True)
-    country_phone_code = models.CharField(max_length=20, blank=True, null=True)
-    country_phone_number = models.CharField(max_length=20, blank=True, null=True)
-    phone_number = models.CharField(max_length=20, blank=True, null=True, unique=True)
-    is_verified_phone_number = models.BooleanField(default=False)
-    is_verified_email_address = models.BooleanField(default=False)
-    email_address = models.EmailField(blank=True, null=True, max_length=50)
-    fbId = models.CharField(blank=True, null=True, max_length=60)
-    appleId = models.CharField(blank=True, null=True, max_length=80)
-    is_dark_mode = models.BooleanField(default=True)
-    is_hide_photos = models.BooleanField(default=False)
-    is_hide_trips = models.BooleanField(default=False)
-    is_hide_coffees = models.BooleanField(default=False)
-    is_hide_cities = models.BooleanField(default=False)
-    is_hide_countries = models.BooleanField(default=False)
-    is_hide_continents = models.BooleanField(default=False)
-    is_auto_location_report = models.BooleanField(default=True)
-    current_city = models.ForeignKey(
-        location_models.City, on_delete=models.SET_NULL, null=True, blank=True, related_name='currentCity', )
-    current_country = models.ForeignKey(
-        location_models.Country, on_delete=models.SET_NULL, null=True, blank=True, related_name='currentCountry', )
-    current_continent = models.ForeignKey(
-        location_models.Continent, on_delete=models.SET_NULL, null=True, blank=True, related_name='currentContinent', )
-    blocked_user = models.ManyToManyField('self',  blank=True, related_name='user_blocked')
-
-    send_instagram = models.CharField(blank=True, null=True, max_length=200, default="")
-    send_phone = models.CharField(blank=True, null=True, max_length=200, default="")
-    send_email = models.EmailField(blank=True, null=True, max_length=200, default="")
-    send_kakao = models.CharField(blank=True, null=True, max_length=200, default="")
-    send_facebook = models.CharField(blank=True, null=True, max_length=200, default="")
-    send_snapchat = models.CharField(blank=True, null=True, max_length=200, default="")
-    send_line = models.CharField(blank=True, null=True, max_length=200, default="")
-    send_wechat = models.CharField(blank=True, null=True, max_length=200, default="")
-    send_kik = models.CharField(blank=True, null=True, max_length=200, default="")
-    send_vk = models.CharField(blank=True, null=True, max_length=200, default="")
-    send_whatsapp = models.CharField(blank=True, null=True, max_length=200, default="")
-    send_twitter = models.CharField(blank=True, null=True, max_length=200, default="")
-    send_youtube = models.CharField(blank=True, null=True, max_length=200, default="")
-    send_telegram = models.CharField(blank=True, null=True, max_length=200, default="")
-    send_behance = models.CharField(blank=True, null=True, max_length=200, default="")
-    send_linkedin = models.CharField(blank=True, null=True, max_length=200, default="")
-    send_pinterest = models.CharField(blank=True, null=True, max_length=200, default="")
-    send_vine = models.CharField(blank=True, null=True, max_length=200, default="")
-    send_tumblr = models.CharField(blank=True, null=True, max_length=200, default="")
-
-    def __str__(self):
-        return self.user.username
-
-    @cached_property
-    def username(self):
-        return self.user.username
-
-    @cached_property
-    def id(self):
-        return self.user.id
-
-    @cached_property
-    def photo_count(self):
-        return self.user.avatar.all().order_by('-created_at').count()
-
-    @cached_property
-    def blocked_user_count(self):
-        return self.blocked_user.all().order_by('-created_at').count()
-
-    @cached_property
-    def city_count(self):
-        return self.user.moveNotificationUser.all().order_by('city').distinct('city').count()
-
-    @cached_property
-    def country_count(self):
-        return self.user.moveNotificationUser.all().order_by('city__country').distinct('city__country').count()
-
-    @cached_property
-    def continent_count(self):
-        return self.user.moveNotificationUser.all().order_by('city__country__continent').distinct('city__country__continent').count()
-
-    @cached_property
-    def trip_count(self):
-        return self.user.moveNotificationUser.all().count()
-
-    @cached_property
-    def coffee_count(self):
-        return self.user.coffee.all().count()
-
-    class Meta:
-        ordering = ['-created_at']
 
 
 class Profile(config_models.TimeStampedModel):
