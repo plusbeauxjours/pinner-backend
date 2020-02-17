@@ -55,7 +55,7 @@ class Avatar(config_models.TimeStampedModel):
         upload_to=upload_app_thumbnail,
         null=True,
         blank=True,
-        processors=[ResizeToFill(120, 120)],
+        processors=[ResizeToFill(240, 240)],
         format='JPEG',
         options={'quality': 100}
     )
@@ -202,13 +202,6 @@ class Profile(config_models.TimeStampedModel):
     @cached_property
     def coffee_count(self):
         return self.user.coffee.all().count()
-
-    def image_tag(self):
-        return format_html(
-            '<img src="{url}" style="width:50px; height:50px; object-fit: cover;">',
-            url=self.app_avatar_url)
-    image_tag.short_description = 'Image'
-    image_tag.allow_tags = True
 
     class Meta:
         ordering = ['-created_at']
