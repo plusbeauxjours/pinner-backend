@@ -206,7 +206,7 @@ class Profile(config_models.TimeStampedModel):
     def image_tag(self):
         return format_html(
             '<img src="{url}" style="width:50px; height:50px; object-fit: cover;">',
-            url=self.avatar_url)
+            url=self.app_avatar_url)
     image_tag.short_description = 'Image'
     image_tag.allow_tags = True
 
