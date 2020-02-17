@@ -77,7 +77,6 @@ class ProfileAdmin(admin.ModelAdmin):
 
     list_display = (
         "id",
-        "image_tag",
         "uuid",
         "username",
         "gender",
