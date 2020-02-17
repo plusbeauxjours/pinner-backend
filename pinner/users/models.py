@@ -2,6 +2,7 @@ import os
 import uuid
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.html import escape, format_html
 from config import models as config_models
 from locations import models as location_models
 from django.contrib.humanize.templatetags.humanize import naturaltime
@@ -201,6 +202,13 @@ class Profile(config_models.TimeStampedModel):
     @cached_property
     def coffee_count(self):
         return self.user.coffee.all().count()
+
+    def image_tag(self):
+        return format_html(
+            '<img src="{url}" style="width:50px; height:50px; object-fit: cover;">',
+            url=self.avatar_url)
+    image_tag.short_description = 'Image'
+    image_tag.allow_tags = True
 
     class Meta:
         ordering = ['-created_at']
