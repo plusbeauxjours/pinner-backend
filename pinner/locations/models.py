@@ -21,10 +21,12 @@ class Continent (config_models.TimeStampedModel):
     @cached_property
     def country_count(self):
         return self.countries.all().count()
+    country_count.short_description = "country"
 
     @cached_property
     def user_log_count(self):
         return self.moveNotificationContinent.values('actor__id').all().order_by('-actor__id').distinct('actor__id').count()
+    user_log_count.short_description = "user log"
 
     def __str__(self):
         return self.continent_name
@@ -55,14 +57,17 @@ class Country (config_models.TimeStampedModel):
     @cached_property
     def city_count(self):
         return self.cities.all().count()
+    city_count.short_description = "city"
 
     @cached_property
     def total_like_count(self):
         return Like.objects.filter(city__country=self).count()
+    total_like_count.short_description = "like"
 
     @cached_property
     def user_log_count(self):
         return self.moveNotificationCountry.values('actor__id').all().order_by('-actor__id').distinct('actor__id').count()
+    user_log_count.short_description = "user log"
 
     def __str__(self):
         return self.country_name
@@ -93,14 +98,17 @@ class City (config_models.TimeStampedModel):
     @cached_property
     def like_count(self):
         return self.likes.all().count()
+    like_count.short_description = "like"
 
     @cached_property
     def user_count(self):
         return self.currentCity.values('id').all().count()
+    user_count.short_description = "user"
 
     @cached_property
     def user_log_count(self):
         return self.moveNotificationCity.values('actor__id').all().order_by('-actor__id').distinct('actor__id').count()
+    user_log_count.short_description = "user log"
 
     def __str__(self):
         return self.city_name
