@@ -40,7 +40,6 @@ class Coffee (config_models.TimeStampedModel):
     @property
     def match_count(self):
         return self.match.all().count()
-    match_count.short_description = "match"
 
     @property
     def natural_time(self):
@@ -69,7 +68,6 @@ class Match (config_models.TimeStampedModel):
     @property
     def country_count(self):
         return self.countries.all().count()
-    country_count.short_description = "country"
 
     @property
     def natural_time(self):

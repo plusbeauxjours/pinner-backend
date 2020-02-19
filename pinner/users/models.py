@@ -178,37 +178,30 @@ class Profile(config_models.TimeStampedModel):
     @cached_property
     def photo_count(self):
         return self.user.avatar.all().order_by('-created_at').count()
-    photo_count.short_description = "photo"
 
     @cached_property
     def blocked_user_count(self):
         return self.blocked_user.all().order_by('-created_at').count()
-    blocked_user_count.short_description = "blocked_user"
 
     @cached_property
     def city_count(self):
         return self.user.moveNotificationUser.all().order_by('city').distinct('city').count()
-    city_count.short_description = "city"
 
     @cached_property
     def country_count(self):
         return self.user.moveNotificationUser.all().order_by('city__country').distinct('city__country').count()
-    country_count.short_description = "country"
 
     @cached_property
     def continent_count(self):
         return self.user.moveNotificationUser.all().order_by('city__country__continent').distinct('city__country__continent').count()
-    continent_count.short_description = "continent"
 
     @cached_property
     def trip_count(self):
         return self.user.moveNotificationUser.all().count()
-    trip_count.short_description = "trip"
 
     @cached_property
     def coffee_count(self):
         return self.user.coffee.all().count()
-    coffee_count.short_description = "coffee"
 
     class Meta:
         ordering = ['-created_at']
