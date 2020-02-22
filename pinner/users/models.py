@@ -109,7 +109,7 @@ class Profile(config_models.TimeStampedModel):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, blank=True, null=True)
     push_token = models.CharField(blank=True, null=True, max_length=200)
     user = models.OneToOneField(
-        User, on_delete=models.CASCADE, related_name='profile')
+        User, on_delete=models.CASCADE, unique=True, related_name='profile')
     bio = models.TextField(default='', blank=True, null=True)
     distance = models.IntegerField(default=0, blank=True, null=True)
     website = models.URLField(blank=True, null=True)

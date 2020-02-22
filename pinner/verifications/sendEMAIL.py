@@ -10,8 +10,8 @@ def sendVerificationEMAIL(to, key):
     key = 'https://www.pinner.fun/verification/{}'.format(key)
     ctx = {'key': key}
     msg_html = render_to_string('account/email_confirm.html', ctx)
-    send_mail(subject, msg_html, 'no-reply@www.pinner.fun', to, html_message=msg_html)
-    return "koko"
+    send_mail(subject, strip_tags(msg_html), 'no-reply@pinner.fun', to, html_message=msg_html)
+    return
 
 
 def sendConfirmEMAIL(to, key):
@@ -20,5 +20,5 @@ def sendConfirmEMAIL(to, key):
     key = 'https://www.pinner.fun/confirm/{}'.format(key)
     ctx = {'key': key}
     msg_html = render_to_string('account/email_confirm.html', ctx)
-    send_mail(subject, msg_html, 'no-reply@www.pinner.fun', to, html_message=msg_html)
-    return "koko"
+    send_mail(subject, strip_tags(msg_html), 'no-reply@pinner.fun', to, html_message=msg_html)
+    return
