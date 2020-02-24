@@ -31,6 +31,7 @@ class Query(object):
         required=True,
         args={
             'cityId': graphene.String(required=True),
+            "payload": graphene.String(),
             'page': graphene.Int()
         }
     )
