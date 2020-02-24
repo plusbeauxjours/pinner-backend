@@ -49,6 +49,7 @@ class Query(object):
         required=True,
         args={
             'cityId': graphene.String(required=True),
+            "payload": graphene.String(),
             'page': graphene.Int()
         }
     )
@@ -66,6 +67,7 @@ class Query(object):
         resolver=queries.resolve_get_nationality_users,
         required=True,
         args={
+            'payload': graphene.String(),
             'countryCode': graphene.String(required=True),
         }
     )
@@ -74,6 +76,7 @@ class Query(object):
         resolver=queries.resolve_get_residence_users,
         required=True,
         args={
+            'payload': graphene.String(),
             'countryCode': graphene.String(required=True),
         }
     )

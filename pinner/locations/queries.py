@@ -113,6 +113,7 @@ def resolve_city_profile(self, info, **kwargs):
     user = info.context.user
     cityId = kwargs.get('cityId')
     page = kwargs.get('page', 0)
+    payload = kwargs.get("payload")
     offset = 10 * page
 
     try:
@@ -124,8 +125,12 @@ def resolve_city_profile(self, info, **kwargs):
     coffees = city.coffee.filter(expires__gt=timezone.now())
     usersNow = city.currentCity.order_by('-id').distinct('id')
 
-    usersBefore = city.moveNotificationCity.exclude(
-        actor__profile__in=usersNow).order_by('-actor_id').distinct('actor_id')[:15]
+    if payload == "BOX":
+        usersBefore = city.moveNotificationCity.exclude(
+            actor__profile__in=usersNow).order_by('-actor_id').distinct('actor_id')[:1]
+    else:
+        usersBefore = city.moveNotificationCity.exclude(
+            actor__profile__in=usersNow).order_by('-actor_id').distinct('actor_id')
 
     if page == 1:
         nextPage = page+1
@@ -294,38 +299,47 @@ def resolve_get_countries_page(self, info, **kwargs):
     countries = countries[offset:10 + offset]
     return types.GetCountriesPageResponse(countries=countries, page=nextPage, hasNextPage=hasNextPage, countryCount=countryCount)
 
+
 @login_required
 def resolve_get_nationality_users(self, info, **kwargs):
 
     user = info.context.user
+    payload = kwargs.get("payload")
     countryCode = kwargs.get('countryCode')
 
     try:
         country = models.Country.objects.get(country_code=countryCode)
+
+        if payload == "BOX":
+            users = country.nationality.order_by('-id').distinct('id')[:15]
+            return user_types.GetUserListResponse(users=users)
+        else:
+            users = country.nationality.order_by('-id').distinct('id')
+            return user_types.GetUserListResponse(users=users)
+
     except models.Country.DoesNotExist:
         raise GraphQLError('Country not found')
-
-    users = country.nationality.order_by('-id').distinct('id')
-
-    return user_types.GetUserListResponse(users=users)
 
 
 @login_required
 def resolve_get_residence_users(self, info, **kwargs):
 
     user = info.context.user
+    payload = kwargs.get("payload")
     countryCode = kwargs.get('countryCode')
 
     try:
         country = models.Country.objects.get(country_code=countryCode)
+
+        if payload == "BOX":
+            users = country.residence.order_by('-id').distinct('id')[:15]
+            return user_types.GetUserListResponse(users=users)
+        else:
+            users = country.residence.order_by('-id').distinct('id')
+            return user_types.GetUserListResponse(users=users)
+
     except models.Country.DoesNotExist:
         raise GraphQLError('Country not found')
-
-    users = country.residence.order_by('-id').distinct('id')
-
-    return user_types.GetUserListResponse(users=users)
-
-
 
 
 @login_required
@@ -509,7 +523,7 @@ def resolve_near_cities(self, info, **kwargs):
     hasNextPage = offset < combined.count()
     if payload == "PIN":
         cities = combined[:3]
-    else: 
+    else:
         cities = combined[offset:15 + offset]
 
     return types.NearCitiesResponse(cities=cities, page=nextPage, hasNextPage=hasNextPage)
