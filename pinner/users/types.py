@@ -57,6 +57,7 @@ class UpdateSNSResponse(graphene.ObjectType):
     ok = graphene.Boolean()
     user = graphene.Field(UserType)
 
+
 class ToggleSettingsResponse(graphene.ObjectType):
     ok = graphene.Boolean()
     user = graphene.Field(UserType)
@@ -147,7 +148,8 @@ class RegisterPushResponse (graphene.ObjectType):
 
 class AddBlockUserResponse (graphene.ObjectType):
     ok = graphene.Boolean()
-    blockedUser=graphene.Field(ProfileType)
+    blockedUser = graphene.Field(ProfileType)
+
 
 class DeleteBlockUserResponse (graphene.ObjectType):
     ok = graphene.Boolean()
@@ -156,3 +158,7 @@ class DeleteBlockUserResponse (graphene.ObjectType):
 
 class GetBlockedUserResponse(graphene.ObjectType):
     blocked_users = graphene.List(ProfileType)
+
+
+class GetUserListResponse(graphene.ObjectType):
+    users = graphene.List(ProfileType)

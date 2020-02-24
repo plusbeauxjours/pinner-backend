@@ -294,6 +294,39 @@ def resolve_get_countries_page(self, info, **kwargs):
     countries = countries[offset:10 + offset]
     return types.GetCountriesPageResponse(countries=countries, page=nextPage, hasNextPage=hasNextPage, countryCount=countryCount)
 
+@login_required
+def resolve_get_nationality_users(self, info, **kwargs):
+
+    user = info.context.user
+    countryCode = kwargs.get('countryCode')
+
+    try:
+        country = models.Country.objects.get(country_code=countryCode)
+    except models.Country.DoesNotExist:
+        raise GraphQLError('Country not found')
+
+    users = country.nationality.order_by('-id').distinct('id')
+
+    return user_types.GetUserListResponse(users=users)
+
+
+@login_required
+def resolve_get_residence_users(self, info, **kwargs):
+
+    user = info.context.user
+    countryCode = kwargs.get('countryCode')
+
+    try:
+        country = models.Country.objects.get(country_code=countryCode)
+    except models.Country.DoesNotExist:
+        raise GraphQLError('Country not found')
+
+    users = country.residence.order_by('-id').distinct('id')
+
+    return user_types.GetUserListResponse(users=users)
+
+
+
 
 @login_required
 def resolve_country_users_now(self, info, **kwargs):

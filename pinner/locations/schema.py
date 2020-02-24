@@ -61,6 +61,22 @@ class Query(object):
             'page': graphene.Int()
         }
     )
+    get_nationality_users = graphene.Field(
+        user_types.GetUserListResponse,
+        resolver=queries.resolve_get_nationality_users,
+        required=True,
+        args={
+            'countryCode': graphene.String(required=True),
+        }
+    )
+    get_residence_users = graphene.Field(
+        user_types.GetUserListResponse,
+        resolver=queries.resolve_get_residence_users,
+        required=True,
+        args={
+            'countryCode': graphene.String(required=True),
+        }
+    )
     country_users_now = graphene.Field(
         user_types.UsersNowResponse,
         resolver=queries.resolve_country_users_now,
