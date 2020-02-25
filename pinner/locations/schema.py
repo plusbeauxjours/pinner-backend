@@ -51,7 +51,8 @@ class Query(object):
         args={
             'cityId': graphene.String(required=True),
             "payload": graphene.String(),
-            'page': graphene.Int()
+            'page': graphene.Int(),
+            'payload': graphene.String()
         }
     )
     country_profile = graphene.Field(

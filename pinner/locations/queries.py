@@ -204,6 +204,7 @@ def resolve_city_users_before(self, info, **kwargs):
     cityId = kwargs.get('cityId')
     page = kwargs.get('page', 0)
     offset = 10 * page
+    payload = kwargs.get('payload')
 
     nextPage = page+1
 
@@ -216,11 +217,14 @@ def resolve_city_users_before(self, info, **kwargs):
     usersBefore = city.moveNotificationCity.exclude(
         actor__profile__in=usersNow).order_by('-actor_id').distinct('actor_id')
 
-    hasNextPage = offset < usersBefore.count()
+    if payload == "APP":
+        return notification_types.usersBeforeResponse(usersBefore=usersBefore,  page=None, hasNextPage=None)
+    else:
+        hasNextPage = offset < usersBefore.count()
 
-    usersBefore = usersBefore[offset:10 + offset]
+        usersBefore = usersBefore[offset:10 + offset]
 
-    return notification_types.usersBeforeResponse(usersBefore=usersBefore,  page=nextPage, hasNextPage=hasNextPage)
+        return notification_types.usersBeforeResponse(usersBefore=usersBefore,  page=nextPage, hasNextPage=hasNextPage)
 
 
 @login_required
