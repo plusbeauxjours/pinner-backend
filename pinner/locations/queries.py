@@ -127,7 +127,7 @@ def resolve_city_profile(self, info, **kwargs):
 
     if payload == "BOX":
         usersBefore = city.moveNotificationCity.exclude(
-            actor__profile__in=usersNow).order_by('-actor_id').distinct('actor_id')[:1]
+            actor__profile__in=usersNow).order_by('-actor_id').distinct('actor_id')[:15]
     else:
         usersBefore = city.moveNotificationCity.exclude(
             actor__profile__in=usersNow).order_by('-actor_id').distinct('actor_id')
