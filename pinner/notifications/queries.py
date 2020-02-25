@@ -25,19 +25,20 @@ def resolve_get_trips(self, info, **kwargs):
     except models.User.DoesNotExist:
         return location_types.TripResponse(trip=None)
 
+# 2020/02/25
 
-@login_required
-def resolve_get_trip_cities(self, info, **kwargs):
+# @login_required
+# def resolve_get_trip_cities(self, info, **kwargs):
 
-    user = info.context.user
+#     user = info.context.user
 
-    try:
-        trip = user.moveNotificationUser.all().order_by('city',).distinct('city')
-        try:
-            coffees = coffees_models.Coffee.objects.get(host=user, expires__gte=timezone.now())
-            coffeeId = coffees.uuid
-            return location_types.TripCitiesResponse(trip=trip, coffeeId=coffeeId)
-        except coffees_models.Coffee.DoesNotExist:
-            return location_types.TripCitiesResponse(trip=trip, coffeeId=None)
-    except models.User.DoesNotExist:
-        return location_types.TripCitiesResponse(trip=None, coffeeId=None)
+#     try:
+#         trip = user.moveNotificationUser.all().order_by('city',).distinct('city')
+#         try:
+#             coffees = coffees_models.Coffee.objects.get(host=user, expires__gte=timezone.now())
+#             coffeeId = coffees.uuid
+#             return location_types.TripCitiesResponse(trip=trip, coffeeId=coffeeId)
+#         except coffees_models.Coffee.DoesNotExist:
+#             return location_types.TripCitiesResponse(trip=trip, coffeeId=None)
+#     except models.User.DoesNotExist:
+#         return location_types.TripCitiesResponse(trip=None, coffeeId=None)
