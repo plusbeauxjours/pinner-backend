@@ -171,7 +171,8 @@ class RequestCoffee(graphene.Mutation):
                     host=user,
                     target=target,
                 )
-                return types.RequestCoffeeResponse(ok=True, coffee=coffee)
+                profiles = currentCity.currentCity.all()
+                return types.RequestCoffeeResponse(ok=True, coffee=coffee, profiles=profiles)
 
             except IntegrityError as e:
                 print(e)

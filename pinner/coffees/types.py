@@ -1,8 +1,9 @@
 import graphene
+from users import models as user_models
+from config import types as config_types
 from graphene_django.types import DjangoObjectType
 from . import models
 from django.contrib.auth.models import User
-from config import types as config_types
 
 
 class CoffeeType(DjangoObjectType):
@@ -53,9 +54,33 @@ class MatchType(DjangoObjectType):
         model = models.Match
 
 
+class TokenType(DjangoObjectType):
+    username = graphene.String(source='username')
+    photo_count = graphene.Int(source='photo_count')
+    city_count = graphene.Int(source='city_count')
+    country_count = graphene.Int(source='country_count')
+    continent_count = graphene.Int(source='continent_count')
+    post_count = graphene.Int(source='post_count')
+    trip_count = graphene.Int(source='trip_count')
+    coffee_count = graphene.Int(source='coffee_count')
+    blocked_user_count = graphene.Int(source='blocked_user_count')
+    is_self = graphene.Boolean()
+
+    def resolve_is_self(self, info):
+        user = info.context.user
+        if self.user.id == user.id:
+            return True
+        else:
+            return False
+
+    class Meta:
+        model = user_models.Profile
+
+
 class RequestCoffeeResponse(graphene.ObjectType):
     ok = graphene.Boolean()
     coffee = graphene.Field(CoffeeType)
+    profiles = graphene.List(TokenType)
 
 
 class GetCoffeesResponse(graphene.ObjectType):
