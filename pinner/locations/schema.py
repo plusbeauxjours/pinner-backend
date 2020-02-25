@@ -190,6 +190,11 @@ class Query(object):
             'continentCode': graphene.String(required=True),
             'page': graphene.Int()}
     )
+    get_my_coffee = graphene.Field(
+        types.GetMyCoffeeResponse,
+        resolver=queries.resolve_get_my_coffee,
+        required=True,
+    )
 
 
 class Mutation(object):

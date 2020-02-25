@@ -78,7 +78,7 @@ class CityProfileResponse(graphene.ObjectType):
     usersNow = graphene.List(user_types.ProfileType)
     usersBefore = graphene.List(notification_types.MoveNotificationType)
     hasNextPage = graphene.Boolean()
-    coffeeId = graphene.String()
+    
 
 
 class TripProfileResponse(graphene.ObjectType):
@@ -170,3 +170,7 @@ class GetSameTripsResponse(graphene.ObjectType):
     ok = graphene.Boolean()
     count = graphene.Int()
     cities = graphene.List(CityType)
+
+
+class GetMyCoffeeResponse(graphene.ObjectType):
+    coffeeId = graphene.String()

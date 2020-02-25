@@ -108,6 +108,19 @@ def resolve_trip_profile(self, info, **kwargs):
 
     return types.TripProfileResponse(count=count, city=city, usersBefore=usersBefore, userCount=userCount, coffees=coffees)
 
+@login_required
+def resolve_get_my_coffee(self, info, **kwargs):
+
+    user = info.context.user
+
+    try:
+        myCoffee = coffee_models.Coffee.objects.get(host=user, expires__gte=timezone.now())
+        coffeeId = myCoffee.uuid
+        return types.GetMyCoffeeResponse(coffeeId=coffeeId)
+
+    except coffee_models.Coffee.DoesNotExist:
+        return types.GetMyCoffeeResponse(coffeeId=None)
+    
 
 @login_required
 def resolve_city_profile(self, info, **kwargs):
@@ -127,12 +140,6 @@ def resolve_city_profile(self, info, **kwargs):
     coffees = city.coffee.filter(expires__gt=timezone.now())
     usersNow = city.currentCity.order_by('-id').distinct('id')
 
-    try:
-        myCoffee = coffee_models.Coffee.objects.get(host=user, expires__gte=timezone.now())
-        coffeeId = myCoffee.uuid
-    except coffee_models.Coffee.DoesNotExist:
-        coffeeId = None
-
     if payload == "BOX":
         usersBefore = city.moveNotificationCity.exclude(
             actor__profile__in=usersNow).order_by('-actor_id').distinct('actor_id')[:15]
@@ -144,14 +151,14 @@ def resolve_city_profile(self, info, **kwargs):
         nextPage = page+1
         hasNextPage = offset < usersNow.count()
 
-        return types.CityProfileResponse(page=nextPage, count=count, usersNow=usersNow, usersBefore=usersBefore, city=city, hasNextPage=hasNextPage, coffeeId=coffeeId)
+        return types.CityProfileResponse(page=nextPage, count=count, usersNow=usersNow, usersBefore=usersBefore, city=city, hasNextPage=hasNextPage)
 
     else:
         nextPage = page+1
         hasNextPage = offset < usersNow.count()
         usersNow = usersNow[offset:10 + offset]
 
-        return types.CityProfileResponse(page=nextPage, count=count, usersNow=usersNow, usersBefore=usersBefore, city=city, hasNextPage=hasNextPage, coffeeId=coffeeId)
+        return types.CityProfileResponse(page=nextPage, count=count, usersNow=usersNow, usersBefore=usersBefore, city=city, hasNextPage=hasNextPage)
 
 
 @login_required
