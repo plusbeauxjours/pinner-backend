@@ -171,7 +171,16 @@ class RequestCoffee(graphene.Mutation):
                     host=user,
                     target=target,
                 )
-                profiles = currentCity.currentCity.all()
+                if target == "everyone":
+                    profiles = currentCity.currentCity.all().exclude(id=user.profile.id)
+                elif target == "nationality":
+                    profiles = currentCity.currentCity.filter(
+                        nationality=user.profile.nationality).exclude(id=user.profile.id)
+                elif target == "residence":
+                    profiles = currentCity.currentCity.filter(
+                        residence=user.profile.residence).exclude(id=user.profile.id)
+                elif target == "gender":
+                    profiles = currentCity.currentCity.filter(gender=user.profile.gender).exclude(id=user.profile.id)
                 return types.RequestCoffeeResponse(ok=True, coffee=coffee, profiles=profiles)
 
             except IntegrityError as e:
