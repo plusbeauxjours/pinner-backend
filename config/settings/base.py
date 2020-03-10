@@ -362,7 +362,8 @@ SENTRY_DSN = env('SENTRY_DSN')
 sentry_sdk.init(
     dsn=SENTRY_DSN,
     environment='production',
-    integrations=[DjangoIntegration()]
+    integrations=[DjangoIntegration()],
+    send_default_pii=True,
 )
 
 django_heroku.settings(locals())
