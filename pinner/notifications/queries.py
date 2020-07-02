@@ -8,6 +8,7 @@ from graphql_jwt.decorators import login_required
 from locations import models as location_models
 from locations import types as location_types
 from coffees import models as coffees_models
+from users import models as user_models
 
 
 @login_required
@@ -17,27 +18,9 @@ def resolve_get_trips(self, info, **kwargs):
     page = kwargs.get('page', 0)
 
     try:
-        user = models.User.objects.prefetch_related('moveNotificationUser').get(uuid=uuid)
+        user = user_models.User.objects.prefetch_related('moveNotificationUser').get(uuid=uuid)
         trip = user.moveNotificationUser.all().order_by('-start_date', '-created_at')
 
         return location_types.TripResponse(trip=trip)
-    except models.User.DoesNotExist:
+    except user_models.User.DoesNotExist:
         return location_types.TripResponse(trip=None)
-
-# 2020/02/25
-
-# @login_required
-# def resolve_get_trip_cities(self, info, **kwargs):
-
-#     user = info.context.user
-
-#     try:
-#         trip = user.moveNotificationUser.all().order_by('city',).distinct('city')
-#         try:
-#             coffees = coffees_models.Coffee.objects.get(host=user, expires__gte=timezone.now())
-#             coffeeId = coffees.uuid
-#             return location_types.TripCitiesResponse(trip=trip, coffeeId=coffeeId)
-#         except coffees_models.Coffee.DoesNotExist:
-#             return location_types.TripCitiesResponse(trip=trip, coffeeId=None)
-#     except models.User.DoesNotExist:
-#         return location_types.TripCitiesResponse(trip=None, coffeeId=None)

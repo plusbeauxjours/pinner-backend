@@ -158,12 +158,6 @@ class Query(object):
         required=True,
         args={'cityId': graphene.String()}
     )
-    # recommend_locations = graphene.Field(
-    #     types.RecommendLocationsResponse,
-    #     resolver=queries.resolve_recommend_locations,
-    #     required=True,
-    #     args={'page': graphene.Int()}
-    # )
     get_cities_page = graphene.Field(
         types.GetCitiesPageResponse,
         resolver=queries.resolve_get_cities_page,

@@ -133,11 +133,6 @@ class TripResponse(graphene.ObjectType):
     trip = graphene.List(notification_types.MoveNotificationType)
 
 
-class TripCitiesResponse(graphene.ObjectType):
-    trip = graphene.List(notification_types.MoveNotificationType)
-    coffeeId = graphene.String()
-
-
 class ReportLocationResponse(graphene.ObjectType):
     ok = graphene.Boolean()
 
@@ -149,12 +144,6 @@ class ToggleLikeCityResponse(graphene.ObjectType):
 
 class SlackReportLocationResponse(graphene.ObjectType):
     ok = graphene.Boolean()
-
-
-class RecommendLocationsResponse(graphene.ObjectType):
-    page = graphene.Int()
-    hasNextPage = graphene.Boolean()
-    cities = graphene.List(CityType)
 
 
 class GetSameTripsResponse(graphene.ObjectType):

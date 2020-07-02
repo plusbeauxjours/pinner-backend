@@ -136,9 +136,9 @@ class CompletePhoneVerification(graphene.Mutation):
                 exstingUser.is_verified_phone_number = True
                 exstingUser.save()
                 verification.is_verified = True
-                verification.user = exstingUser.user
+                verification.user = exstingUser
                 verification.save()
-                token = get_token(exstingUser.user)
+                token = get_token(exstingUser)
                 return types.CompletePhoneVerificationResponse(ok=True, token=token)
 
             except users_models.User.DoesNotExist:

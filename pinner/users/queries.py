@@ -129,52 +129,6 @@ def resolve_search_users(self, info, **kwargs):
 
 
 @login_required
-def resolve_recommend_users(self, info, **kwargs):
-
-    user = info.context.user
-    page = kwargs.get('page', 0)
-    offset = 15 * page
-
-    nextPage = page+1
-    userGuest = user.guest.all()
-    userHost = user.host.all()
-
-    combined = models.User.objects.none()
-
-    try:
-        nationalityUser = user.nationality.nationality.all().order_by('-distance')[:10]
-        combined = combined | nationalityUser.exclude(id=user.id).exclude(Q(user__host__in=userGuest) | Q(
-            user__host__in=userHost) | Q(user__guest__in=userGuest) | Q(user__guest__in=userHost)).order_by('id').distinct('id')
-    except:
-        nationalityUser = models.User.objects.none()
-
-    try:
-        residenceUser = user.residence.residence.all().order_by('-distance')[:10]
-        combined = combined | residenceUser.exclude(id=user.id).exclude(Q(user__host__in=userGuest) | Q(
-            user__host__in=userHost) | Q(user__guest__in=userGuest) | Q(user__guest__in=userHost)).order_by('id').distinct('id')
-    except:
-        residenceUser = models.User.objects.none()
-
-    try:
-        locationUser = user.moveNotificationUser.all().order_by('-created_at').order_by('city').distinct('city')[:10]
-        for i in locationUser:
-            userLocations = models.User.objects.filter(user__moveNotificationUser__city=i.city).order_by('-distance')
-            combined = combined | userLocations.exclude(id=user.id).exclude(Q(user__host__in=userGuest) | Q(
-                user__host__in=userHost) | Q(user__guest__in=userGuest) | Q(user__guest__in=userHost)).order_by('id').distinct('id')
-    except:
-        locationUser = models.User.objects.none()
-
-    if combined.count() < 10:
-        combined = combined | models.User.objects.exclude(id=user.id).exclude(id=user.id).exclude(Q(user__host__in=userGuest) | Q(
-            user__host__in=userHost) | Q(user__guest__in=userGuest) | Q(user__guest__in=userHost)).order_by('id').distinct('id')[:5]
-
-    hasNextPage = offset < combined.count()
-    combined = combined[offset:15 + offset]
-
-    return types.RecommendUsersResponse(users=combined, page=nextPage, hasNextPage=hasNextPage)
-
-
-@login_required
 def resolve_user_list(self, info):
 
     user = info.context.user

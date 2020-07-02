@@ -14,13 +14,6 @@ class Query(object):
             'page': graphene.Int(),
         }
     )
-    # 2020/02/25
-
-    # get_trip_cities = graphene.Field(
-    #     location_types.TripCitiesResponse,
-    #     resolver=queries.resolve_get_trip_cities,
-    #     required=True,
-    # )
 
 
 class Mutation(object):
