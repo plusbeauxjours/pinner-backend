@@ -9,6 +9,8 @@ class UserAdmin(admin.ModelAdmin):
         (
             "Basic Info",
             {"fields": (
+                "first_name",
+                "last_name",
                 "gender",
                 "nationality",
                 "residence",
@@ -64,7 +66,6 @@ class UserAdmin(admin.ModelAdmin):
                     "is_dark_mode",
                     "is_hide_photos",
                     "is_hide_trips",
-                    "is_hide_coffees",
                     "is_hide_cities",
                     "is_hide_countries",
                     "is_hide_continents",

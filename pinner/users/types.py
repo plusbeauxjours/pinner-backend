@@ -4,7 +4,6 @@ from . import models
 from config import types as config_types
 from locations import types as location_types
 from notifications import types as notification_types
-from coffees import types as coffee_types
 from django.utils import timezone
 import datetime
 
@@ -17,7 +16,6 @@ class UserType(DjangoObjectType):
     continent_count = graphene.Int(source='continent_count')
     post_count = graphene.Int(source='post_count')
     trip_count = graphene.Int(source='trip_count')
-    coffee_count = graphene.Int(source='coffee_count')
     blocked_user_count = graphene.Int(source='blocked_user_count')
     is_self = graphene.Boolean()
 

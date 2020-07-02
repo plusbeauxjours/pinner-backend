@@ -1,9 +1,7 @@
 import os
 import uuid
 from django.db import models
-from django.utils.html import escape, format_html
 from config import models as config_models
-from locations import models as location_models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.humanize.templatetags.humanize import naturaltime
 
@@ -32,9 +30,9 @@ class User(AbstractUser, config_models.TimeStampedModel):
     website = models.URLField(blank=True, null=True)
     gender = models.CharField(max_length=15, blank=True, null=True, choices=GENDERS)
     residence = models.ForeignKey(
-        location_models.Country, blank=True, null=True, on_delete=models.SET_NULL, related_name='residence')
+        'locations.Country', blank=True, null=True, on_delete=models.SET_NULL, related_name='residence')
     nationality = models.ForeignKey(
-        location_models.Country, blank=True, null=True, on_delete=models.SET_NULL, related_name='nationality')
+        'locations.Country', blank=True, null=True, on_delete=models.SET_NULL, related_name='nationality')
     avatar_url = models.CharField(max_length=300, blank=True, null=True)
     app_avatar_url = models.CharField(max_length=300, blank=True, null=True)
     country_phone_code = models.CharField(max_length=20, blank=True, null=True)
@@ -48,17 +46,16 @@ class User(AbstractUser, config_models.TimeStampedModel):
     is_dark_mode = models.BooleanField(default=True)
     is_hide_photos = models.BooleanField(default=False)
     is_hide_trips = models.BooleanField(default=False)
-    is_hide_coffees = models.BooleanField(default=False)
     is_hide_cities = models.BooleanField(default=False)
     is_hide_countries = models.BooleanField(default=False)
     is_hide_continents = models.BooleanField(default=False)
     is_auto_location_report = models.BooleanField(default=True)
     current_city = models.ForeignKey(
-        location_models.City, on_delete=models.SET_NULL, null=True, blank=True, related_name='currentCity', )
+        'locations.City', on_delete=models.SET_NULL, null=True, blank=True, related_name='currentCity', )
     current_country = models.ForeignKey(
-        location_models.Country, on_delete=models.SET_NULL, null=True, blank=True, related_name='currentCountry', )
+        'locations.Country', on_delete=models.SET_NULL, null=True, blank=True, related_name='currentCountry', )
     current_continent = models.ForeignKey(
-        location_models.Continent, on_delete=models.SET_NULL, null=True, blank=True, related_name='currentContinent', )
+        'locations.Continent', on_delete=models.SET_NULL, null=True, blank=True, related_name='currentContinent', )
     blocked_user = models.ManyToManyField('self',  blank=True, related_name='user_blocked')
 
     send_instagram = models.CharField(blank=True, null=True, max_length=200, default="")
@@ -114,10 +111,6 @@ class User(AbstractUser, config_models.TimeStampedModel):
     @cached_property
     def trip_count(self):
         return self.moveNotificationUser.all().count()
-
-    @cached_property
-    def coffee_count(self):
-        return self.coffee.all().count()
 
     class Meta:
         ordering = ['-created_at']

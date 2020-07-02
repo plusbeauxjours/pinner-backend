@@ -1,7 +1,6 @@
 import graphene
 from graphene_django.types import DjangoObjectType
 from config import types as config_types
-from coffees import types as coffee_types
 from users import types as user_types
 from . import models
 

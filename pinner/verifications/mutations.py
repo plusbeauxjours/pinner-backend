@@ -254,15 +254,12 @@ class CompletePhoneVerification(graphene.Mutation):
                         newUser = users_models.User.objects.create_user(username=username)
                         token = get_token(newUser)
                         city = location_models.City.objects.get(city_id=cityId)
-                        newUser = users_models.User.objects.create(
-                            user=newUser,
-                            country_phone_number=countryPhoneNumber,
-                            country_phone_code=countryPhoneCode,
-                            phone_number=phoneNumber,
-                            current_city=city,
-                            current_country=city.country,
-                            current_continent=city.country.continent,
-                        )
+                        newUser.country_phone_number = countryPhoneNumber
+                        newUser.country_phone_code = countryPhoneCode
+                        newUser.phone_number = phoneNumber
+                        newUser.current_city = city
+                        newUser.current_country = city.country
+                        newUser.current_continent = city.country.continent
                         moveNotification = notification_models.MoveNotification.objects.create(
                             actor=newUser,
                             city=city,
@@ -585,13 +582,10 @@ class CompleteEmailVerification(graphene.Mutation):
                         newUser = users_models.User.objects.create_user(username=username)
                         token = get_token(newUser)
                         city = location_models.City.objects.get(city_id=cityId)
-                        newUser = users_models.User.objects.create(
-                            user=newUser,
-                            email_address=verification.payload,
-                            current_city=city,
-                            current_country=city.country,
-                            current_continent=city.country.continent,
-                        )
+                        newUser.email_address=verification.payload,
+                        newUser.current_city=city,
+                        newUser.current_country=city.country,
+                        newUser.current_continent=city.country.continent,
                         newUser.is_verified_email_address = True
                         newUser.save()
                         verification.is_verified = True

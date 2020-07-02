@@ -7,7 +7,6 @@ from django.db.models.functions import Trunc
 from graphql_jwt.decorators import login_required
 from locations import models as location_models
 from locations import types as location_types
-from coffees import models as coffees_models
 from users import models as user_models
 
 

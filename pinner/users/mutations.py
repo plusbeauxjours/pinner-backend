@@ -231,22 +231,6 @@ class ToggleSettings(graphene.Mutation):
                     return types.ToggleSettingsResponse(ok=True, user=user)
                 except:
                     return types.ToggleSettingsResponse(ok=False, user=None)
-        elif payload == "HIDE_COFFEES":
-            if user.is_hide_coffees == True:
-                try:
-                    user.is_hide_coffees = False
-                    user.save()
-                    return types.ToggleSettingsResponse(ok=True, user=user)
-                except:
-                    return types.ToggleSettingsResponse(ok=False, user=None)
-            elif user.is_hide_coffees == False:
-                try:
-                    user.is_hide_coffees = True
-                    user.save()
-                    return types.ToggleSettingsResponse(ok=True, user=user)
-                except:
-                    return types.ToggleSettingsResponse(ok=False, user=None)
-
         elif payload == "HIDE_CITIES":
             if user.is_hide_cities == True:
                 try:
@@ -800,7 +784,6 @@ class FacebookConnect(graphene.Mutation):
                 newUser = models.User.objects.create_user(username)
                 newUser.first_name = first_name
                 newUser.last_name = last_name
-                newUser.save()
 
                 avatar_url = "https://graph.facebook.com/%s/picture?type=large" % fbId
                 thumbnail = BytesIO(urlopen(avatar_url).read())
@@ -810,18 +793,17 @@ class FacebookConnect(graphene.Mutation):
                 )
                 avatar.thumbnail.save("image.jpg", ContentFile(thumbnail.getvalue()), save=False)
                 avatar.save()
-                user = models.User.objects.create(
-                    user=newUser,
-                    fbId=fbId,
-                    email_address=email,
-                    is_verified_email_address=True,
-                    gender=gender,
-                    avatar_url=avatar.thumbnail,
-                    app_avatar_url=avatar.thumbnail,
-                    current_city=city,
-                    current_country=city.country,
-                    current_continent=city.country.continent,
-                )
+
+                newUser.fbId = fbId
+                newUser.email_address = email
+                newUser.is_verified_email_address = True
+                newUser.gender = gender
+                newUser.avatar_url = avatar.thumbnail
+                newUser.app_avatar_url = avatar.thumbnail
+                newUser.current_city = city
+                newUser.current_country = city.country
+                newUser.current_continent = city.country.continent
+                newUser.save()
                 moveNotification = notification_models.MoveNotification.objects.create(
                     actor=newUser,
                     city=city,
@@ -987,17 +969,15 @@ class AppleConnect(graphene.Mutation):
                     if last_name:
                         newUser.last_name = last_name
                     newUser.save()
+                    newUser.appleId = appleId
+                    newUser.email_address = email
+                    newUser.is_verified_email_address = is_verified_email_address
+                    newUser.gender = gender
+                    newUser.current_city = city
+                    newUser.current_country = city.country
+                    newUser.current_continent = city.country.continent
+                    newUser.save()
 
-                    user = models.User.objects.create(
-                        user=newUser,
-                        appleId=appleId,
-                        email_address=email,
-                        is_verified_email_address=is_verified_email_address,
-                        gender=gender,
-                        current_city=city,
-                        current_country=city.country,
-                        current_continent=city.country.continent,
-                    )
                     moveNotification = notification_models.MoveNotification.objects.create(
                         actor=newUser,
                         city=city,

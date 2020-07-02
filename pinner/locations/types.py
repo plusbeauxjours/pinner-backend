@@ -6,14 +6,12 @@ from . import models
 from config import types as config_types
 from users import types as user_types
 from notifications import types as notification_types
-from coffees import types as coffee_types
 
 
 class CityType(DjangoObjectType):
     user_count = graphene.Int(source='user_count')
     user_log_count = graphene.Int(source='user_log_count')
     like_count = graphene.Int(source='like_count')
-    has_coffee = graphene.Boolean()
     distance = graphene.Int()
     count = graphene.Int()
     diff = graphene.Int()
@@ -29,12 +27,6 @@ class CityType(DjangoObjectType):
             return True
         except models.Like.DoesNotExist:
             return False
-
-    def resolve_has_coffee(self, info):
-        me = info.context.user
-        matchedGuests = me.guest.values('host__id').all()
-        matchedHosts = me.host.values('guest__id').all()
-        return self.coffee.values('id').filter(expires__gte=timezone.now()).exclude(host__id__in=matchedGuests).exclude(host__id__in=matchedHosts).exists()
 
 
 class CountryType(DjangoObjectType):
@@ -150,7 +142,3 @@ class GetSameTripsResponse(graphene.ObjectType):
     ok = graphene.Boolean()
     count = graphene.Int()
     cities = graphene.List(CityType)
-
-
-class GetMyCoffeeResponse(graphene.ObjectType):
-    coffeeId = graphene.String()

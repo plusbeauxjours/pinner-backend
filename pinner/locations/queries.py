@@ -11,8 +11,6 @@ from locations import models as location_models
 from notifications import models as notification_models
 from notifications import types as notification_types
 
-from coffees import models as coffee_models
-
 from users import types as user_types
 from users import models as user_models
 
@@ -26,33 +24,6 @@ def resolve_header(self, info, **kwargs):
     cityId = kwargs.get('cityId')
 
     city = models.City.objects.get(city_id=cityId)
-
-    # cities = models.City.objects.all().order_by('-id')
-    # for i in cities:
-    #     try:
-    #         if i.city_photo:
-    #             gp = i.city_photo.replace("w=450", "h=450&w=450").replace(
-    #                 "q=80", "q=100").replace("tinysrgb", "faces").replace("fit=max", "fit=crop")
-    #             i.city_photo = gp
-    #             i.save()
-    #     except:
-    #         i.city_thumbnail = None
-    #         i.save()
-    # countries = models.Country.objects.all()
-    # for i in countries:
-    #     if i.country_photo:
-    #         gp = i.country_photo.replace("w=450", "h=450&w=450").replace(
-    #             "q=80", "q=100").replace("tinysrgb", "faces").replace("fit=max", "fit=crop")
-    #         i.country_photo = gp
-    #         i.save()
-
-    # continents = models.Continent.objects.all()
-    # for i in continents:
-    #     if i.continent_photo:
-    #         gp = i.continent_photo.replace("w=450", "h=450&w=450").replace(
-    #             "q=80", "q=100").replace("tinysrgb", "faces").replace("fit=max", "fit=crop")
-    #         i.continent_photo = gp
-    #         i.save()
 
     return types.HeaderResponse(city=city)
 
@@ -82,20 +53,6 @@ def resolve_search_continents(self, info, **kwargs):
 
 
 @login_required
-def resolve_get_my_coffee(self, info, **kwargs):
-
-    user = info.context.user
-
-    try:
-        myCoffee = coffee_models.Coffee.objects.get(host=user, expires__gte=timezone.now())
-        coffeeId = myCoffee.uuid
-        return types.GetMyCoffeeResponse(coffeeId=coffeeId)
-
-    except coffee_models.Coffee.DoesNotExist:
-        return types.GetMyCoffeeResponse(coffeeId=None)
-
-
-@login_required
 def resolve_city_profile(self, info, **kwargs):
 
     user = info.context.user
@@ -105,12 +62,11 @@ def resolve_city_profile(self, info, **kwargs):
     offset = 10 * page
 
     try:
-        city = models.City.objects.prefetch_related('coffee').prefetch_related('currentCity').get(city_id=cityId)
+        city = models.City.objects.prefetch_related('currentCity').get(city_id=cityId)
     except models.City.DoesNotExist:
         raise GraphQLError('City not found')
     count = user.moveNotificationUser.values('id').filter(city__city_id=cityId).count()
 
-    coffees = city.coffee.filter(expires__gt=timezone.now())
     usersNow = city.currentCity.order_by('-id').distinct('id')
 
     if payload == "BOX":
@@ -172,7 +128,7 @@ def resolve_city_users_now(self, info, **kwargs):
     nextPage = page+1
 
     try:
-        city = models.City.objects.prefetch_related('coffee').prefetch_related('currentCity').get(city_id=cityId)
+        city = models.City.objects.prefetch_related('currentCity').get(city_id=cityId)
     except models.City.DoesNotExist:
         raise GraphQLError('City not found')
 
@@ -197,7 +153,7 @@ def resolve_city_users_before(self, info, **kwargs):
     nextPage = page+1
 
     try:
-        city = models.City.objects.prefetch_related('coffee').prefetch_related('currentCity').get(city_id=cityId)
+        city = models.City.objects.prefetch_related('currentCity').get(city_id=cityId)
     except models.City.DoesNotExist:
         raise GraphQLError('City not found')
 
@@ -533,72 +489,3 @@ def resolve_get_city_photo(self, info, **kwargs):
 
     except models.City.DoesNotExist:
         return types.PhotoResponse(photo=None)
-
-
-# @login_required
-# def resolve_recommend_locations(self, info, **kwargs):
-
-#     user = info.context.user
-#     page = kwargs.get('page', 0)
-#     offset = 15 * page
-
-#     nextPage = page+1
-
-#     city = user.current_city
-#     combined = models.City.objects.none()
-
-#     def get_locations_nearby_coords(latitude, longitude, max_distance=None):
-
-#         gcd_formula = "6371 * acos(cos(radians(%s)) * \
-#         cos(radians(latitude)) \
-#         * cos(radians(longitude) - radians(%s)) + \
-#         sin(radians(%s)) * sin(radians(latitude)))"
-#         distance_raw_sql = RawSQL(
-#             gcd_formula,
-#             (latitude, longitude, latitude)
-#         )
-#         qs = combined.annotate(distance=distance_raw_sql).order_by('-id').distinct('id')
-#         return qs
-
-#     try:
-#         nationalityUser = user.nationality.nationality.all()[:10]
-#         for i in nationalityUser:
-#             nationalityUsers = models.City.objects.filter(id=i.user.current_city.id).exclude(id=city.id)
-#             combined = combined | nationalityUsers
-#     except:
-#         nationalityUser = models.City.objects.none()
-
-#     try:
-#         residenceUser = user.residence.residence.all()[:10]
-#         for i in residenceUser:
-#             residenceUsers = models.City.objects.filter(id=i.user.current_city.id).exclude(id=city.id)
-#             combined = combined | residenceUsers
-#     except:
-#         residenceUser = models.City.objects.none()
-
-#     try:
-#         locationUser = user_models.Profile.objects.filter(
-#             user__moveNotificationUser__city=city).order_by('-distance')[:10]
-#         for i in locationUser:
-#             locationUsers = models.City.objects.filter(id=i.user.current_city.id).exclude(id=city.id)
-#             combined = combined | locationUsers
-#     except:
-#         locationUser = models.City.objects.none()
-
-#     try:
-#         likeUser = user_models.Profile.objects.filter(user__likes__city=city).order_by('-distance')[:15]
-#         for i in likeUser:
-#             likeUsers = models.City.objects.filter(id=i.user.current_city.id).exclude(id=city.id)
-#             combined = combined | likeUsers
-#     except:
-#         likeUser = models.City.objects.none()
-
-#     if combined.count() < 10:
-#         combined = combined | models.City.objects.exclude(id=city.id).order_by('-created_at')[:5]
-#         combined = combined | models.City.objects.exclude(id=city.id).order_by('likes')[:5]
-
-#     cities = get_locations_nearby_coords(city.latitude, city.longitude)
-#     hasNextPage = offset < cities.count()
-#     cities = cities[offset:15 + offset]
-
-#     return types.RecommendLocationsResponse(cities=cities, page=nextPage, hasNextPage=hasNextPage)

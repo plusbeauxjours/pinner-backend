@@ -5,23 +5,6 @@ from graphene_django.types import DjangoObjectType
 from . import models
 
 
-class CoffeeType(DjangoObjectType):
-    natural_time = graphene.String(source='natural_time')
-    status = graphene.String(source='status')
-    match_count = graphene.Int(source='match_count')
-    is_matching = graphene.Boolean()
-
-    def resolve_is_matching(self, info):
-        user = info.context.user
-        if user.host.filter(coffee=self) or user.guest.filter(coffee=self):
-            return True
-        else:
-            return False
-
-    class Meta:
-        model = models.Coffee
-
-
 class MatchType(DjangoObjectType):
     natural_time = graphene.String(source='natural_time')
     is_host = graphene.Boolean()
@@ -61,7 +44,6 @@ class TokenType(DjangoObjectType):
     continent_count = graphene.Int(source='continent_count')
     post_count = graphene.Int(source='post_count')
     trip_count = graphene.Int(source='trip_count')
-    coffee_count = graphene.Int(source='coffee_count')
     blocked_user_count = graphene.Int(source='blocked_user_count')
     is_self = graphene.Boolean()
 
@@ -76,28 +58,12 @@ class TokenType(DjangoObjectType):
         model = user_models.User
 
 
-class RequestCoffeeResponse(graphene.ObjectType):
-    ok = graphene.Boolean()
-    coffee = graphene.Field(CoffeeType)
-    profiles = graphene.List(TokenType)
-
-
-class GetCoffeesResponse(graphene.ObjectType):
-    count = graphene.Int()
-    coffees = graphene.List(CoffeeType)
-
-
 class GetMatchesResponse(graphene.ObjectType):
     matches = graphene.List(MatchType)
 
 
-class CoffeeDetailResponse(graphene.ObjectType):
-    coffee = graphene.Field(CoffeeType)
-
-
 class MatchResponse(graphene.ObjectType):
     ok = graphene.Boolean()
-    coffeeId = graphene.String()
     cityId = graphene.String()
     countryCode = graphene.String()
     continentCode = graphene.String()
@@ -110,12 +76,6 @@ class UnMatchResponse(graphene.ObjectType):
     cityId = graphene.String()
     countryCode = graphene.String()
     continentCode = graphene.String()
-
-
-class DeleteCoffeeResponse(graphene.ObjectType):
-    uuid = graphene.String()
-    coffeeId = graphene.String()
-    ok = graphene.Boolean()
 
 
 class MarkAsReadMatchResponse(graphene.ObjectType):

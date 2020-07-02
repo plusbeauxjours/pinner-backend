@@ -92,7 +92,7 @@ LOCAL_APPS = [
     'notifications.apps.NotificationsConfig',
     'verifications.apps.VerificationsConfig',
     'locations.apps.LocationsConfig',
-    'coffees.apps.CoffeesConfig'
+    'matchs.apps.MatchsConfig'
 
 
     # Your stuff: custom apps go here
