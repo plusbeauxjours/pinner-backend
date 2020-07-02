@@ -6,14 +6,13 @@ from sentry_sdk.integrations.django import DjangoIntegration
 import sentry_sdk
 import dj_database_url
 import os
-import django_heroku
 import environ
 from os.path import join, dirname
 from dotenv import load_dotenv
 
 ROOT_DIR = environ.Path(__file__) - 3  # (pinner/config/settings/base.py - 3 = pinner/)
 APPS_DIR = ROOT_DIR.path('pinner')
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 env = environ.Env()
 dotenv_path = join(environ.Path(__file__) - 3, '.env')
@@ -22,7 +21,7 @@ load_dotenv(dotenv_path)
 # GENERAL
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#debug
-DEBUG = False
+DEBUG = True
 # Local time zone. Choices are
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # though not all of them may be available with every OS.
@@ -43,10 +42,18 @@ USE_TZ = True
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
-DATABASES = {
-    'default': env.db('DATABASE_URL', default='postgres:///pinner'),
-}
-DATABASES['default']['ATOMIC_REQUESTS'] = True
+if DEBUG:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        }
+    }
+else:
+    DATABASES = {
+        'default': env.db('DATABASE_URL', default='postgres:///pinner'),
+    }
+    DATABASES['default']['ATOMIC_REQUESTS'] = True
 
 # URLS
 # ------------------------------------------------------------------------------
@@ -71,7 +78,7 @@ THIRD_PARTY_APPS = [
     'crispy_forms',
     'allauth',
     'allauth.account',
-    'allauth.socialaccount',
+    # 'allauth.socialaccount',
     'imagekit',
     'graphene_django',
     'corsheaders',
@@ -241,7 +248,8 @@ X_FRAME_OPTIONS = 'DENY'
 # ADMIN
 # ------------------------------------------------------------------------------
 # Django Admin URL.
-ADMIN_URL = 'admin'
+ADMIN_URL = 'admin/'
+AUTH_USER_MODEL = "users.User"
 # https://docs.djangoproject.com/en/dev/ref/settings/#admins
 ADMINS = [
     ("plusbeauxjours", 'plusbeauxjours@gmail.com'),
@@ -254,7 +262,7 @@ MANAGERS = ADMINS
 # ------------------------------------------------------------------------------
 ACCOUNT_ALLOW_REGISTRATION = env.bool('DJANGO_ACCOUNT_ALLOW_REGISTRATION', True)
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
-ACCOUNT_AUTHENTICATION_METHOD = 'username'
+# ACCOUNT_AUTHENTICATION_METHOD = 'username'
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 ACCOUNT_EMAIL_REQUIRED = False
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
@@ -366,7 +374,6 @@ sentry_sdk.init(
     send_default_pii=True,
 )
 
-django_heroku.settings(locals())
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 AWS_QUERYSTRING_AUTH = False

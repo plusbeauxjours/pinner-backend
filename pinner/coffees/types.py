@@ -3,7 +3,6 @@ from users import models as user_models
 from config import types as config_types
 from graphene_django.types import DjangoObjectType
 from . import models
-from django.contrib.auth.models import User
 
 
 class CoffeeType(DjangoObjectType):
@@ -68,13 +67,13 @@ class TokenType(DjangoObjectType):
 
     def resolve_is_self(self, info):
         user = info.context.user
-        if self.user.id == user.id:
+        if self.id == user.id:
             return True
         else:
             return False
 
     class Meta:
-        model = user_models.Profile
+        model = user_models.User
 
 
 class RequestCoffeeResponse(graphene.ObjectType):

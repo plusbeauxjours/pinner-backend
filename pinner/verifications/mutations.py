@@ -14,7 +14,6 @@ from locations import models as location_models
 from locations import types as location_types
 from locations import reversePlace
 from locations import locationThumbnail
-from django.contrib.auth.models import User
 from . import models, types
 from . import sendSMS
 from . import sendEMAIL
@@ -133,16 +132,16 @@ class CompletePhoneVerification(graphene.Mutation):
             )
 
             try:
-                exstingUserProfile = users_models.Profile.objects.get(phone_number=phoneNumber)
-                exstingUserProfile.is_verified_phone_number = True
-                exstingUserProfile.save()
+                exstingUser = users_models.User.objects.get(phone_number=phoneNumber)
+                exstingUser.is_verified_phone_number = True
+                exstingUser.save()
                 verification.is_verified = True
-                verification.user = exstingUserProfile.user
+                verification.user = exstingUser.user
                 verification.save()
-                token = get_token(exstingUserProfile.user)
+                token = get_token(exstingUser.user)
                 return types.CompletePhoneVerificationResponse(ok=True, token=token)
 
-            except users_models.Profile.DoesNotExist:
+            except users_models.User.DoesNotExist:
 
                 def get_locations_nearby_coords(latitude, longitude, max_distance=3000):
                     gcd_formula = "6371 * acos(cos(radians(%s)) * \
@@ -252,10 +251,10 @@ class CompletePhoneVerification(graphene.Mutation):
                         adjectives = json.load(adjectives)
                         nouns = json.load(nouns)
                         username = random.choice(adjectives) + random.choice(nouns).capitalize()
-                        newUser = User.objects.create_user(username=username)
+                        newUser = users_models.User.objects.create_user(username=username)
                         token = get_token(newUser)
                         city = location_models.City.objects.get(city_id=cityId)
-                        newUserProfile = users_models.Profile.objects.create(
+                        newUser = users_models.User.objects.create(
                             user=newUser,
                             country_phone_number=countryPhoneNumber,
                             country_phone_code=countryPhoneCode,
@@ -270,8 +269,8 @@ class CompletePhoneVerification(graphene.Mutation):
                             country=city.country,
                             continent=city.country.continent,
                         )
-                        newUserProfile.is_verified_phone_number = True
-                        newUserProfile.save()
+                        newUser.is_verified_phone_number = True
+                        newUser.save()
                         verification.is_verified = True
                         verification.user = newUser
                         verification.save()
@@ -302,12 +301,12 @@ class StartEditPhoneVerification(graphene.Mutation):
         user = info.context.user
 
         try:
-            existingPhoneNumber = users_models.Profile.objects.get(phone_number=phoneNumber)
+            existingPhoneNumber = users_models.User.objects.get(phone_number=phoneNumber)
             if existingPhoneNumber:
                 return types.StartEditPhoneVerificationResponse(ok=False)
                 raise Exception('Phone number is already verified')
 
-        except users_models.Profile.DoesNotExist:
+        except users_models.User.DoesNotExist:
             try:
                 preVerification = models.Verification.objects.get(payload=payload,
                                                                   target="phone",
@@ -363,7 +362,7 @@ class CompleteEditPhoneVerification(graphene.Mutation):
         countryPhoneCode = kwargs.get('countryPhoneCode')
         key = kwargs.get('key')
         payload = countryPhoneNumber + phoneNumber
-        profile = info.context.user.profile
+        user = info.context.user
 
         try:
             verification = models.Verification.objects.get(
@@ -373,11 +372,11 @@ class CompleteEditPhoneVerification(graphene.Mutation):
                 is_verified=False,
                 is_edit=True
             )
-            profile.phone_number = phoneNumber
-            profile.country_phone_number = countryPhoneNumber
-            profile.country_phone_code = countryPhoneCode
-            profile.is_verified_phone_number = True
-            profile.save()
+            user.phone_number = phoneNumber
+            user.country_phone_number = countryPhoneNumber
+            user.country_phone_code = countryPhoneCode
+            user.is_verified_phone_number = True
+            user.save()
             verification.is_verified = True
             verification.save()
             return types.CompleteEditPhoneVerificationResponse(ok=True,
@@ -464,16 +463,16 @@ class CompleteEmailVerification(graphene.Mutation):
             )
 
             try:
-                exstingUserProfile = users_models.Profile.objects.get(email_address=verification.payload)
-                exstingUserProfile.is_verified_email_address = True
-                exstingUserProfile.save()
+                exstingUser = users_models.User.objects.get(email_address=verification.payload)
+                exstingUser.is_verified_email_address = True
+                exstingUser.save()
                 verification.is_verified = True
-                verification.user = exstingUserProfile.user
+                verification.user = exstingUser
                 verification.save()
-                token = get_token(exstingUserProfile.user)
+                token = get_token(exstingUser)
                 return types.CompleteEmailVerificationResponse(ok=True, token=token)
 
-            except users_models.Profile.DoesNotExist:
+            except users_models.User.DoesNotExist:
 
                 def get_locations_nearby_coords(latitude, longitude, max_distance=3000):
                     gcd_formula = "6371 * acos(cos(radians(%s)) * \
@@ -583,18 +582,18 @@ class CompleteEmailVerification(graphene.Mutation):
                         adjectives = json.load(adjectives)
                         nouns = json.load(nouns)
                         username = random.choice(adjectives) + random.choice(nouns).capitalize()
-                        newUser = User.objects.create_user(username=username)
+                        newUser = users_models.User.objects.create_user(username=username)
                         token = get_token(newUser)
                         city = location_models.City.objects.get(city_id=cityId)
-                        newUserProfile = users_models.Profile.objects.create(
+                        newUser = users_models.User.objects.create(
                             user=newUser,
                             email_address=verification.payload,
                             current_city=city,
                             current_country=city.country,
                             current_continent=city.country.continent,
                         )
-                        newUserProfile.is_verified_email_address = True
-                        newUserProfile.save()
+                        newUser.is_verified_email_address = True
+                        newUser.save()
                         verification.is_verified = True
                         verification.user = newUser
                         verification.save()
@@ -621,13 +620,13 @@ class StartEditEmailVerification(graphene.Mutation):
         user = info.context.user
 
         try:
-            existingEmailAddress = users_models.Profile.objects.get(
+            existingEmailAddress = users_models.User.objects.get(
                 email_address=emailAddress, is_verified_email_address=True)
             if existingEmailAddress:
                 return types.StartEditEmailVerificationResponse(ok=False)
                 raise Exception('Email address is already verified')
 
-        except users_models.Profile.DoesNotExist:
+        except users_models.User.DoesNotExist:
             try:
                 preVerification = models.Verification.objects.get(
                     target="email",
@@ -684,9 +683,9 @@ class CompleteEditEmailVerification(graphene.Mutation):
                 is_verified=False,
                 is_edit=True
             )
-            verification.user.profile.email_address = verification.payload
-            verification.user.profile.is_verified_email_address = True
-            verification.user.profile.save()
+            verification.user.email_address = verification.payload
+            verification.user.is_verified_email_address = True
+            verification.user.save()
             verification.is_verified = True
             token = get_token(verification.user)
             verification.save()

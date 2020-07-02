@@ -17,12 +17,12 @@ urlpatterns = [
         name="about",
     ),
     path(settings.ADMIN_URL, admin.site.urls),
-    path('graphql', csrf_exempt(FileUploadGraphQLView.as_view(graphiql=True))),
+    path('graphql/', csrf_exempt(FileUploadGraphQLView.as_view(graphiql=True))),
     path(
-        "users",
+        "users/",
         include("pinner.users.urls", namespace="users"),
     ),
-    path("accounts", include("allauth.urls")),
+    path("accounts/", include("allauth.urls")),
     # path("graphql/", csrf_exempt(GraphQLView.as_view(graphiql=True))),
     # path("s3Upload/", csrf_exempt(views.sign_s3))
 

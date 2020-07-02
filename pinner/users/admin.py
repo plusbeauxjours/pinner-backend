@@ -2,14 +2,13 @@ from django.contrib import admin
 from . import models
 
 
-@admin.register(models.Profile)
-class ProfileAdmin(admin.ModelAdmin):
+@admin.register(models.User)
+class UserAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (
             "Basic Info",
             {"fields": (
-                "user",
                 "gender",
                 "nationality",
                 "residence",

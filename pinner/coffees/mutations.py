@@ -1,6 +1,5 @@
 import graphene
 from django.db import IntegrityError
-from django.contrib.auth.models import User
 from . import models, types
 import json
 from graphql_jwt.decorators import login_required
@@ -94,9 +93,9 @@ class RequestCoffee(graphene.Mutation):
                             latitude=latitude,
                             longitude=longitude
                         )
-                    if not user.profile.nationality:
-                        user.profile.nationality = country
-                        user.profile.save()
+                    if not user.nationality:
+                        user.nationality = country
+                        user.save()
 
                 elif target == "residence" and countryCode:
                     try:
@@ -159,28 +158,28 @@ class RequestCoffee(graphene.Mutation):
                             latitude=latitude,
                             longitude=longitude
                         )
-                    if not user.profile.residence:
-                        user.profile.residence = country
-                        user.profile.save()
+                    if not user.residence:
+                        user.residence = country
+                        user.save()
 
                 elif target == "gender" and gender:
-                    user.profile.gender = gender
-                    user.profile.save()
+                    user.gender = gender
+                    user.save()
                 coffee = models.Coffee.objects.create(
                     city=currentCity,
                     host=user,
                     target=target,
                 )
                 if target == "everyone":
-                    profiles = currentCity.currentCity.all().exclude(id=user.profile.id)
+                    profiles = currentCity.currentCity.all().exclude(id=user.id)
                 elif target == "nationality":
                     profiles = currentCity.currentCity.filter(
-                        nationality=user.profile.nationality).exclude(id=user.profile.id)
+                        nationality=user.nationality).exclude(id=user.id)
                 elif target == "residence":
                     profiles = currentCity.currentCity.filter(
-                        residence=user.profile.residence).exclude(id=user.profile.id)
+                        residence=user.residence).exclude(id=user.id)
                 elif target == "gender":
-                    profiles = currentCity.currentCity.filter(gender=user.profile.gender).exclude(id=user.profile.id)
+                    profiles = currentCity.currentCity.filter(gender=user.gender).exclude(id=user.id)
                 return types.RequestCoffeeResponse(ok=True, coffee=coffee, profiles=profiles)
 
             except IntegrityError as e:
@@ -207,15 +206,15 @@ class DeleteCoffee(graphene.Mutation):
         try:
             coffee = models.Coffee.objects.get(uuid=coffeeId)
         except models.Coffee.DoesNotExist:
-            return types.DeleteCoffeeResponse(ok=False, coffeeId=None, uuid=user.profile.uuid)
+            return types.DeleteCoffeeResponse(ok=False, coffeeId=None, uuid=user.uuid)
 
         if coffee.host.id == user.id:
 
             coffee.delete()
-            return types.DeleteCoffeeResponse(ok=True, coffeeId=coffeeId, uuid=user.profile.uuid)
+            return types.DeleteCoffeeResponse(ok=True, coffeeId=coffeeId, uuid=user.uuid)
 
         else:
-            return types.DeleteCoffeeResponse(ok=False, coffeeId=None, uuid=user.profile.uuid)
+            return types.DeleteCoffeeResponse(ok=False, coffeeId=None, uuid=user.uuid)
 
 
 class Match(graphene.Mutation):

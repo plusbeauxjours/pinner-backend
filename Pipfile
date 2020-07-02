@@ -75,6 +75,7 @@ pg = "*"
 argon2 = "*"
 future = "*"
 django-storages = "*"
+django-seed = "*"
 
 [requires]
 python_version = "3.7"

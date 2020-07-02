@@ -1,7 +1,7 @@
 from django.db import IntegrityError
 from . import types, models
-from django.contrib.auth.models import User
 from graphql_jwt.decorators import login_required
+from users import models as user_models
 from locations import models as location_models
 from coffees import models as coffee_models
 from django.utils import timezone
@@ -27,15 +27,14 @@ def resolve_get_coffees(self, info, **kwargs):
             return types.GetCoffeesResponse(coffees=None, count=None)
 
         try:
-            profile = me.profile
-            blockedUser = profile.blocked_user.values('id').all()
+            blockedUser = me.blocked_user.values('id').all()
             matchedGuests = me.guest.values('host__id').all()
             matchedHosts = me.host.values('guest__id').all()
             coffees = city.coffee.filter((Q(target='everyone') |
-                                          Q(target='nationality', host__profile__nationality=profile.nationality) |
-                                          Q(target='residence', host__profile__residence=profile.residence) |
-                                          Q(target='gender', host__profile__gender=profile.gender)) &
-                                         Q(expires__gte=timezone.now())).exclude(host__id__in=matchedGuests).exclude(host__profile__id__in=blockedUser).exclude(host__id__in=matchedHosts).order_by('-created_at')
+                                          Q(target='nationality', host__nationality=me.nationality) |
+                                          Q(target='residence', host__residence=me.residence) |
+                                          Q(target='gender', host__gender=me.gender)) &
+                                         Q(expires__gte=timezone.now())).exclude(host__id__in=matchedGuests).exclude(host__id__in=blockedUser).exclude(host__id__in=matchedHosts).order_by('-created_at')
             count = coffees.count()
             return types.GetCoffeesResponse(coffees=coffees, count=count)
 
@@ -44,8 +43,8 @@ def resolve_get_coffees(self, info, **kwargs):
 
     elif location == "profile":
         try:
-            user = User.objects.prefetch_related('coffee').get(profile__uuid=uuid)
-        except User.DoesNotExist:
+            user = user_models.User.objects.prefetch_related('coffee').get(uuid=uuid)
+        except user_models.User.DoesNotExist:
             return types.GetCoffeesResponse(coffees=None, count=None)
 
         try:
@@ -77,12 +76,11 @@ def resolve_coffee_detail(self, info, **kwargs):
 def resolve_get_matches(self, info, **kwargs):
 
     user = info.context.user
-    profile = user.profile
     page = kwargs.get('page', 0)
 
-    blockedUser = profile.blocked_user.values('id').all()
-    host = user.host.exclude(( Q(host__profile__id__in=blockedUser)|  Q(guest__profile__id__in=blockedUser))).all()
-    guest = user.guest.exclude(( Q(host__profile__id__in=blockedUser)|  Q(guest__profile__id__in=blockedUser))).all()
+    blockedUser = user.blocked_user.values('id').all()
+    host = user.host.exclude((Q(host__id__in=blockedUser) | Q(guest__id__in=blockedUser))).all()
+    guest = user.guest.exclude((Q(host__id__in=blockedUser) | Q(guest__id__in=blockedUser))).all()
 
     combined = host.union(guest).order_by('-created_at')
 

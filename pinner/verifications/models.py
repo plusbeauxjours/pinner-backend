@@ -4,7 +4,6 @@ import uuid
 import secrets
 
 from django.db import models
-from django.contrib.auth.models import User
 from config import models as config_models
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
@@ -16,7 +15,7 @@ class Verification(config_models.TimeStampedModel):
         ('phone', 'Phone'),
         ('email', 'Email')
     )
-    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE, related_name='verification')
+    user = models.ForeignKey('users.User', blank=True, null=True, on_delete=models.CASCADE, related_name='verification')
     target = models.CharField(max_length=10, choices=TARGETS)
     payload = models.CharField(max_length=30)
     key = models.CharField(max_length=300, blank=True)

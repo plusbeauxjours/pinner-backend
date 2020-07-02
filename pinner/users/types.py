@@ -1,7 +1,6 @@
 import graphene
 from graphene_django.types import DjangoObjectType
 from . import models
-from django.contrib.auth.models import User
 from config import types as config_types
 from locations import types as location_types
 from notifications import types as notification_types
@@ -11,13 +10,6 @@ import datetime
 
 
 class UserType(DjangoObjectType):
-
-    class Meta:
-        model = User
-        exclude_fields = ('password',)
-
-
-class ProfileType(DjangoObjectType):
     username = graphene.String(source='username')
     photo_count = graphene.Int(source='photo_count')
     city_count = graphene.Int(source='city_count')
@@ -31,13 +23,13 @@ class ProfileType(DjangoObjectType):
 
     def resolve_is_self(self, info):
         user = info.context.user
-        if self.user.id == user.id:
+        if self.id == user.id:
             return True
         else:
             return False
 
     class Meta:
-        model = models.Profile
+        model = models.User
 
 
 class AvatarType(DjangoObjectType):
@@ -121,7 +113,7 @@ class AppleConnectResponse(graphene.ObjectType):
 class RecommendUsersResponse(graphene.ObjectType):
     page = graphene.Int()
     hasNextPage = graphene.Boolean()
-    users = graphene.List(ProfileType)
+    users = graphene.List(UserType)
 
 
 class ReportLocationResponse(graphene.ObjectType):
@@ -139,7 +131,7 @@ class SlackReportUsersResponse(graphene.ObjectType):
 class UsersNowResponse(graphene.ObjectType):
     page = graphene.Int()
     hasNextPage = graphene.Boolean()
-    usersNow = graphene.List(ProfileType)
+    usersNow = graphene.List(UserType)
 
 
 class RegisterPushResponse (graphene.ObjectType):
@@ -148,7 +140,7 @@ class RegisterPushResponse (graphene.ObjectType):
 
 class AddBlockUserResponse (graphene.ObjectType):
     ok = graphene.Boolean()
-    blockedUser = graphene.Field(ProfileType)
+    blockedUser = graphene.Field(UserType)
 
 
 class DeleteBlockUserResponse (graphene.ObjectType):
@@ -157,8 +149,8 @@ class DeleteBlockUserResponse (graphene.ObjectType):
 
 
 class GetBlockedUserResponse(graphene.ObjectType):
-    blocked_users = graphene.List(ProfileType)
+    blocked_users = graphene.List(UserType)
 
 
 class GetUserListResponse(graphene.ObjectType):
-    users = graphene.List(ProfileType)
+    users = graphene.List(UserType)

@@ -3,7 +3,6 @@ import json
 from django.db import IntegrityError
 from django.db.models import Q
 from django.db.models.expressions import RawSQL
-from django.contrib.auth.models import User
 from graphql_jwt.decorators import login_required
 
 from . import models, types
@@ -145,7 +144,6 @@ class ReportLocation(graphene.Mutation):
 
     def mutate(self, info, **kwargs):
         user = info.context.user
-        profile = user.profile
 
         currentLat = kwargs.get('currentLat')
         currentLng = kwargs.get('currentLng')
@@ -237,10 +235,10 @@ class ReportLocation(graphene.Mutation):
 
         try:
             city = models.City.objects.get(city_id=currentCityId)
-            profile.current_city = city
-            profile.current_country = city.country
-            profile.current_continent = city.country.continent
-            profile.save()
+            user.current_city = city
+            user.current_country = city.country
+            user.current_continent = city.country.continent
+            user.save()
             if city.near_city.count() < 20:
                 nearCities = get_locations_nearby_coords(currentLat, currentLng, 3000)[:20]
                 for i in nearCities:
@@ -271,13 +269,13 @@ class ReportLocation(graphene.Mutation):
             for i in nearCities:
                 city.near_city.add(i)
                 city.save()
-            profile.current_city = city
-            profile.current_country = city.country
-            profile.current_continent = city.country.continent
-            profile.save()
+            user.current_city = city
+            user.current_country = city.country
+            user.current_continent = city.country.continent
+            user.save()
             return city
 
-        if profile.is_auto_location_report is True:
+        if user.is_auto_location_report is True:
             try:
                 latest = notification_models.MoveNotification.objects.filter(
                     actor=user).latest('start_date', 'created_at')

@@ -1,6 +1,5 @@
 import uuid
 from django.db import models
-from django.contrib.auth.models import User
 from config import models as config_models
 from locations import models as location_models
 
@@ -25,7 +24,7 @@ class Coffee (config_models.TimeStampedModel):
 
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, blank=True, null=True)
     city = models.ForeignKey(location_models.City, on_delete=models.CASCADE, related_name='coffee')
-    host = models.ForeignKey(User, on_delete=models.CASCADE, related_name='coffee')
+    host = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='coffee')
     duration = models.DurationField(default=datetime.timedelta(days=1))
     expires = models.DateTimeField(blank=True, null=True)
     target = models.CharField(max_length=11, choices=TARGETS, default='everyone')
@@ -60,8 +59,8 @@ class Match (config_models.TimeStampedModel):
 
     coffee = models.ForeignKey(Coffee, on_delete=models.SET_NULL, null=True, blank=True, related_name='match')
     city = models.ForeignKey(location_models.City, on_delete=models.CASCADE, null=True, blank=True)
-    host = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='host')
-    guest = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='guest')
+    host = models.ForeignKey('users.User', on_delete=models.CASCADE, null=True, blank=True, related_name='host')
+    guest = models.ForeignKey('users.User', on_delete=models.CASCADE, null=True, blank=True, related_name='guest')
     is_read_by_host = models.BooleanField(default=False)
     is_read_by_guest = models.BooleanField(default=False)
 

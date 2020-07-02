@@ -6,7 +6,6 @@ from django.db.models.functions import Trunc
 
 from graphql_jwt.decorators import login_required
 from locations import models as location_models
-from django.contrib.auth.models import User
 from locations import types as location_types
 from coffees import models as coffees_models
 
@@ -18,7 +17,7 @@ def resolve_get_trips(self, info, **kwargs):
     page = kwargs.get('page', 0)
 
     try:
-        user = User.objects.prefetch_related('moveNotificationUser').get(profile__uuid=uuid)
+        user = models.User.objects.prefetch_related('moveNotificationUser').get(uuid=uuid)
         trip = user.moveNotificationUser.all().order_by('-start_date', '-created_at')
 
         return location_types.TripResponse(trip=trip)

@@ -23,6 +23,7 @@ from django.core.files.base import ContentFile
 from io import BytesIO
 from urllib.request import urlopen
 
+
 class UpdateSNS(graphene.Mutation):
 
     class Arguments:
@@ -40,139 +41,138 @@ class UpdateSNS(graphene.Mutation):
 
         if payload == "INSTAGRAM":
             try:
-                user.profile.send_instagram = username
-                user.profile.save()
+                user.send_instagram = username
+                user.save()
                 return types.UpdateSNSResponse(ok=True, user=user)
             except:
                 return types.UpdateSNSResponse(ok=False, user=None)
         if payload == "PHONE":
             try:
-                user.profile.send_phone = username
-                user.profile.save()
+                user.send_phone = username
+                user.save()
                 return types.UpdateSNSResponse(ok=True, user=user)
             except:
                 return types.UpdateSNSResponse(ok=False, user=None)
         if payload == "EMAIL":
             try:
-                user.profile.send_email = username
-                user.profile.save()
+                user.send_email = username
+                user.save()
                 return types.UpdateSNSResponse(ok=True, user=user)
             except:
                 return types.UpdateSNSResponse(ok=False, user=None)
         if payload == "KAKAOTALK":
             try:
-                user.profile.send_kakao = username
-                user.profile.save()
+                user.send_kakao = username
+                user.save()
                 return types.UpdateSNSResponse(ok=True, user=user)
             except:
                 return types.UpdateSNSResponse(ok=False, user=None)
         if payload == "FACEBOOK":
             try:
-                user.profile.send_facebook = username
-                user.profile.save()
+                user.send_facebook = username
+                user.save()
                 return types.UpdateSNSResponse(ok=True, user=user)
             except:
                 return types.UpdateSNSResponse(ok=False, user=None)
         if payload == "YOUTUBE":
             try:
-                user.profile.send_youtube = username
-                user.profile.save()
+                user.send_youtube = username
+                user.save()
                 return types.UpdateSNSResponse(ok=True, user=user)
             except:
                 return types.UpdateSNSResponse(ok=False, user=None)
         if payload == "TWITTER":
             try:
-                user.profile.send_twitter = username
-                user.profile.save()
+                user.send_twitter = username
+                user.save()
                 return types.UpdateSNSResponse(ok=True, user=user)
             except:
                 return types.UpdateSNSResponse(ok=False, user=None)
         if payload == "TELEGRAM":
             try:
-                user.profile.send_telegram = username
-                user.profile.save()
+                user.send_telegram = username
+                user.save()
                 return types.UpdateSNSResponse(ok=True, user=user)
             except:
                 return types.UpdateSNSResponse(ok=False, user=None)
         if payload == "SNAPCHAT":
             try:
-                user.profile.send_snapchat = username
-                user.profile.save()
+                user.send_snapchat = username
+                user.save()
                 return types.UpdateSNSResponse(ok=True, user=user)
             except:
                 return types.UpdateSNSResponse(ok=False, user=None)
         if payload == "LINE":
             try:
-                user.profile.send_line = username
-                user.profile.save()
+                user.send_line = username
+                user.save()
                 return types.UpdateSNSResponse(ok=True, user=user)
             except:
                 return types.UpdateSNSResponse(ok=False, user=None)
         if payload == "WECHAT":
             try:
-                user.profile.send_wechat = username
-                user.profile.save()
+                user.send_wechat = username
+                user.save()
                 return types.UpdateSNSResponse(ok=True, user=user)
             except:
                 return types.UpdateSNSResponse(ok=False, user=None)
         if payload == "KIK":
             try:
-                user.profile.send_kik = username
-                user.profile.save()
+                user.send_kik = username
+                user.save()
                 return types.UpdateSNSResponse(ok=True, user=user)
             except:
                 return types.UpdateSNSResponse(ok=False, user=None)
-        if payload =="VK":
+        if payload == "VK":
             try:
-                user.profile.send_vk = username
-                user.profile.save()
+                user.send_vk = username
+                user.save()
                 return types.UpdateSNSResponse(ok=True, user=user)
             except:
                 return types.UpdateSNSResponse(ok=False, user=None)
-        if payload =="WHATSAPP":
+        if payload == "WHATSAPP":
             try:
-                user.profile.send_whatsapp = username
-                user.profile.save()
+                user.send_whatsapp = username
+                user.save()
                 return types.UpdateSNSResponse(ok=True, user=user)
             except:
                 return types.UpdateSNSResponse(ok=False, user=None)
-        if payload =="BEHANCE":
+        if payload == "BEHANCE":
             try:
-                user.profile.send_behance = username
-                user.profile.save()
+                user.send_behance = username
+                user.save()
                 return types.UpdateSNSResponse(ok=True, user=user)
             except:
                 return types.UpdateSNSResponse(ok=False, user=None)
-        if payload =="LINKEDIN":
+        if payload == "LINKEDIN":
             try:
-                user.profile.send_linkedin = username
-                user.profile.save()
+                user.send_linkedin = username
+                user.save()
                 return types.UpdateSNSResponse(ok=True, user=user)
             except:
                 return types.UpdateSNSResponse(ok=False, user=None)
-        if payload =="PINTEREST":
+        if payload == "PINTEREST":
             try:
-                user.profile.send_pinterest = username
-                user.profile.save()
+                user.send_pinterest = username
+                user.save()
                 return types.UpdateSNSResponse(ok=True, user=user)
             except:
                 return types.UpdateSNSResponse(ok=False, user=None)
-        if payload =="VINE":
+        if payload == "VINE":
             try:
-                user.profile.send_vine = username
-                user.profile.save()
+                user.send_vine = username
+                user.save()
                 return types.UpdateSNSResponse(ok=True, user=user)
             except:
                 return types.UpdateSNSResponse(ok=False, user=None)
-        if payload =="TUMBLR":
+        if payload == "TUMBLR":
             try:
-                user.profile.send_tumblr = username
-                user.profile.save()
+                user.send_tumblr = username
+                user.save()
                 return types.UpdateSNSResponse(ok=True, user=user)
             except:
                 return types.UpdateSNSResponse(ok=False, user=None)
 
-         
 
 class ToggleSettings(graphene.Mutation):
 
@@ -187,123 +187,123 @@ class ToggleSettings(graphene.Mutation):
         user = info.context.user
         payload = kwargs.get('payload')
         if payload == "DARK_MODE":
-            if user.profile.is_dark_mode == True:
+            if user.is_dark_mode == True:
                 try:
-                    user.profile.is_dark_mode = False
-                    user.profile.save()
+                    user.is_dark_mode = False
+                    user.save()
                     return types.ToggleSettingsResponse(ok=True, user=user)
                 except:
                     return types.ToggleSettingsResponse(ok=False, user=None)
-            elif user.profile.is_dark_mode == False:
+            elif user.is_dark_mode == False:
                 try:
-                    user.profile.is_dark_mode = True
-                    user.profile.save()
+                    user.is_dark_mode = True
+                    user.save()
                     return types.ToggleSettingsResponse(ok=True, user=user)
                 except:
                     return types.ToggleSettingsResponse(ok=False, user=None)
         elif payload == "HIDE_PHOTOS":
-            if user.profile.is_hide_photos == True:
+            if user.is_hide_photos == True:
                 try:
-                    user.profile.is_hide_photos = False
-                    user.profile.save()
+                    user.is_hide_photos = False
+                    user.save()
                     return types.ToggleSettingsResponse(ok=True, user=user)
                 except:
                     return types.ToggleSettingsResponse(ok=False, user=None)
-            elif user.profile.is_hide_photos == False:
+            elif user.is_hide_photos == False:
                 try:
-                    user.profile.is_hide_photos = True
-                    user.profile.save()
+                    user.is_hide_photos = True
+                    user.save()
                     return types.ToggleSettingsResponse(ok=True, user=user)
                 except:
                     return types.ToggleSettingsResponse(ok=False, user=None)
         elif payload == "HIDE_TRIPS":
-            if user.profile.is_hide_trips == True:
+            if user.is_hide_trips == True:
                 try:
-                    user.profile.is_hide_trips = False
-                    user.profile.save()
+                    user.is_hide_trips = False
+                    user.save()
                     return types.ToggleSettingsResponse(ok=True, user=user)
                 except:
                     return types.ToggleSettingsResponse(ok=False, user=None)
-            elif user.profile.is_hide_trips == False:
+            elif user.is_hide_trips == False:
                 try:
-                    user.profile.is_hide_trips = True
-                    user.profile.save()
+                    user.is_hide_trips = True
+                    user.save()
                     return types.ToggleSettingsResponse(ok=True, user=user)
                 except:
                     return types.ToggleSettingsResponse(ok=False, user=None)
         elif payload == "HIDE_COFFEES":
-            if user.profile.is_hide_coffees == True:
+            if user.is_hide_coffees == True:
                 try:
-                    user.profile.is_hide_coffees = False
-                    user.profile.save()
+                    user.is_hide_coffees = False
+                    user.save()
                     return types.ToggleSettingsResponse(ok=True, user=user)
                 except:
                     return types.ToggleSettingsResponse(ok=False, user=None)
-            elif user.profile.is_hide_coffees == False:
+            elif user.is_hide_coffees == False:
                 try:
-                    user.profile.is_hide_coffees = True
-                    user.profile.save()
+                    user.is_hide_coffees = True
+                    user.save()
                     return types.ToggleSettingsResponse(ok=True, user=user)
                 except:
                     return types.ToggleSettingsResponse(ok=False, user=None)
 
         elif payload == "HIDE_CITIES":
-            if user.profile.is_hide_cities == True:
+            if user.is_hide_cities == True:
                 try:
-                    user.profile.is_hide_cities = False
-                    user.profile.save()
+                    user.is_hide_cities = False
+                    user.save()
                     return types.ToggleSettingsResponse(ok=True, user=user)
                 except:
                     return types.ToggleSettingsResponse(ok=False, user=None)
-            elif user.profile.is_hide_cities == False:
+            elif user.is_hide_cities == False:
                 try:
-                    user.profile.is_hide_cities = True
-                    user.profile.save()
+                    user.is_hide_cities = True
+                    user.save()
                     return types.ToggleSettingsResponse(ok=True, user=user)
                 except:
                     return types.ToggleSettingsResponse(ok=False, user=None)
         elif payload == "HIDE_COUNTRIES":
-            if user.profile.is_hide_countries == True:
+            if user.is_hide_countries == True:
                 try:
-                    user.profile.is_hide_countries = False
-                    user.profile.save()
+                    user.is_hide_countries = False
+                    user.save()
                     return types.ToggleSettingsResponse(ok=True, user=user)
                 except:
                     return types.ToggleSettingsResponse(ok=False, user=None)
-            elif user.profile.is_hide_countries == False:
+            elif user.is_hide_countries == False:
                 try:
-                    user.profile.is_hide_countries = True
-                    user.profile.save()
+                    user.is_hide_countries = True
+                    user.save()
                     return types.ToggleSettingsResponse(ok=True, user=user)
                 except:
                     return types.ToggleSettingsResponse(ok=False, user=None)
         elif payload == "HIDE_CONTINENTS":
-            if user.profile.is_hide_continents == True:
+            if user.is_hide_continents == True:
                 try:
-                    user.profile.is_hide_continents = False
-                    user.profile.save()
+                    user.is_hide_continents = False
+                    user.save()
                     return types.ToggleSettingsResponse(ok=True, user=user)
                 except:
                     return types.ToggleSettingsResponse(ok=False, user=None)
-            elif user.profile.is_hide_continents == False:
+            elif user.is_hide_continents == False:
                 try:
-                    user.profile.is_hide_continents = True
-                    user.profile.save()
+                    user.is_hide_continents = True
+                    user.save()
                     return types.ToggleSettingsResponse(ok=True, user=user)
                 except:
                     return types.ToggleSettingsResponse(ok=False, user=None)
         elif payload == "AUTO_LOCATION_REPORT":
-            if user.profile.is_auto_location_report == True:
+            if user.is_auto_location_report == True:
                 try:
-                    user.profile.is_auto_location_report = False
-                    user.profile.save()
+                    user.is_auto_location_report = False
+                    user.save()
                     return types.ToggleSettingsResponse(ok=True, user=user)
                 except:
                     return types.ToggleSettingsResponse(ok=False, user=None)
-            elif user.profile.is_auto_location_report == False:
+            elif user.is_auto_location_report == False:
                 try:
-                    user.profile.is_auto_location_report = True
-                    user.profile.save()
+                    user.is_auto_location_report = True
+                    user.save()
                     return types.ToggleSettingsResponse(ok=True, user=user)
                 except:
                     return types.ToggleSettingsResponse(ok=False, user=None)
@@ -327,17 +327,15 @@ class EditProfile(graphene.Mutation):
 
         user = info.context.user
 
-        profile = user.profile
+        if user.is_authenticated:
 
-        if user.is_authenticated and profile is not None:
-
-            bio = kwargs.get('bio', user.profile.bio)
-            gender = kwargs.get('gender', user.profile.gender)
+            bio = kwargs.get('bio', user.bio)
+            gender = kwargs.get('gender', user.gender)
             firstName = kwargs.get('firstName', user.first_name)
             lastName = kwargs.get('lastName', user.last_name)
             username = kwargs.get('username', user.username)
-            nationalityCode = kwargs.get('nationalityCode', user.profile.nationality)
-            residenceCode = kwargs.get('residenceCode', user.profile.residence)
+            nationalityCode = kwargs.get('nationalityCode', user.nationality)
+            residenceCode = kwargs.get('residenceCode', user.residence)
 
             # if username:
             #     raise Exception("Only English username is allowed "
@@ -483,19 +481,19 @@ class EditProfile(graphene.Mutation):
                 )
 
             try:
-                profile.bio = bio
-                profile.gender = gender
-                profile.nationality = nationality
-                profile.residence = residence
-                profile.save()
+                user.bio = bio
+                user.gender = gender
+                user.nationality = nationality
+                user.residence = residence
+                user.save()
 
                 user.first_name = firstName
                 user.last_name = lastName
                 if user.username != username:
                     try:
-                        existing_user = User.objects.get(username=username)
+                        existing_user = models.User.objects.get(username=username)
                         raise Exception("Username is already taken")
-                    except User.DoesNotExist:
+                    except models.User.DoesNotExist:
                         user.username = username
                 user.save()
                 token = get_token(user)
@@ -531,31 +529,32 @@ class MarkAsMain(graphene.Mutation):
                 newMainAvatar = models.Avatar.objects.get(uuid=uuid)
                 prevMainAvatar.is_main = False
                 newMainAvatar.is_main = True
-                user.profile.avatar_url = newMainAvatar.thumbnail
-                user.profile.app_avatar_url = newMainAvatar.app_thumbnail
-                user.profile.save()
+                user.avatar_url = newMainAvatar.thumbnail
+                user.app_avatar_url = newMainAvatar.app_thumbnail
+                user.save()
                 prevMainAvatar.save()
                 newMainAvatar.save()
                 return types.MarkAsMainResponse(ok=True, avatar=newMainAvatar,  preAvatarUUID=prevMainAvatar.uuid, newAvatarUUID=uuid)
             else:
                 newMainAvatar = models.Avatar.objects.get(uuid=uuid)
                 newMainAvatar.is_main = True
-                user.profile.avatar_url = newMainAvatar.thumbnail
-                user.profile.app_avatar_url = newMainAvatar.app_thumbnail
-                user.profile.save()
+                user.avatar_url = newMainAvatar.thumbnail
+                user.app_avatar_url = newMainAvatar.app_thumbnail
+                user.save()
                 newMainAvatar.save()
                 return types.MarkAsMainResponse(ok=True, avatar=newMainAvatar,  preAvatarUUID=None, newAvatarUUID=uuid)
 
         except models.Avatar.DoesNotExist:
             newMainAvatar = models.Avatar.objects.get(uuid=uuid)
             newMainAvatar.is_main = True
-            user.profile.avatar_url = newMainAvatar.thumbnail
-            user.profile.app_avatar_url = newMainAvatar.app_thumbnail
-            user.profile.save()
+            user.avatar_url = newMainAvatar.thumbnail
+            user.app_avatar_url = newMainAvatar.app_thumbnail
+            user.save()
             newMainAvatar.save()
             return types.MarkAsMainResponse(ok=True, avatar=newMainAvatar, preAvatarUUID=None, newAvatarUUID=uuid)
 
-class  RegisterPush(graphene.Mutation):
+
+class RegisterPush(graphene.Mutation):
 
     class Arguments:
         push_token = graphene.String(required=True)
@@ -569,11 +568,11 @@ class  RegisterPush(graphene.Mutation):
         push_token = kwargs.get('push_token')
 
         try:
-            if user.profile.push_token == push_token:
+            if user.push_token == push_token:
                 return types.RegisterPushResponse(ok=True)
-            else: 
-                user.profile.push_token = push_token
-                user.profile.save()
+            else:
+                user.push_token = push_token
+                user.save()
                 return types.RegisterPushResponse(ok=True)
 
         except IntegrityError as e:
@@ -591,7 +590,7 @@ class DeleteProfile(graphene.Mutation):
         user = info.context.user
 
         try:
-            user.profile.delete()
+            user.delete()
             user.delete()
             return types.DeleteProfileResponse(ok=True)
 
@@ -618,19 +617,19 @@ class UploadAvatar(graphene.Mutation):
             prevMainAvatar.is_main = False
             newMainAvatar = models.Avatar.objects.create(
                 is_main=True, image=file, thumbnail=file, app_thumbnail=file, creator=user)
-            user.profile.avatar_url = newMainAvatar.thumbnail
-            user.profile.app_avatar_url = newMainAvatar.app_thumbnail
+            user.avatar_url = newMainAvatar.thumbnail
+            user.app_avatar_url = newMainAvatar.app_thumbnail
             prevMainAvatar.save()
-            user.profile.save()
-            return types.UploadAvatarResponse(ok=True, preAvatarUUID=prevMainAvatar.uuid ,newAvatarUUID=newMainAvatar.uuid, avatar=newMainAvatar)
+            user.save()
+            return types.UploadAvatarResponse(ok=True, preAvatarUUID=prevMainAvatar.uuid, newAvatarUUID=newMainAvatar.uuid, avatar=newMainAvatar)
 
         except models.Avatar.DoesNotExist:
             newMainAvatar = models.Avatar.objects.create(
                 is_main=True, image=file, thumbnail=file, app_thumbnail=file, creator=user)
-            user.profile.avatar_url = newMainAvatar.thumbnail
-            user.profile.app_avatar_url = newMainAvatar.app_thumbnail
-            user.profile.save()
-            return types.UploadAvatarResponse(ok=True, preAvatarUUID=None ,newAvatarUUID=newMainAvatar.uuid, avatar=newMainAvatar) 
+            user.avatar_url = newMainAvatar.thumbnail
+            user.app_avatar_url = newMainAvatar.app_thumbnail
+            user.save()
+            return types.UploadAvatarResponse(ok=True, preAvatarUUID=None, newAvatarUUID=newMainAvatar.uuid, avatar=newMainAvatar)
 
 
 class DeleteAvatar(graphene.Mutation):
@@ -679,16 +678,14 @@ class FacebookConnect(graphene.Mutation):
         countryCode = kwargs.get('countryCode')
         fbId = kwargs.get('fbId')
 
-
-
         try:
-            profile = models.Profile.objects.get(
+            user = models.User.objects.get(
                 fbId=fbId
             )
-            token = get_token(profile.user)
+            token = get_token(user)
             return types.FacebookConnectResponse(ok=True, token=token)
 
-        except models.Profile.DoesNotExist:
+        except models.User.DoesNotExist:
 
             def get_locations_nearby_coords(latitude, longitude, max_distance=3000):
                 gcd_formula = "6371 * acos(cos(radians(%s)) * \
@@ -744,7 +741,6 @@ class FacebookConnect(graphene.Mutation):
                                     continentPhotoURL = None
                                     continentThumbnailURL = None
 
-
                                 continent = location_models.Continent.objects.create(
                                     continent_name=continentName,
                                     continent_photo=continentPhotoURL,
@@ -795,14 +791,13 @@ class FacebookConnect(graphene.Mutation):
                     city.near_city.add(i)
                     city.save()
 
-    
             with open('pinner/users/adjectives.json', mode='rt', encoding='utf-8') as file:
                 adjectives = json.load(file)
-                if email: 
+                if email:
                     local, at, domain = email.rpartition('@')
                 username = random.choice(adjectives) + local.capitalize()
 
-                newUser = User.objects.create_user(username)
+                newUser = models.User.objects.create_user(username)
                 newUser.first_name = first_name
                 newUser.last_name = last_name
                 newUser.save()
@@ -815,7 +810,7 @@ class FacebookConnect(graphene.Mutation):
                 )
                 avatar.thumbnail.save("image.jpg", ContentFile(thumbnail.getvalue()), save=False)
                 avatar.save()
-                profile = models.Profile.objects.create(
+                user = models.User.objects.create(
                     user=newUser,
                     fbId=fbId,
                     email_address=email,
@@ -824,8 +819,8 @@ class FacebookConnect(graphene.Mutation):
                     avatar_url=avatar.thumbnail,
                     app_avatar_url=avatar.thumbnail,
                     current_city=city,
-                    current_country = city.country,
-                    current_continent = city.country.continent,
+                    current_country=city.country,
+                    current_continent=city.country.continent,
                 )
                 moveNotification = notification_models.MoveNotification.objects.create(
                     actor=newUser,
@@ -834,9 +829,8 @@ class FacebookConnect(graphene.Mutation):
                     continent=city.country.continent,
                 )
 
-                token = get_token(profile.user)
+                token = get_token(user)
                 return types.FacebookConnectResponse(ok=True, token=token)
-
 
 
 class AppleConnect(graphene.Mutation):
@@ -861,16 +855,14 @@ class AppleConnect(graphene.Mutation):
         countryCode = kwargs.get('countryCode')
         appleId = kwargs.get('appleId')
 
-
-
         try:
-            profile = models.Profile.objects.get(
+            user = models.User.objects.get(
                 appleId=appleId
             )
-            token = get_token(profile.user)
+            token = get_token(user)
             return types.AppleConnectResponse(ok=True, token=token)
 
-        except models.Profile.DoesNotExist:
+        except models.User.DoesNotExist:
 
             def get_locations_nearby_coords(latitude, longitude, max_distance=3000):
                 gcd_formula = "6371 * acos(cos(radians(%s)) * \
@@ -926,7 +918,6 @@ class AppleConnect(graphene.Mutation):
                                     continentPhotoURL = None
                                     continentThumbnailURL = None
 
-
                                 continent = location_models.Continent.objects.create(
                                     continent_name=continentName,
                                     continent_photo=continentPhotoURL,
@@ -977,36 +968,35 @@ class AppleConnect(graphene.Mutation):
                     city.near_city.add(i)
                     city.save()
 
-    
             with open('pinner/users/adjectives.json', mode='rt', encoding='utf-8') as adjectives:
                 with open('pinner/users/nouns.json', mode='rt', encoding='utf-8') as nouns:
                     adjectives = json.load(adjectives)
                     nouns = json.load(nouns)
-                    
-                    if email: 
+
+                    if email:
                         local, at, domain = email.rpartition('@')
                         username = random.choice(adjectives) + local.capitalize()
                         is_verified_email_address = True
-                    else: 
+                    else:
                         username = random.choice(adjectives) + random.choice(nouns).capitalize()
                         is_verified_email_address = False
 
-                    newUser = User.objects.create_user(username)
+                    newUser = models.User.objects.create_user(username)
                     if first_name:
                         newUser.first_name = first_name
                     if last_name:
                         newUser.last_name = last_name
                     newUser.save()
-                    
-                    profile = models.Profile.objects.create(
+
+                    user = models.User.objects.create(
                         user=newUser,
                         appleId=appleId,
                         email_address=email,
                         is_verified_email_address=is_verified_email_address,
                         gender=gender,
                         current_city=city,
-                        current_country = city.country,
-                        current_continent = city.country.continent,
+                        current_country=city.country,
+                        current_continent=city.country.continent,
                     )
                     moveNotification = notification_models.MoveNotification.objects.create(
                         actor=newUser,
@@ -1015,7 +1005,7 @@ class AppleConnect(graphene.Mutation):
                         continent=city.country.continent,
                     )
 
-                    token = get_token(profile.user)
+                    token = get_token(user)
                     return types.AppleConnectResponse(ok=True, token=token)
 
 
@@ -1031,7 +1021,7 @@ class SlackReportUsers(graphene.Mutation):
 
         reportUsername = info.context.user.username
         targetUuid = kwargs.get('targetUsername')
-        targetUsername = User.objects.get(profile__uuid=targetUuid).username
+        targetUsername = models.User.objects.get(uuid=targetUuid).username
         payload = kwargs.get('payload')
 
         if payload == "PHOTO":
@@ -1108,19 +1098,20 @@ class AddBlockUser(graphene.Mutation):
     @login_required
     def mutate(self, info, **kwargs):
 
-        profile = info.context.user.profile
+        user = info.context.user
 
         uuid = kwargs.get('uuid')
-        blockedUser = models.Profile.objects.get(uuid=uuid)
+        blockedUser = models.User.objects.get(uuid=uuid)
 
         try:
-            profile.blocked_user.add(blockedUser)
-            profile.save()
+            user.blocked_user.add(blockedUser)
+            user.save()
             return types.AddBlockUserResponse(ok=True, blockedUser=blockedUser)
 
         except IntegrityError as e:
             print(e)
             return types.AddBlockUserResponse(ok=False, blockedUser=None)
+
 
 class DeleteBlockUser(graphene.Mutation):
 
@@ -1132,13 +1123,13 @@ class DeleteBlockUser(graphene.Mutation):
     @login_required
     def mutate(self, info, **kwargs):
 
-        profile = info.context.user.profile
+        user = info.context.user
 
         uuid = kwargs.get('uuid')
-        blockedUser = models.Profile.objects.get(uuid=uuid)
+        blockedUser = models.User.objects.get(uuid=uuid)
 
         try:
-            profile.blocked_user.remove(blockedUser)
+            user.blocked_user.remove(blockedUser)
             return types.DeleteBlockUserResponse(ok=True, uuid=uuid)
 
         except IntegrityError as e:

@@ -75,18 +75,9 @@ class CityProfileResponse(graphene.ObjectType):
     page = graphene.Int()
     count = graphene.Int()
     city = graphene.Field(CityType)
-    usersNow = graphene.List(user_types.ProfileType)
+    usersNow = graphene.List(user_types.UserType)
     usersBefore = graphene.List(notification_types.MoveNotificationType)
     hasNextPage = graphene.Boolean()
-    
-
-
-class TripProfileResponse(graphene.ObjectType):
-    city = graphene.Field(CityType)
-    count = graphene.Int()
-    usersBefore = graphene.List(notification_types.MoveNotificationType)
-    userCount = graphene.Int()
-    coffees = graphene.List(coffee_types.CoffeeType)
 
 
 class GetCitiesPageResponse(graphene.ObjectType):

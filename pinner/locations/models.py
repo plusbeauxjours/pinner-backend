@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.contrib.humanize.templatetags.humanize import naturaltime
 from django.utils.html import escape, format_html
 from config import models as config_models
@@ -24,7 +23,8 @@ class Continent (config_models.TimeStampedModel):
 
     @cached_property
     def user_log_count(self):
-        return self.moveNotificationContinent.values('actor__id').all().order_by('-actor__id').distinct('actor__id').count()
+        # return self.moveNotificationContinent.values('actor__id').all().order_by('-actor__id').distinct('actor__id').count()
+        return self.moveNotificationContinent.values('actor__id').all().order_by('-actor__id').count()
 
     def __str__(self):
         return self.continent_name
@@ -62,7 +62,8 @@ class Country (config_models.TimeStampedModel):
 
     @cached_property
     def user_log_count(self):
-        return self.moveNotificationCountry.values('actor__id').all().order_by('-actor__id').distinct('actor__id').count()
+        # return self.moveNotificationCountry.values('actor__id').all().order_by('-actor__id').distinct('actor__id').count()
+        return self.moveNotificationCountry.values('actor__id').all().order_by('-actor__id').count()
 
     def __str__(self):
         return self.country_name
@@ -100,7 +101,8 @@ class City (config_models.TimeStampedModel):
 
     @cached_property
     def user_log_count(self):
-        return self.moveNotificationCity.values('actor__id').all().order_by('-actor__id').distinct('actor__id').count()
+        # return self.moveNotificationCity.values('actor__id').all().order_by('-actor__id').distinct('actor__id').count()
+        return self.moveNotificationCity.values('actor__id').all().order_by('-actor__id').count()
 
     def __str__(self):
         return self.city_name
@@ -116,7 +118,7 @@ class City (config_models.TimeStampedModel):
 class Like(config_models.TimeStampedModel):
 
     creator = models.ForeignKey(
-        User, on_delete=models.CASCADE, null=True, related_name='likes')
+        'users.User', on_delete=models.CASCADE, null=True, related_name='likes')
     city = models.ForeignKey(
         City, on_delete=models.CASCADE, null=True, related_name='likes')
 

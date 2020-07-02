@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.contrib.humanize.templatetags.humanize import naturaltime
 from datetime import timedelta
 from django.db.models import Q
@@ -21,9 +20,9 @@ class Notification(config_models.TimeStampedModel):
         ('match', 'MATCH'),
     )
 
-    actor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notification_from')
+    actor = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='notification_from')
     target = models.ForeignKey(
-        User, on_delete=models.CASCADE, null=True, blank=True, related_name='notification_to')
+        'users.User', on_delete=models.CASCADE, null=True, blank=True, related_name='notification_to')
     verb = models.CharField(max_length=10, choices=VERBS, default='match')
     is_read = models.BooleanField(default=False)
     match = models.ForeignKey(
@@ -53,7 +52,7 @@ class MoveNotification(config_models.TimeStampedModel):
 
     )
 
-    actor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='moveNotificationUser')
+    actor = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='moveNotificationUser')
     verb = models.CharField(max_length=10, choices=VERBS, default='move')
     city = models.ForeignKey(
         location_models.City, on_delete=models.CASCADE, null=True, blank=True, related_name='moveNotificationCity')

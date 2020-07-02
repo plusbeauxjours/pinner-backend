@@ -164,8 +164,8 @@ class CalculateDistance(graphene.Mutation):
                 except (ZeroDivisionError, IndexError) as e:
                     print(e)
 
-            user.profile.distance = int(round(distance))
-            user.profile.save()
+            user.distance = int(round(distance))
+            user.save()
             return types.CalculateDistanceResponse(distance=int(round(distance)))
 
         except IntegrityError as e:
