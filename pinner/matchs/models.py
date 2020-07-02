@@ -4,7 +4,7 @@ from config import models as config_models
 from django.contrib.humanize.templatetags.humanize import naturaltime
 
 
-class Match (config_models.TimeStampedModel):
+class Match(config_models.TimeStampedModel):
 
     city = models.ForeignKey('locations.City', on_delete=models.CASCADE, null=True, blank=True)
     host = models.ForeignKey('users.User', on_delete=models.CASCADE, null=True, blank=True, related_name='host')

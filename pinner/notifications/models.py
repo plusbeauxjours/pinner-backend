@@ -6,6 +6,7 @@ from datetime import date
 from django.core.exceptions import ValidationError
 
 from config import models as config_models
+from matchs import models as match_models
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 
@@ -22,7 +23,7 @@ class Notification(config_models.TimeStampedModel):
     verb = models.CharField(max_length=10, choices=VERBS, default='match')
     is_read = models.BooleanField(default=False)
     match = models.ForeignKey(
-        'matchs.Match', on_delete=models.CASCADE, null=True, blank=True, related_name='notification')
+        match_models.Match, on_delete=models.CASCADE, null=True, blank=True, related_name='notification')
 
     @property
     def natural_time(self):
