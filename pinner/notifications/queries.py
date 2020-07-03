@@ -18,7 +18,7 @@ def resolve_get_trips(self, info, **kwargs):
 
     try:
         user = user_models.User.objects.prefetch_related('moveNotificationUser').get(uuid=uuid)
-        trip = user.moveNotificationUser.all().order_by('-start_date', '-created_at')
+        trip = user.moveNotificationUser.all().order_by('-created_at')
 
         return location_types.TripResponse(trip=trip)
     except user_models.User.DoesNotExist:

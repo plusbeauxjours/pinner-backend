@@ -16,7 +16,6 @@ class NotificationType(DjangoObjectType):
 class MoveNotificationType(DjangoObjectType):
     natural_time = graphene.String(source="natural_time")
     created_at = graphene.Date(source="created_at")
-    diff_days = graphene.Int(source="diff_days")
 
     class Meta:
         model = models.MoveNotification

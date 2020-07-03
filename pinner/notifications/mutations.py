@@ -36,8 +36,6 @@ class AddTrip(graphene.Mutation):
 
     class Arguments:
         cityId = graphene.String(required=True)
-        startDate = graphene.types.datetime.DateTime(required=True)
-        endDate = graphene.types.datetime.DateTime(required=True)
 
     Output = types.AddTripResponse
 
@@ -45,8 +43,6 @@ class AddTrip(graphene.Mutation):
     def mutate(self, info, **kwargs):
 
         cityId = kwargs.get('cityId')
-        startDate = kwargs.get('startDate')
-        endDate = kwargs.get('endDate')
         user = info.context.user
 
         try:
@@ -55,8 +51,6 @@ class AddTrip(graphene.Mutation):
                 city=location_models.City.objects.get(city_id=cityId),
                 country=location_models.Country.objects.get(cities__city_id=cityId),
                 continent=location_models.Continent.objects.get(countries__cities__city_id=cityId),
-                start_date=startDate,
-                end_date=endDate
             )
             return types.AddTripResponse(ok=True, moveNotification=moveNotification)
         except IntegrityError as e:
@@ -70,8 +64,6 @@ class EditTrip(graphene.Mutation):
     class Arguments:
         moveNotificationId = graphene.Int(required=True)
         cityId = graphene.String()
-        startDate = graphene.types.datetime.DateTime()
-        endDate = graphene.types.datetime.DateTime()
 
     Output = types.EditTripResponse
 
@@ -92,14 +84,10 @@ class EditTrip(graphene.Mutation):
         else:
             try:
                 cityId = kwargs.get('cityId', moveNotification.city.city_id)
-                startDate = kwargs.get('startDate', moveNotification.start_date)
-                endDate = kwargs.get('endDate', moveNotification.end_date)
 
                 moveNotification.city = location_models.City.objects.get(city_id=cityId)
                 moveNotification.country = location_models.Country.objects.get(cities__city_id=cityId)
                 moveNotification.continent = location_models.Continent.objects.get(countries__cities__city_id=cityId)
-                moveNotification.start_date = startDate
-                moveNotification.end_date = endDate
 
                 moveNotification.save()
                 return types.EditTripResponse(ok=True, moveNotification=moveNotification)
@@ -148,7 +136,7 @@ class CalculateDistance(graphene.Mutation):
         distance = 0
 
         try:
-            trips = models.MoveNotification.objects.filter(actor=user).order_by('-start_date', '-created_at')
+            trips = models.MoveNotification.objects.filter(actor=user).order_by('-created_at')
         except user.moveNotificationUser.DoesNotExist:
             raise Exception('Trips Not Found')
 

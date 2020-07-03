@@ -57,9 +57,6 @@ class MoveNotification(config_models.TimeStampedModel):
         'locations.Country', on_delete=models.CASCADE, null=True, blank=True, related_name='moveNotificationCountry')
     continent = models.ForeignKey(
         'locations.Continent', on_delete=models.CASCADE, null=True, blank=True, related_name='moveNotificationContinent')
-    start_date = models.DateField(null=True, blank=True)
-    end_date = models.DateField(null=True, blank=True)
-    diff_days = models.IntegerField(null=True, blank=True)
 
     @property
     def natural_time(self):
@@ -67,27 +64,3 @@ class MoveNotification(config_models.TimeStampedModel):
 
     class Meta:
         ordering = ['-created_at']
-
-
-@receiver(pre_save, sender=MoveNotification)
-def get_diff_days(sender, **kwargs):
-    instance = kwargs.pop('instance')
-    if instance.start_date or instance.end_date:
-        instance.diff_days = (instance.end_date-instance.start_date).days
-
-
-@receiver(pre_save, sender=MoveNotification)
-def clean(sender, **kwargs):
-    instance = kwargs.pop('instance')
-    if instance.start_date or instance.end_date:
-        if MoveNotification.objects.filter(actor__id=instance.actor_id).exclude(id=instance.id).filter(
-            Q(start_date__gte=instance.start_date, start_date__lt=instance.end_date)
-            | Q(end_date__gt=instance.start_date, end_date__lte=instance.end_date)
-        ).exists():
-            raise ValidationError("Overlapping dates")
-
-# @receiver(pre_save, sender=MoveNotification)
-# def clean_dates(sender, **kwargs):
-#     instance = kwargs.pop('instance')
-#     if instance.start_date > instance.end_date:
-#         raise ValidationError("Trip cannot go Back")

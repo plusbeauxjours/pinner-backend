@@ -71,8 +71,7 @@ def resolve_top_countries(self, info, **kwargs):
 
     countries = location_models.Country.objects.filter(
         cities__moveNotificationCity__actor__uuid=uuid).annotate(
-        count=Count('cities__moveNotificationCity', distinct=True)).annotate(
-        diff=Sum('cities__moveNotificationCity__diff_days')).order_by('-count', '-diff')
+        count=Count('cities__moveNotificationCity', distinct=True)).order_by('-count')
 
     return location_types.CountriesResponse(countries=countries)
 
@@ -86,8 +85,7 @@ def resolve_frequent_visits(self, info, **kwargs):
 
     cities = location_models.City.objects.filter(
         moveNotificationCity__actor__uuid=uuid).annotate(
-        count=Count('moveNotificationCity', distinct=True)).annotate(
-        diff=Sum('moveNotificationCity__diff_days')).order_by('-count', '-diff')
+        count=Count('moveNotificationCity', distinct=True)).order_by('-count')
 
     return location_types.CitiesResponse(cities=cities)
 
@@ -101,8 +99,7 @@ def resolve_top_continents(self, info, **kwargs):
 
     continents = location_models.Continent.objects.filter(
         countries__cities__moveNotificationCity__actor__uuid=uuid).annotate(
-        count=Count('countries__cities__moveNotificationCity', distinct=True)).annotate(
-        diff=Sum('countries__cities__moveNotificationCity__diff_days')).order_by('-count', '-diff')
+        count=Count('countries__cities__moveNotificationCity', distinct=True)).order_by('-count')
 
     return location_types.ContinentsResponse(continents=continents)
 

@@ -14,7 +14,6 @@ class CityType(DjangoObjectType):
     like_count = graphene.Int(source='like_count')
     distance = graphene.Int()
     count = graphene.Int()
-    diff = graphene.Int()
     is_liked = graphene.Boolean()
 
     class Meta:
@@ -33,7 +32,6 @@ class CountryType(DjangoObjectType):
     city_count = graphene.Int(source='city_count')
     total_like_count = graphene.Int(source='total_like_count')
     count = graphene.Int()
-    diff = graphene.Int()
 
     class Meta:
         model = models.Country
@@ -42,7 +40,6 @@ class CountryType(DjangoObjectType):
 class ContinentType(DjangoObjectType):
     country_count = graphene.Int(source='country_count')
     count = graphene.Int()
-    diff = graphene.Int()
 
     class Meta:
         model = models.Continent
