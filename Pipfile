@@ -76,6 +76,7 @@ argon2 = "*"
 future = "*"
 django-storages = "*"
 django-seed = "*"
+python-google-places = "*"
 
 [requires]
 python_version = "3.7"

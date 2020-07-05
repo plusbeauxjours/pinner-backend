@@ -1,13 +1,11 @@
 import graphene
 from django.db import IntegrityError
 from . import models, types
-import json
 from graphql_jwt.decorators import login_required
 from locations import models as location_models
-from locations import locationThumbnail
 from notifications import models as notification_models
 from users import models as user_models
-from django.utils import timezone
+from django.db.models import Q
 
 
 class Match(graphene.Mutation):
@@ -32,21 +30,22 @@ class Match(graphene.Mutation):
             host = user_models.User.objects.get(uuid=hostUuid)
             guest = user_models.User.objects.get(uuid=guestUuid)
             city = location_models.City.objects.get(city_id=cityId)
-            countryCode = city.country.country_code
-            continentCode = city.country.continent.continent_code
-            match = models.Match.objects.create(
-                city=city,
-                host=host,
-                guest=user,
-            )
-            notification_models.Notification.objects.create(
-                verb="match",
-                actor=user,
-                target=guest,
-                match=match
-            )
-            return types.MatchResponse(ok=True, match=match,  cityId=cityId, countryCode=countryCode,
-                                       continentCode=continentCode)
+            try:
+                existingMatch = models.Match.objects.get(Q(host=host, guest=guest) | Q(host=guest, guest=host))
+                return types.MatchResponse(ok=True, match=existingMatch)
+            except models.Match.DoesNotExist:
+                match = models.Match.objects.create(
+                    city=city,
+                    host=host,
+                    guest=guest,
+                )
+                notification_models.Notification.objects.create(
+                    verb="match",
+                    actor=user,
+                    target=guest,
+                    match=match
+                )
+                return types.MatchResponse(ok=True, match=match)
         except IntegrityError as e:
             print(e)
             raise Exception("Can't create a match")
@@ -67,15 +66,10 @@ class UnMatch(graphene.Mutation):
 
         try:
             match = models.Match.objects.get(id=matchId)
-            cityId = match.city.city_id
-            countryCode = match.city.country.country_code
-            continentCode = match.city.country.continent.continent_code
             match.delete()
-            return types.UnMatchResponse(ok=True, matchId=matchId,  cityId=cityId, countryCode=countryCode,
-                                         continentCode=continentCode)
+            return types.UnMatchResponse(ok=True, matchId=matchId,)
         except models.Match.DoesNotExist:
-            return types.UnMatchResponse(ok=False, matchId=None,  cityId=None, countryCode=None,
-                                         continentCode=None)
+            return types.UnMatchResponse(ok=False, matchId=None, )
 
 
 class MarkAsReadMatch(graphene.Mutation):

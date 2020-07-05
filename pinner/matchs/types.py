@@ -64,18 +64,12 @@ class GetMatchesResponse(graphene.ObjectType):
 
 class MatchResponse(graphene.ObjectType):
     ok = graphene.Boolean()
-    cityId = graphene.String()
-    countryCode = graphene.String()
-    continentCode = graphene.String()
     match = graphene.Field(MatchType)
 
 
 class UnMatchResponse(graphene.ObjectType):
     ok = graphene.Boolean()
     matchId = graphene.Int()
-    cityId = graphene.String()
-    countryCode = graphene.String()
-    continentCode = graphene.String()
 
 
 class MarkAsReadMatchResponse(graphene.ObjectType):

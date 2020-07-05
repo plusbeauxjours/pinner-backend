@@ -596,9 +596,9 @@ class UploadAvatar(graphene.Mutation):
         user = info.context.user
 
         try:
-            prevMainAvatar = models.Avatar.objects.get(
+            prevMainAvatar = models.Avatar.objects.filter(
                 is_main=True, creator=user)
-            prevMainAvatar.is_main = False
+            prevMainAvatar.update(is_main=False)
             newMainAvatar = models.Avatar.objects.create(
                 is_main=True, image=file, thumbnail=file, app_thumbnail=file, creator=user)
             user.avatar_url = newMainAvatar.thumbnail

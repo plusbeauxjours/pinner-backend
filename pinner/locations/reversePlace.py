@@ -20,7 +20,9 @@ def reverse_place(placeId):
 
                 if component['types'][0] == 'locality' or component['types'][0] == 'sublocality' or component['types'][0] == 'colloquial_area':
                     city_name = component['long_name']
-                    # return city_name
+                    break
+                elif component['types'][0] == 'administrative_area_level_1':
+                    city_name = component['long_name']
         return lat, lng, city_name,  country_code
     except:
         lat = 0
