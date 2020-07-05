@@ -138,7 +138,7 @@ class CalculateDistance(graphene.Mutation):
         try:
             trips = models.MoveNotification.objects.filter(actor=user).order_by('-created_at')
         except user.moveNotificationUser.DoesNotExist:
-            raise Exception('Trips Not Found')
+            pass
 
         try:
             for i, trip in enumerate(trips):

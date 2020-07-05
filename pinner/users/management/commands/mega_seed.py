@@ -10,6 +10,7 @@ from django.db.models.expressions import RawSQL
 from locations import reversePlace, locationThumbnail
 from googleplaces import GooglePlaces
 from django.conf import settings
+from math import radians, degrees, sin, cos, asin, acos, sqrt
 
 
 def createCity(cityId):
@@ -113,7 +114,7 @@ def createCity(cityId):
         city.save()
 
 
-citiNames = [
+cityNames = [
     "TOKYO, Japan",
     "JAKARTA, Indonesia",
     "New York",
@@ -791,7 +792,7 @@ class Command(BaseCommand):
         randomCity = location_models.City.objects.all()
         user_seeder.add_entity(
             user_models.User,
-            80,
+            300,
             {
                 "uuid": lambda x: uuid.uuid4(),
                 "residence": lambda x: random.choice(randomCountry),
@@ -801,7 +802,22 @@ class Command(BaseCommand):
                 "current_city": lambda x: random.choice(randomCity),
                 "current_country": None,
                 "current_continent": None,
-
+                "is_dark_mode": True,
+                "is_hide_photos": False,
+                "is_hide_trips": False,
+                "is_hide_cities": False,
+                "is_hide_countries": False,
+                "is_hide_continents": False,
+                "is_auto_location_report": True,
+                "fbId": None,
+                "appleId": None,
+                "is_verified_phone_number": False,
+                "is_verified_email_address": False,
+                "avatar_url": None,
+                "app_avatar_url": None,
+                "push_token": None,
+                "distance": 0,
+                "website": None,
             },
         )
         user_seeder.execute()
@@ -826,10 +842,29 @@ class Command(BaseCommand):
         # UPDATE USER
 
         allUser = user_models.User.objects.all()
-        for i in allUser:
-            i.current_country = i.current_city.country
-            i.current_continent = i.current_city.country.continent
-            i.save()
+        for user in allUser:
+            distance = 0
+            user.current_country = user.current_city.country
+            user.current_continent = user.current_city.country.continent
+            trips = notification_models.MoveNotification.objects.filter(actor=user).order_by('-created_at')
+            try:
+                for i, trip in enumerate(trips):
+                    try:
+                        print("distance1", distance)
+                        lon1, lat1, lon2, lat2 = map(
+                            radians, [trips[i].city.longitude, trips[i].city.latitude, trips[i+1].city.longitude, trips[i+1].city.latitude])
+                        dist = 6371 * (
+                            acos(sin(lat1) * sin(lat2) + cos(lat1) * cos(lat2) * cos(lon1 - lon2))
+                        )
+                        distance += dist
+                        print("distance2", distance)
+                    except (ZeroDivisionError, IndexError) as e:
+                        print(e)
+                print("distance3", distance)
+                user.distance = round(distance)
+                user.save()
+            except notification_models.MoveNotification.DoesNotExist:
+                pass
 
         # UPDATE MOVENOTIFICATION
 
@@ -838,4 +873,5 @@ class Command(BaseCommand):
             i.country = i.city.country
             i.continent = i.city.country.continent
             i.save()
+
         self.stdout.write(self.style.SUCCESS(f"Everything seeded"))
