@@ -32,91 +32,92 @@ def createCity(cityId):
 
     cityLatitude, cityLongitude, cityName, countryCode = reversePlace.reverse_place(cityId)
     nearCities = get_locations_nearby_coords(cityLatitude, cityLongitude, 3000)[:20]
-
-    try:
-        country = location_models.Country.objects.get(country_code=countryCode)
-    except location_models.Country.DoesNotExist:
-
-        with open('pinner/locations/countryData.json', mode='rt', encoding='utf-8') as file:
-            countryData = json.load(file)
-            currentCountry = countryData[countryCode]
-            countryName = currentCountry['name']
-            countryNameNative = currentCountry['native']
-            countryCapital = currentCountry['capital']
-            countryCurrency = currentCountry['currency']
-            countryPhone = currentCountry['phone']
-            countryEmoji = currentCountry['emoji']
-            continentCode = currentCountry['continent']
-            latitude = currentCountry['latitude']
-            longitude = currentCountry['longitude']
-
-            try:
-                continent = location_models.Continent.objects.get(continent_code=continentCode)
-            except:
-                with open('pinner/locations/continentData.json', mode='rt', encoding='utf-8') as file:
-                    continentData = json.load(file)
-                    continentName = continentData[continentCode]
-
-                    try:
-                        gp = locationThumbnail.get_photos(term=continentName).get_urls()
-                        continentPhotoURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=faces&h=450&w=450&fit=crop"
-                        continentThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=faces&h=80&w=80&fit=crop"
-                    except:
-                        continentPhotoURL = None
-                        continentThumbnailURL = None
-
-                    continent = location_models.Continent.objects.create(
-                        continent_name=continentName,
-                        continent_photo=continentPhotoURL,
-                        continent_thumbnail=continentThumbnailURL,
-                        continent_code=continentCode
-                    )
+    if cityLatitude and cityLongitude and cityName and countryCode:
         try:
-            gp = locationThumbnail.get_photos(term=countryName).get_urls()
-            countryPhotoURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=faces&h=450&w=450&fit=crop"
-            countryThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=faces&h=80&w=80&fit=crop"
-        except:
-            countryPhotoURL = None
-            countryThumbnailURL = None
-        country = location_models.Country.objects.create(
-            country_code=countryCode,
-            country_name=countryName,
-            country_name_native=countryNameNative,
-            country_capital=countryCapital,
-            country_currency=countryCurrency,
-            country_phone=countryPhone,
-            country_emoji=countryEmoji,
-            country_photo=countryPhotoURL,
-            country_thumbnail=countryThumbnailURL,
-            continent=continent,
-            latitude=latitude,
-            longitude=longitude
-        )
+            country = location_models.Country.objects.get(country_code=countryCode)
+        except location_models.Country.DoesNotExist:
 
-    try:
-        gp = locationThumbnail.get_photos(term=cityName).get_urls()
-        cityPhotoURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=faces&h=450&w=450&fit=crop"
-        cityThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=faces&h=80&w=80&fit=crop"
-    except:
-        cityPhotoURL = None
-        cityThumbnailURL = None
-    city = location_models.City.objects.create(
-        city_id=cityId,
-        city_name=cityName,
-        country=country,
-        city_photo=cityPhotoURL,
-        city_thumbnail=cityThumbnailURL,
-        latitude=cityLatitude,
-        longitude=cityLongitude
-    )
-    for i in nearCities:
-        city.near_city.add(i)
-        city.save()
+            with open('pinner/locations/countryData.json', mode='rt', encoding='utf-8') as file:
+                countryData = json.load(file)
+                currentCountry = countryData[countryCode]
+                countryName = currentCountry['name']
+                countryNameNative = currentCountry['native']
+                countryCapital = currentCountry['capital']
+                countryCurrency = currentCountry['currency']
+                countryPhone = currentCountry['phone']
+                countryEmoji = currentCountry['emoji']
+                continentCode = currentCountry['continent']
+                latitude = currentCountry['latitude']
+                longitude = currentCountry['longitude']
+
+                try:
+                    continent = location_models.Continent.objects.get(continent_code=continentCode)
+                except:
+                    with open('pinner/locations/continentData.json', mode='rt', encoding='utf-8') as file:
+                        continentData = json.load(file)
+                        continentName = continentData[continentCode]
+
+                        try:
+                            gp = locationThumbnail.get_photos(term=continentName).get_urls()
+                            continentPhotoURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=faces&h=450&w=450&fit=crop"
+                            continentThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=faces&h=80&w=80&fit=crop"
+                        except:
+                            continentPhotoURL = None
+                            continentThumbnailURL = None
+
+                        continent = location_models.Continent.objects.create(
+                            continent_name=continentName,
+                            continent_photo=continentPhotoURL,
+                            continent_thumbnail=continentThumbnailURL,
+                            continent_code=continentCode
+                        )
+            try:
+                gp = locationThumbnail.get_photos(term=countryName).get_urls()
+                countryPhotoURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=faces&h=450&w=450&fit=crop"
+                countryThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=faces&h=80&w=80&fit=crop"
+            except:
+                countryPhotoURL = None
+                countryThumbnailURL = None
+            country = location_models.Country.objects.create(
+                country_code=countryCode,
+                country_name=countryName,
+                country_name_native=countryNameNative,
+                country_capital=countryCapital,
+                country_currency=countryCurrency,
+                country_phone=countryPhone,
+                country_emoji=countryEmoji,
+                country_photo=countryPhotoURL,
+                country_thumbnail=countryThumbnailURL,
+                continent=continent,
+                latitude=latitude,
+                longitude=longitude
+            )
+
+        try:
+            gp = locationThumbnail.get_photos(term=cityName).get_urls()
+            cityPhotoURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=faces&h=450&w=450&fit=crop"
+            cityThumbnailURL = gp+"?ixlib=rb-0.3.5&q=100&fm=jpg&crop=entropy&cs=faces&h=80&w=80&fit=crop"
+        except:
+            cityPhotoURL = None
+            cityThumbnailURL = None
+        city = location_models.City.objects.create(
+            city_id=cityId,
+            city_name=cityName,
+            country=country,
+            city_photo=cityPhotoURL,
+            city_thumbnail=cityThumbnailURL,
+            latitude=cityLatitude,
+            longitude=cityLongitude
+        )
+        print(city.cityName)
+        for i in nearCities:
+            city.near_city.add(i)
+            city.save()
 
 
 cityNames = [
     "TOKYO, Japan",
-    "JAKARTA, Indonesia",
+    # "JAKARTA, Indonesia",
     "New York",
     "SEOUL, South Korea",
     "MANILA, Philippines",
@@ -132,8 +133,6 @@ cityNames = [
     "MOSCOW, Russia",
     "BEIJING, China",
     "BUENOS AIRES, Argentina",
-    "Guangzhou, China",
-    "Shenzhen, China",
     "Istanbul, Turkey",
     "Rio de Janeiro, Brazil",
     "PARIS, France",
@@ -152,7 +151,6 @@ cityNames = [
     "DHAKA, Bangladesh",
     "Essen, Germany",
     "Tianjin, China",
-    "HONG KONG, China",
     "Lahore, Pakistan",
     "Bangalore, India",
     "Hyderabad, India",
@@ -200,12 +198,10 @@ cityNames = [
     "Porto Alegre, Brazil",
     "Melbourne, Australia",
     "LUANDA, Angola",
-    "Hangzhou, China",
     "ALGIERS, Algeria",
     "Hà Noi, Viet Nam",
     "Montréal, Canada",
     "PYONGYANG, North Korea",
-    "Qingdao, China",
     "Surat, India",
     "Fortaleza, Brazil",
     "Medellín, Colombia",
@@ -243,7 +239,6 @@ cityNames = [
     "Rawalpindi, Pakistan",
     "TASHKENT, Uzbekistan",
     "Katowice, Poland",
-    "Changchun, China",
     "Campinas, Brazil",
     "Daegu, South Korea",
     "Changsha, China",
@@ -256,9 +251,7 @@ cityNames = [
     "Birmingham, United Kingdom",
     "Tampa",
     "Medan, Indonesia",
-    "Dalian, China",
     "TUNIS, Tunisia",
-    "Shijiazhuang, China",
     "Manchester, United Kingdom",
     "PORT-AU-PRINCE, Haiti",
     "DAMASCUS, Syria",
@@ -283,14 +276,12 @@ cityNames = [
     "Yokohama, Japan",
     "Incheon, South Korea",
     "BRASILIA, Brazil",
-    "Zhongshan, China",
     "West Midlands, United Kingdom",
     "Giza, Egypt",
     "Quezon City, Philippines",
     "Chittagong, Bangladesh",
     "STOCKHOLM, Sweden",
     "Puebla de Zaragoza, Mexico",
-    "Puning, China",
     "BAKU, Azerbaijan",
     "Ibadan, Nigeria",
     "Brisbane, Australia",
@@ -299,12 +290,8 @@ cityNames = [
     "Maracaibo, Venezuela",
     "Hamburg, Germany",
     "BUDAPEST, Hungary",
-    "Shunde, China",
     "Manaus, Brazil",
-    "Xuzhou, China",
     "Ségou, Mali",
-    "Baotou, China",
-    "Hefei, China",
     "VIENNA, Austria",
     "Indore, India",
     "ASUNCION, Paraguay",
@@ -326,52 +313,29 @@ cityNames = [
     "Kyoto, Japan",
     "Xiantao, China",
     "Tangerang, Indonesia",
-    "Bhopal, India",
-    "Coimbatore, India",
     "Kharkiv, Ukraine",
     "Gwangju, South Korea",
     "Xinghua, China",
     "HARARE, Zimbabwe",
-    "Fushun, China",
-    "Shangqiu, China",
     "Belém, Brazil",
     "Santa Cruz,",
     "Semarang, Indonesia",
-    "Ludhiana, India",
     "Novosibirsk, Russia",
-    "Neijiang, Chin",
+    "Neijiang, China",
     "MAPUTO, Mozambique",
     "Douala, Cameroon",
-    "Weifang, China",
-    "Daqing, China",
     "Kayes, Mali",
-    "Tongzhou, China",
     "Tabriz, Iran",
     "Homs, Syria",
-    "Kochi, India",
-    "Suining, China",
-    "Bozhou, China",
-    "Zhanjiang, China",
-    "Changde, China",
     "MONTEVIDEO, Uruguay",
-    "Xintai, China",
     "Ekaterinoburg, Russia",
     "Juárez, Mexico",
-    "Handan, China",
-    "Visakhapatnam, India",
     "Kawasaki, Japan",
-    "Jiangjin, China",
-    "Pingdu, China",
-    "Agra, India",
-    "Jiangyin, China",
     "Tijuana, Mexico",
-    "Liuyang, China",
     "Bursa, Turkey",
     "Al-Hasakeh, Syria",
     "Makkah, Saudi Arabia",
     "YAOUNDE, Cameroon",
-    "Xuanwei, China",
-    "Dengzhou, China",
     "Palembang, Indonesia",
     "Nizhny Novgorod, Russia",
     "León, Mexico",
@@ -380,7 +344,6 @@ cityNames = [
     "Auckland, New Zealand",
     "Omdurman, Sudan",
     "Valencia, Venezuela",
-    "Thane, India",
     "San Antonio",
     "Almaty, Kazakhstan",
     "PHNOM PENH, Cambodia",
@@ -392,22 +355,16 @@ cityNames = [
     "Varanasi, India",
     "Córdoba, Argentina",
     "KAMPALA, Uganda",
-    "Ruian, China",
-    "Lianjiang, China",
-    "Huaian, China",
     "Shiraz, Iran",
     "Multan, Pakistan",
     "Madurai, India",
     "München, Germany",
     "Kalyan, India",
-    "Quanzhou, Chin",
+    "Quanzhou, China",
     "Adana, Turkey",
-    "Bazhong, Chin",
+    "Bazhong, China",
     "Fès, Morocco",
     "OUAGADOUGOU, Burkina Faso",
-    "Haicheng, China",
-    "Xishan, China",
-    "Leiyang, China",
     "Caloocan, Philippines",
     "Kalookan, Philippines",
     "Saitama, Japan",
@@ -419,7 +376,7 @@ cityNames = [
     "Yushu, China",
     "Barranquilla, Colombia",
     "Hiroshima, Japan",
-    "Chifeng, Chin",
+    "Chifeng, China",
     "Nashik, India",
     "Makasar, Indonesia",
     "SOFIA, Bulgaria",
@@ -439,7 +396,6 @@ cityNames = [
     "YEREVAN, Armenia",
     "Jamshedpur, India",
     "Zürich, Switzerland",
-    "Zoucheng, China",
     "Pikine-Guediawaye, Senegal",
     "Anqiu, China",
     "Chelyabinsk, Russia",
@@ -464,9 +420,7 @@ cityNames = [
     "Ufa, Russia",
     "Sendai, Japan",
     "Volgograd, Russia",
-    "Ezhou, China",
     "GUATEMALA CITY, Guatemala",
-    "Zhongxiang, China",
     "AMSTERDAM, Netherlands",
     "BRUSSELS, Belgium",
     "BAMAKO, Mali",
@@ -491,7 +445,6 @@ cityNames = [
     "Peshawar, Pakistan",
     "ULAANBAATAR, Mongolia",
     "Sao Gonçalo, Brazil",
-    "Srinagar, India",
     "Ghaziabad, India",
     "Köln, Germany",
     "Ahwaz, Iran",
@@ -511,26 +464,17 @@ cityNames = [
     "Soweto, South Africa",
     "Cartagena, Colombia",
     "Torino, Italy",
-    "Aurangabad, India",
     "Lattakia, Syria",
     "Mérida, Mexico",
-    "Thiruvananthapuram, India",
     "Göteborg, Sweden",
     "Torreón, Mexico",
-    "Kozhikode, India",
     "Salé, Morocco",
     "Tyneside, United Kingdom",
-    "Solapur, India",
     "Shubra-El-Khema, Egypt",
-    "Gwalior, India",
-    "Ranchi, India",
     "Mombasa, Kenya",
     "TEGUCIGALPA, Honduras",
-    "Jodhpur, India",
-    "Duque de Caxias, Brazil",
     "Tiruchchirappalli, India",
     "Saratov, Russia",
-    "Nova Iguaçu, Brazil",
     "Santiago de los Caballeros, Dominican",
     "LA PAZ, Bolivia",
     "Sakai, Japan",
@@ -540,28 +484,20 @@ cityNames = [
     "Liverpool, United Kingdom",
     "Yanshi, China",
     "Guwahati, India",
-    "Yichun, China",
     "Konya, Turkey",
     "Barquisimeto, Venezuela",
     "Valencia, Spain",
     "Guilin, China",
     "Hamamatsu, Japan",
-    "Sao Bernardo do Campo, Brazil",
     "Deir El-Zor, Syria",
     "BISHKEK, Kyrgyzstan",
-    "Teresina, Brazil",
     "BENGHAZI, Libya",
     "Zaporizhya, Ukraine",
     "Gaoyou, China",
     "Marseille, France",
-    "Natal, Brazil",
     "Bandar Lampung, Indonesia",
-    "Hubli-Dharwad, India",
-    "Mysore, India",
     "Niigata, Japan",
     "Indianapolis",
-    "Jiaozhou, China",
-    "Pingxiang, China",
     "Haiphong, Viet Nam",
     "Arequipa, Peru",
     "Jacksonville",
@@ -572,8 +508,6 @@ cityNames = [
     "ZAGREB, Croatia",
     "Port Elizabeth, South Africa",
     "Mendoza, Argentina",
-    "Nantong, China",
-    "Pengzhou, China",
     "Khulna, Bangladesh",
     "Malang, Indonesia",
     "Padang, Indonesia",
@@ -592,10 +526,8 @@ cityNames = [
     "Columbus",
     "Bareilly, India",
     "JERUSALEM, Israel",
-    "Tainan, China",
     "Cuernavaca, Mexico",
     "RIGA, Latvia",
-    "Linfen, China",
     "Québec, Canada",
     "Cebu, Philippines",
     "Aguascalientes, Mexico",
@@ -624,21 +556,17 @@ cityNames = [
     "Querétaro, Mexico",
     "PRETORIA, South Africa",
     "Meknès, Morocco",
-    "Qiongshan, China",
     "Bulawayo, Zimbabwe",
-    "Wendeng, China",
     "Okayama, Japan",
     "Santo André, Brazil",
     "RABAT, Morocco",
     "Pakanbaru, Indonesia",
-    "Nehe, China",
     "Memphis",
     "Joao Pessoa, Brazil",
     "KATHMANDU, Nepal",
     "Antalya, Turkey",
     "Kumamoto, Japan",
     "Palermo, Italy",
-    "Aligarh, India",
     "Nottingham, United Kingdom",
     "Mosul, Iraq",
     "Hermosillo, Mexico",
@@ -649,7 +577,6 @@ cityNames = [
     "Cotonou, Benin",
     "Zaragoza, Spain",
     "Tampico, Mexico",
-    "Maoming, China",
     "Morón, Argentina",
     "La Plata, Argentina",
     "Ciudad Guayana, Venezuela",
@@ -661,11 +588,8 @@ cityNames = [
     "Puente Alto, Chile",
     "Gorakhpur, India",
     "Fort Worth",
-    "Xinji, China",
     "San Miguel de Tucumán, Argentina",
-    "Dujiangyan, China",
     "The Hague, Netherlands",
-    "Bhiwandi, India",
     "Culiacán Rosales, Mexico",
     "Maiduguri, Nigeria",
     "Genova, Italy",
@@ -677,7 +601,6 @@ cityNames = [
     "Sao José dos Campos, Brazil",
     "Charlotte",
     "Malmö, Sweden",
-    "Jammu, India",
     "Kagoshima, Japan",
     "Yaroslave, Russia",
     "Contagem, Brazil",
@@ -692,25 +615,20 @@ cityNames = [
     "Jurong, China",
     "Cúcuta, Colombia",
     "Dortmund, Germany",
-    "Cuttack, India",
     "Cochabamba, Bolivia",
     "Cheongju, South Korea",
     "Chongjin, North Korea",
     "Stuttgart, Germany",
-    "Rushan, China",
     "KINGSTON, Jamaica",
     "Milwaukee",
     "Sorocaba, Brazil",
     "Glasgow, United Kingdom",
     "Khabarovsk, Russia",
-    "Guanghan, China",
-    "Warangal, India",
     "Irkutsk, Russia",
     "Tyumen, Russia",
     "Lomas de Zamora, Argentina",
     "Funabashi, Japan",
     "Düsseldorf, Germany",
-    "Shenzhou, China",
     "Içel, Turkey",
     "Maanshan, China",
     "Bandjarmasin, Indonesia",
@@ -718,31 +636,24 @@ cityNames = [
     "Poznan, Poland",
     "Kayseri, Turkey",
     "Quetta, Pakistan",
-    "Samarinda, Indonesia",
     "HELSINKI, Finland",
     "Novokuznetsk, Russia",
     "Málaga, Spain",
     "Hachioji, Japan",
     "Ribeirao Prêto,",
-    "Jamnagar, India",
     "NOUAKCHOTT, Mauritania",
-    "Bhilai Nagar, India",
     "Dezhou, China",
     "Makhachkala, Russia",
     "Bristol, United Kingdom",
     "ASTANA, Kazakhstan",
     "Yizhou, China",
-    "Amravati, India",
     "Nashville-Davidson",
-    "Batam, Indonesia",
     "Orenburg, Russia",
     "Cancun, Mexico",
     "OSLO, Norway",
     "Cuiabá, Brazil",
-    "Tiruppur, India",
     "VILNIUS, Lithuania",
     "Bremen, Germany",
-    "Mangalore, India",
     "Feira de Santana, Brazil",
     "Portland",
     "Reynosa, Mexico",
@@ -750,20 +661,14 @@ cityNames = [
     "Oklahoma City",
     "Nakhon Ratchasima, Thailand",
     "Kerman, Iran",
-    "Kaiyuan, China",
     "ISLAMABAD, Pakistan",
-    "Bikaner, India",
     "DUSHANBE, Tajikistan",
     "VIENTIANE, Laos",
-    "Dehradun, India",
-    "Beining, China",
     "ABU DHABI, United Arab Emirates",
     "Shimkent, Kazakhstan",
     "Imbaba, Egypt",
-    "Yicheng, China",
     "SKOPLJE, Macedonia",
     "Kadhimain, Iraq",
-    "Renhuai, China",
     "Kemerovo, Russia",
     "Duisburg, Germany",
     "Rasht, Iran"
@@ -790,37 +695,42 @@ class Command(BaseCommand):
         user_seeder = Seed.seeder()
         randomCountry = location_models.Country.objects.all()
         randomCity = location_models.City.objects.all()
-        user_seeder.add_entity(
-            user_models.User,
-            300,
-            {
-                "uuid": lambda x: uuid.uuid4(),
-                "residence": lambda x: random.choice(randomCountry),
-                "nationality": lambda x: random.choice(randomCountry),
-                "is_staff": False,
-                "is_superuser": False,
-                "current_city": lambda x: random.choice(randomCity),
-                "current_country": None,
-                "current_continent": None,
-                "is_dark_mode": True,
-                "is_hide_photos": False,
-                "is_hide_trips": False,
-                "is_hide_cities": False,
-                "is_hide_countries": False,
-                "is_hide_continents": False,
-                "is_auto_location_report": True,
-                "fbId": None,
-                "appleId": None,
-                "is_verified_phone_number": False,
-                "is_verified_email_address": False,
-                "avatar_url": None,
-                "app_avatar_url": None,
-                "push_token": None,
-                "distance": 0,
-                "website": None,
-            },
-        )
-        user_seeder.execute()
+        with open('pinner/users/adjectives.json', mode='rt', encoding='utf-8') as adjectives:
+            with open('pinner/users/nouns.json', mode='rt', encoding='utf-8') as nouns:
+                adjectives = json.load(adjectives)
+                nouns = json.load(nouns)
+                user_seeder.add_entity(
+                    user_models.User,
+                    300,
+                    {
+                        "uuid": lambda x: uuid.uuid4(),
+                        "username": lambda x: random.choice(adjectives) + random.choice(nouns).capitalize(),
+                        "residence": lambda x: random.choice(randomCountry),
+                        "nationality": lambda x: random.choice(randomCountry),
+                        "is_staff": False,
+                        "is_superuser": False,
+                        "current_city": lambda x: random.choice(randomCity),
+                        "current_country": None,
+                        "current_continent": None,
+                        "is_dark_mode": True,
+                        "is_hide_photos": False,
+                        "is_hide_trips": False,
+                        "is_hide_cities": False,
+                        "is_hide_countries": False,
+                        "is_hide_continents": False,
+                        "is_auto_location_report": True,
+                        "fbId": None,
+                        "appleId": None,
+                        "is_verified_phone_number": False,
+                        "is_verified_email_address": False,
+                        "avatar_url": None,
+                        "app_avatar_url": None,
+                        "push_token": None,
+                        "distance": 0,
+                        "website": None,
+                    },
+                )
+                user_seeder.execute()
 
         # CREATE MOVENOTIFICATION
 
@@ -850,17 +760,14 @@ class Command(BaseCommand):
             try:
                 for i, trip in enumerate(trips):
                     try:
-                        print("distance1", distance)
                         lon1, lat1, lon2, lat2 = map(
                             radians, [trips[i].city.longitude, trips[i].city.latitude, trips[i+1].city.longitude, trips[i+1].city.latitude])
                         dist = 6371 * (
                             acos(sin(lat1) * sin(lat2) + cos(lat1) * cos(lat2) * cos(lon1 - lon2))
                         )
                         distance += dist
-                        print("distance2", distance)
                     except (ZeroDivisionError, IndexError) as e:
                         print(e)
-                print("distance3", distance)
                 user.distance = round(distance)
                 user.save()
             except notification_models.MoveNotification.DoesNotExist:
