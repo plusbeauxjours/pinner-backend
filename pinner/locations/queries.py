@@ -67,17 +67,17 @@ def resolve_city_profile(self, info, **kwargs):
         raise GraphQLError('City not found')
     count = user.moveNotificationUser.values('id').filter(city__city_id=cityId).count()
 
-    # usersNow = city.currentCity.order_by('-id').distinct('id')
-    usersNow = city.currentCity.order_by('-id')
+    usersNow = city.currentCity.order_by('-id').distinct('id')
+    # usersNow = city.currentCity.order_by('-id')
 
     if payload == "BOX":
         usersBefore = city.moveNotificationCity.exclude(
-            # actor__in=usersNow).order_by('-actor_id').distinct('actor_id')[:15]
-            actor__in=usersNow).order_by('-actor_id')[:15]
+            actor__in=usersNow).order_by('-actor_id').distinct('actor_id')[:15]
+        # actor__in=usersNow).order_by('-actor_id')[:15]
     else:
         usersBefore = city.moveNotificationCity.exclude(
-            # actor__in=usersNow).order_by('-actor_id').distinct('actor_id')
-            actor__in=usersNow).order_by('-actor_id')
+            actor__in=usersNow).order_by('-actor_id').distinct('actor_id')
+        # actor__in=usersNow).order_by('-actor_id')
 
     if page == 1:
         nextPage = page+1
@@ -135,8 +135,8 @@ def resolve_city_users_now(self, info, **kwargs):
     except models.City.DoesNotExist:
         raise GraphQLError('City not found')
 
-    # usersNow = city.currentCity.order_by('-id').distinct('id')
-    usersNow = city.currentCity.order_by('-id')
+    usersNow = city.currentCity.order_by('-id').distinct('id')
+    # usersNow = city.currentCity.order_by('-id')
 
     hasNextPage = offset < usersNow.count()
 
@@ -161,11 +161,11 @@ def resolve_city_users_before(self, info, **kwargs):
     except models.City.DoesNotExist:
         raise GraphQLError('City not found')
 
-    # usersNow = city.currentCity.order_by('-id').distinct('id')
-    usersNow = city.currentCity.order_by('-id')
+    usersNow = city.currentCity.order_by('-id').distinct('id')
+    # usersNow = city.currentCity.order_by('-id')
     usersBefore = city.moveNotificationCity.exclude(
-        # actor__in=usersNow).order_by('-actor_id').distinct('actor_id')
-        actor__in=usersNow).order_by('-actor_id')
+        actor__in=usersNow).order_by('-actor_id').distinct('actor_id')
+    # actor__in=usersNow).order_by('-actor_id')
 
     if payload == "APP":
         return notification_types.usersBeforeResponse(usersBefore=usersBefore,  page=None, hasNextPage=None)
@@ -265,12 +265,12 @@ def resolve_get_nationality_users(self, info, **kwargs):
         country = models.Country.objects.get(country_code=countryCode)
 
         if payload == "BOX":
-            # users = country.nationality.order_by('-id').distinct('id')[:15]
-            users = country.nationality.order_by('-id')[:15]
+            users = country.nationality.order_by('-id').distinct('id')[:15]
+            # users = country.nationality.order_by('-id')[:15]
             return user_types.GetUserListResponse(users=users)
         else:
-            # users = country.nationality.order_by('-id').distinct('id')
-            users = country.nationality.order_by('-id')
+            users = country.nationality.order_by('-id').distinct('id')
+            # users = country.nationality.order_by('-id')
             return user_types.GetUserListResponse(users=users)
 
     except models.Country.DoesNotExist:
@@ -288,12 +288,12 @@ def resolve_get_residence_users(self, info, **kwargs):
         country = models.Country.objects.get(country_code=countryCode)
 
         if payload == "BOX":
-            # users = country.residence.order_by('-id').distinct('id')[:15]
-            users = country.residence.order_by('-id')[:15]
+            users = country.residence.order_by('-id').distinct('id')[:15]
+            # users = country.residence.order_by('-id')[:15]
             return user_types.GetUserListResponse(users=users)
         else:
-            # users = country.residence.order_by('-id').distinct('id')
-            users = country.residence.order_by('-id')
+            users = country.residence.order_by('-id').distinct('id')
+            # users = country.residence.order_by('-id')
             return user_types.GetUserListResponse(users=users)
 
     except models.Country.DoesNotExist:
@@ -315,8 +315,8 @@ def resolve_country_users_now(self, info, **kwargs):
     except models.Country.DoesNotExist:
         raise GraphQLError('Country not found')
 
-    # usersNow = country.currentCountry.order_by('-id').distinct('id')
-    usersNow = country.currentCountry.order_by('-id')
+    usersNow = country.currentCountry.order_by('-id').distinct('id')
+    # usersNow = country.currentCountry.order_by('-id')
 
     hasNextPage = offset < usersNow.count()
 
@@ -340,11 +340,11 @@ def resolve_country_users_before(self, info, **kwargs):
     except models.Country.DoesNotExist:
         raise GraphQLError('Country not found')
 
-    # usersNow = country.currentCountry.order_by('-id').distinct('id')
-    usersNow = country.currentCountry.order_by('-id')
+    usersNow = country.currentCountry.order_by('-id').distinct('id')
+    # usersNow = country.currentCountry.order_by('-id')
     usersBefore = country.moveNotificationCountry.exclude(
-        # actor__in=usersNow).order_by('-actor_id').distinct('actor_id')
-        actor__in=usersNow).order_by('-actor_id')
+        actor__in=usersNow).order_by('-actor_id').distinct('actor_id')
+    # actor__in=usersNow).order_by('-actor_id')
 
     hasNextPage = offset < usersBefore.count()
 
@@ -415,8 +415,8 @@ def resolve_continent_users_now(self, info, **kwargs):
     except models.Continent.DoesNotExist:
         raise GraphQLError('Continent not found')
 
-    # usersNow = continent.currentContinent.order_by('-id').distinct('id')
-    usersNow = continent.currentContinent.order_by('-id')
+    usersNow = continent.currentContinent.order_by('-id').distinct('id')
+    # usersNow = continent.currentContinent.order_by('-id')
 
     hasNextPage = offset < usersNow.count()
 
@@ -440,11 +440,11 @@ def resolve_continent_users_before(self, info, **kwargs):
     except models.Continent.DoesNotExist:
         raise GraphQLError('Continent not found')
 
-    # usersNow = continent.currentContinent.order_by('-id').distinct('id')
-    usersNow = continent.currentContinent.order_by('-id')
+    usersNow = continent.currentContinent.order_by('-id').distinct('id')
+    # usersNow = continent.currentContinent.order_by('-id')
     usersBefore = continent.moveNotificationContinent.exclude(
-        # actor__in=usersNow).order_by('-actor_id').distinct('actor_id')
-        actor__in=usersNow).order_by('-actor_id')
+        actor__in=usersNow).order_by('-actor_id').distinct('actor_id')
+    # actor__in=usersNow).order_by('-actor_id')
 
     hasNextPage = offset < usersBefore.count()
 

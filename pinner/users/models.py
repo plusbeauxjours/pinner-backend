@@ -95,18 +95,18 @@ class User(AbstractUser, config_models.TimeStampedModel):
 
     @cached_property
     def city_count(self):
-        # return self.moveNotificationUser.all().order_by('city').distinct('city').count()
-        return self.moveNotificationUser.all().order_by('city').count()
+        return self.moveNotificationUser.all().order_by('city').distinct('city').count()
+        # return self.moveNotificationUser.all().order_by('city').count()
 
     @cached_property
     def country_count(self):
-        # return self.moveNotificationUser.all().order_by('city__country').distinct('city__country').count()
-        return self.moveNotificationUser.all().order_by('city__country').count()
+        return self.moveNotificationUser.all().order_by('city__country').distinct('city__country').count()
+        # return self.moveNotificationUser.all().order_by('city__country').count()
 
     @cached_property
     def continent_count(self):
-        # return self.moveNotificationUser.all().order_by('city__country__continent').distinct('city__country__continent').count()
-        return self.moveNotificationUser.all().order_by('city__country__continent').count()
+        return self.moveNotificationUser.all().order_by('city__country__continent').distinct('city__country__continent').count()
+        # return self.moveNotificationUser.all().order_by('city__country__continent').count()
 
     @cached_property
     def trip_count(self):
