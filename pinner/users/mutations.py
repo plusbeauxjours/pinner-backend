@@ -798,8 +798,8 @@ class FacebookConnect(graphene.Mutation):
                 newUser.email_address = email
                 newUser.is_verified_email_address = True
                 newUser.gender = gender
-                newUser.avatar_url = avatar_url
-                newUser.app_avatar_url = avatar_url
+                newUser.avatar_url = None
+                newUser.app_avatar_url = None
                 newUser.current_city = city
                 newUser.current_country = city.country
                 newUser.current_continent = city.country.continent
