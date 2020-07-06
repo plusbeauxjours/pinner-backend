@@ -117,7 +117,7 @@ def createCity(cityId):
 
 cityNames = [
     "TOKYO, Japan",
-    # "JAKARTA, Indonesia",
+    "JAKARTA, Indonesia",
     "New York",
     "SEOUL, South Korea",
     "MANILA, Philippines",
@@ -316,7 +316,6 @@ cityNames = [
     "Kharkiv, Ukraine",
     "Gwangju, South Korea",
     "Xinghua, China",
-    "HARARE, Zimbabwe",
     "Belém, Brazil",
     "Santa Cruz,",
     "Semarang, Indonesia",
