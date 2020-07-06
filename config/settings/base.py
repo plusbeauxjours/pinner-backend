@@ -247,7 +247,7 @@ X_FRAME_OPTIONS = 'DENY'
 # ADMIN
 # ------------------------------------------------------------------------------
 # Django Admin URL.
-ADMIN_URL = 'admin'
+ADMIN_URL = 'admin/'
 AUTH_USER_MODEL = "users.User"
 # https://docs.djangoproject.com/en/dev/ref/settings/#admins
 ADMINS = [

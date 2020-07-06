@@ -811,7 +811,7 @@ class FacebookConnect(graphene.Mutation):
                     continent=city.country.continent,
                 )
 
-                token = get_token(user)
+                token = get_token(newUser)
                 return types.FacebookConnectResponse(ok=True, token=token)
 
 
@@ -985,7 +985,7 @@ class AppleConnect(graphene.Mutation):
                         continent=city.country.continent,
                     )
 
-                    token = get_token(user)
+                    token = get_token(newUser)
                     return types.AppleConnectResponse(ok=True, token=token)
 
 
