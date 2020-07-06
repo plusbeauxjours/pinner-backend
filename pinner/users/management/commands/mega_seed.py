@@ -109,7 +109,7 @@ def createCity(cityId):
             latitude=cityLatitude,
             longitude=cityLongitude
         )
-        print(city.cityName)
+        print(city.city_name)
         for i in nearCities:
             city.near_city.add(i)
             city.save()
