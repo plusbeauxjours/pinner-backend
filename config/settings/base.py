@@ -51,9 +51,8 @@ if DEBUG:
     }
 else:
     DATABASES = {
-        'default': env.db('DATABASE_URL', default='postgres:///pinner'),
+        'default': env.db('DATABASE_URL'),
     }
-    DATABASES['default']['ATOMIC_REQUESTS'] = True
 
 # URLS
 # ------------------------------------------------------------------------------
