@@ -552,7 +552,6 @@ cityNames = [
     "Querétaro, Mexico",
     "PRETORIA, South Africa",
     "Meknès, Morocco",
-    "Bulawayo, Zimbabwe",
     "Okayama, Japan",
     "Santo André, Brazil",
     "RABAT, Morocco",
