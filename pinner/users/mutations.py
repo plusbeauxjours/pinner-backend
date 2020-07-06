@@ -786,20 +786,20 @@ class FacebookConnect(graphene.Mutation):
                 newUser.last_name = last_name
 
                 avatar_url = "https://graph.facebook.com/%s/picture?type=large" % fbId
-                thumbnail = BytesIO(urlopen(avatar_url).read())
-                avatar = models.Avatar.objects.create(
-                    is_main=True,
-                    creator=newUser,
-                )
-                avatar.thumbnail.save("image.jpg", ContentFile(thumbnail.getvalue()), save=False)
-                avatar.save()
+                # thumbnail = BytesIO(urlopen(avatar_url).read())
+                # avatar = models.Avatar.objects.create(
+                #     is_main=True,
+                #     creator=newUser,
+                # )
+                # avatar.thumbnail.save("image.jpg", ContentFile(thumbnail.getvalue()), save=False)
+                # avatar.save()
 
                 newUser.fbId = fbId
                 newUser.email_address = email
                 newUser.is_verified_email_address = True
                 newUser.gender = gender
-                newUser.avatar_url = avatar.thumbnail
-                newUser.app_avatar_url = avatar.thumbnail
+                newUser.avatar_url = avatar_url
+                newUser.app_avatar_url = avatar_url
                 newUser.current_city = city
                 newUser.current_country = city.country
                 newUser.current_continent = city.country.continent

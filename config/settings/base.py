@@ -21,7 +21,7 @@ load_dotenv(dotenv_path)
 # GENERAL
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#debug
-DEBUG = False
+DEBUG = True
 # Local time zone. Choices are
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # though not all of them may be available with every OS.
@@ -374,17 +374,3 @@ sentry_sdk.init(
     send_default_pii=True,
 )
 
-
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-AWS_QUERYSTRING_AUTH = False
-AWS_STORAGE_BUCKET_NAME = env('BUCKETEER_BUCKET_NAME')
-AWS_S3_REGION_NAME = env('BUCKETEER_AWS_REGION')
-AWS_ACCESS_KEY_ID = env('BUCKETEER_AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = env('BUCKETEER_AWS_SECRET_ACCESS_KEY')
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
-MEDIA_URL = 'https://%s.s3.amazonaws.com/' % str(AWS_STORAGE_BUCKET_NAME)
-AWS_DEFAULT_ACL = 'public-read'
-AWS_S3_OBJECT_PARAMETERS = {
-    'CacheControl': 'max-age=86400',
-}
-AWS_LOCATION = 'media'
