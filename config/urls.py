@@ -17,7 +17,7 @@ urlpatterns = [
         name="about",
     ),
     path(settings.ADMIN_URL, admin.site.urls),
-    path('graphql/', csrf_exempt(FileUploadGraphQLView.as_view(graphiql=True))),
+    path('graphql', csrf_exempt(FileUploadGraphQLView.as_view(graphiql=True))),
     path(
         "users/",
         include("pinner.users.urls", namespace="users"),
