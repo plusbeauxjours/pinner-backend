@@ -33,7 +33,7 @@ django-sendgrid-v5==0.8.0
 django-storages==1.7.1
 django-taggit==1.1.0
 django-taggit-serializer==0.1.7
-djangorestframework==3.10.2
+djangorestframework==3.11.2
 docutils==0.15.2
 environ==1.0
 flake8==3.7.8
