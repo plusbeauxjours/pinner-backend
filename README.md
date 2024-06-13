@@ -10,5 +10,5 @@
 
 ### Portfolio Link
 
-> https://www.plusbeauxjours.com/projects/app/pinner-app
-> https://www.plusbeauxjours.com/projects/app/pinner-web
+> https://www.plusbeauxjours.info/projects/app/pinner
+> https://www.plusbeauxjours.info/projects/web/pinner
