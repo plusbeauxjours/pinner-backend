@@ -10,6 +10,6 @@
 
 ### Portfolio Link
 
-> https://www.plusbeauxjours.info/projects/app/pinner
+> https://www.plusbeauxjours.info/projects/0/app/pinner
 
-> https://www.plusbeauxjours.info/projects/web/pinner
+> https://www.plusbeauxjours.info/projects/0/web/pinner
